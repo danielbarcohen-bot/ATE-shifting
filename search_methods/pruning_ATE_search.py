@@ -18,7 +18,7 @@ class PruneATESearch(ATESearch):
                max_seq_length: int):
         # base_line_ate = get_base_line(common_causes, df)
         df_ = df.copy()
-        Q = deque([[]])
+        Q = deque([([], df_)])
         seen_dfs = set()
         prune_count = 0
         try_count = 0
@@ -36,6 +36,7 @@ class PruneATESearch(ATESearch):
             print(f"new ate is {new_ate}")
             if abs(new_ate - target_ate) < epsilon:
                 print(f"""***\nFINISHED\nATE now is:{new_ate}\nsequence is:{seq_arr}\n***""")
+                solution_seq = seq_arr
                 break
 
             if len(seq_arr) < max_seq_length:
