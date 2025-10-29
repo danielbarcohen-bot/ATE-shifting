@@ -34,6 +34,13 @@ EXPERIMENTS = {
         "common_causes": df.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0.005,
         "epsilon": 0.0001,
-        "max_length": 5
+        "max_length": 10
+    },
+    "EXP3": {  # run algorithms on the whole dataset, different target
+        "df": df,
+        "common_causes": df.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": -0.5,
+        "epsilon": 0.501,
+        "max_length": 10
     }
 }
