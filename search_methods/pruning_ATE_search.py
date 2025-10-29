@@ -23,6 +23,7 @@ class PruneATESearch(ATESearch):
         prune_count = 0
         try_count = 0
         solution_seq = None
+        ates = []
 
         start_time = time.time()
         while len(Q) > 0:
@@ -32,6 +33,7 @@ class PruneATESearch(ATESearch):
             model = CausalModel(data=curr_df_filled, treatment='treatment', outcome='outcome',
                                 common_causes=common_causes)
             new_ate = calculate_ate(model)
+            ates.append(new_ate)
 
             print(f"new ate is {new_ate}")
             if abs(new_ate - target_ate) < epsilon:
@@ -81,4 +83,5 @@ class PruneATESearch(ATESearch):
         execution_time = end_time - start_time
         print(f"Execution time: {execution_time} seconds")
         print(f"checked {try_count} combinations")
+        print(f"all ates: {sorted(ates)}")
         return solution_seq

@@ -21,6 +21,7 @@ class BruteForceATESearch(ATESearch):
         Q = deque([[]])
         try_count = 0
         solution_seq = None
+        ates = []
 
         start_time = time.time()
         while len(Q) > 0:
@@ -30,6 +31,7 @@ class BruteForceATESearch(ATESearch):
             curr_df.fillna(value=curr_df.mean(), inplace=True)
             model = CausalModel(data=curr_df, treatment='treatment', outcome='outcome', common_causes=common_causes)
             new_ate = calculate_ate(model)
+            ates.append(new_ate)
 
             if abs(new_ate - target_ate) < epsilon:
                 solution_seq = seq_arr
@@ -49,4 +51,5 @@ class BruteForceATESearch(ATESearch):
         execution_time = end_time - start_time
         print(f"Execution time: {execution_time} seconds")
         print(f"checked {try_count} combinations")
+        print(f"all ates: {sorted(ates)}")
         return solution_seq
