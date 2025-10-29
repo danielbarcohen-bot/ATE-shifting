@@ -27,7 +27,7 @@ class BruteForceATESearch(ATESearch):
         while len(Q) > 0:
             seq_arr = Q.popleft()
             curr_df = apply_data_preparations_seq(df_, seq_arr)
-            print(f"sequence poped is: {seq_arr}")
+            print(f"sequence poped is: {seq_arr}", flush=True)
             curr_df.fillna(value=curr_df.mean(), inplace=True)
             model = CausalModel(data=curr_df, treatment='treatment', outcome='outcome', common_causes=common_causes)
             new_ate = calculate_ate(model)
@@ -35,7 +35,7 @@ class BruteForceATESearch(ATESearch):
 
             if abs(new_ate - target_ate) < epsilon:
                 solution_seq = seq_arr
-                print(f"""***\nFINISHED\nATE now is:{new_ate}\nsequence is:{seq_arr}\n***""")
+                print(f"""***\nFINISHED\nATE now is:{new_ate}\nsequence is:{seq_arr}\n***""", flush=True)
                 break
 
             if len(seq_arr) < max_seq_length:
@@ -49,7 +49,7 @@ class BruteForceATESearch(ATESearch):
 
         end_time = time.time()
         execution_time = end_time - start_time
-        print(f"Execution time: {execution_time} seconds")
-        print(f"checked {try_count} combinations")
-        print(f"all ates: {sorted(ates)}")
+        print(f"Execution time: {execution_time} seconds", flush=True)
+        print(f"checked {try_count} combinations", flush=True)
+        print(f"all ates: {sorted(ates)}", flush=True)
         return solution_seq

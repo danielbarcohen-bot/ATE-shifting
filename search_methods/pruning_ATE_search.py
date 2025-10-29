@@ -28,16 +28,16 @@ class PruneATESearch(ATESearch):
         start_time = time.time()
         while len(Q) > 0:
             seq_arr, curr_df = Q.popleft()
-            print(f"sequence poped is: {seq_arr}")
+            print(f"sequence poped is: {seq_arr}", flush=True)
             curr_df_filled = curr_df.fillna(value=curr_df.mean())
             model = CausalModel(data=curr_df_filled, treatment='treatment', outcome='outcome',
                                 common_causes=common_causes)
             new_ate = calculate_ate(model)
             ates.append(new_ate)
 
-            print(f"new ate is {new_ate}")
+            print(f"new ate is {new_ate}", flush=True)
             if abs(new_ate - target_ate) < epsilon:
-                print(f"""***\nFINISHED\nATE now is:{new_ate}\nsequence is:{seq_arr}\n***""")
+                print(f"""***\nFINISHED\nATE now is:{new_ate}\nsequence is:{seq_arr}\n***""", flush=True)
                 solution_seq = seq_arr
                 break
 
@@ -45,7 +45,7 @@ class PruneATESearch(ATESearch):
                 for col in common_causes:
                     for func_name, func in get_transformations().items():
                         if func_name not in [f_name for (f_name, c) in seq_arr if c == col]:
-                            print(f"checking col {col} and func {func_name}")
+                            print(f"checking col {col} and func {func_name}", flush=True)
                             time_col_func_start = time.time()
                             try_count += 1
                             new_df = curr_df.copy()
@@ -58,30 +58,30 @@ class PruneATESearch(ATESearch):
                             time_signature_start = time.time()
                             df_new_signature = df_signature_fast(new_df, common_causes)
                             time_signature_end = time.time()
-                            print(f"time for df_signature: {time_signature_end - time_signature_start} seconds")
+                            print(f"time for df_signature: {time_signature_end - time_signature_start} seconds", flush=True)
 
                             time_seen_df_start = time.time()
                             if df_new_signature in seen_dfs:
                                 prune_count += 1
                                 df_new_exists = True
-                                print("PRUNED")
+                                print("PRUNED", flush=True)
 
                             time_seen_df_end = time.time()
-                            print(f"time for checking seen_df: {time_seen_df_end - time_seen_df_start} seconds")
+                            print(f"time for checking seen_df: {time_seen_df_end - time_seen_df_start} seconds", flush=True)
 
                             # if not df_already_exists:
                             if not df_new_exists:
-                                print(f"added func {func_name}")
+                                print(f"added func {func_name}", flush=True)
                                 seen_dfs.add(df_new_signature)
                                 Q.append((new_seq, new_df))
 
                             time_col_func_end = time.time()
                             print(
-                                f"time for col {col} and func {func_name}: {time_col_func_end - time_col_func_start} seconds")
+                                f"time for col {col} and func {func_name}: {time_col_func_end - time_col_func_start} seconds", flush=True)
 
         end_time = time.time()
         execution_time = end_time - start_time
-        print(f"Execution time: {execution_time} seconds")
-        print(f"checked {try_count} combinations")
-        print(f"all ates: {sorted(ates)}")
+        print(f"Execution time: {execution_time} seconds", flush=True)
+        print(f"checked {try_count} combinations", flush=True)
+        print(f"all ates: {sorted(ates)}", flush=True)
         return solution_seq
