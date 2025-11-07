@@ -40,7 +40,7 @@ EXPERIMENTS = {
         "df": df,
         "common_causes": df.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -0.5,
-        "epsilon": 0.501,
+        "epsilon": 0.5033,#0.501,
         "max_length": 10
     }
 }
