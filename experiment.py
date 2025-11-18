@@ -24,3 +24,9 @@ class Experiment:
         return PruneATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
                                        epsilon=self.epsilon,
                                        max_seq_length=self.max_length)
+
+    def run_parallel_prune(self):
+        return PruneATESearch().parallel_search(df=self.df, common_causes=self.common_causes,
+                                                target_ate=self.target_ate,
+                                                epsilon=self.epsilon,
+                                                max_seq_length=self.max_length)
