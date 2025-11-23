@@ -124,11 +124,15 @@ class PruneATESearch(ATESearch):
             if len(seq_arr) < max_seq_length:
                 for col in common_causes:
                     for func_name, func in get_transformations().items():
-                        if func_name not in [f_name for (f_name, c) in seq_arr if c == col]: # remove???
+                        if func_name not in [f_name for (f_name, c) in seq_arr if c == col] or (func_name.startswith("fill_") and curr_df[col].isna().sum() > 0): # remove???
                             time_col_func_start = time.time()
                             try_count += 1
                             new_df = curr_df.copy()
                             new_df[col] = func(new_df[col])
+
+                            if new_df[col].equals(curr_df[col]): #col has'nt change - so same df!
+                                prune_count += 1
+                                continue
 
                             df_new_signature = df_signature_fast(new_df, common_causes)
 
@@ -143,6 +147,8 @@ class PruneATESearch(ATESearch):
 
                             time_col_func_end = time.time()
                             run_times.append(time_col_func_end - time_col_func_start)
+                        else:
+                            prune_count += 1
 
             end_pop_Q_time = time.time()
             run_times_pop.append(end_pop_Q_time - start_pop_Q_time)
