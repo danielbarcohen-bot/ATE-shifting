@@ -1,9 +1,18 @@
 import pandas as pd
+import os
+import dowhy.datasets
 
 
 class TwinsDataLoader:
+    def __init__(self):
+        self.CACHE_FILE = "twins_data.pkl"
 
     def load_data(self) -> pd.DataFrame:
+        # load from disk if exists
+        if os.path.exists(self.CACHE_FILE):
+            print("loaded cached data")
+            return pd.read_pickle(self.CACHE_FILE)
+        print("bring data")
         # The covariates data has 46 features
         x = pd.read_csv(
             "https://raw.githubusercontent.com/AMLab-Amsterdam/CEVAE/master/datasets/TWINS/twin_pairs_X_3years_samesex.csv")
@@ -74,7 +83,38 @@ class TwinsDataLoader:
 
         df = pd.DataFrame(columns=cols, data=data)
 
+        df.to_pickle(self.CACHE_FILE)
         return df
 
 
+class LalondeDataLoader:
+    def __init__(self):
+        self.CACHE_FILE = "lalonde_data.pkl"
+
+    def load_data(self) -> pd.DataFrame:
+        if os.path.exists(self.CACHE_FILE):
+            print("loaded cached data")
+            return pd.read_pickle(self.CACHE_FILE)
+        print("bring data")
+        df = pd.read_stata("http://www.nber.org/~rdehejia/data/nsw_dw.dta")
+        df = df.rename(columns={'treat': 'treatment', 're78': 'outcome'})
+        df = df[['nodegree','black', 'hispanic', 'age', 'education', 'married','treatment', 'outcome']]
+        df.to_pickle(self.CACHE_FILE)
+        return df
+
+
+class ACSDataLoader:
+    def __init__(self):
+        self.CACHE_FILE = "ACS_data.pkl"
+
+    def load_data(self) -> pd.DataFrame:
+        if os.path.exists(self.CACHE_FILE):
+            print("loaded cached data")
+            return pd.read_pickle(self.CACHE_FILE)
+        print("bring data")
+        df = pd.read_csv("acs.csv")
+        df = df.rename(columns={'Educational attainment': 'education', 'Private health insurance coverage': 'private health coverage', 'Medicare, for people 65 and older, or people with certain disabilities': 'medicare for people 65 and older', 'Insurance through a current or former employer or union': 'insurance through employer', 'Sex': 'gender', 'With a disability': 'treatment', 'Wages or salary income past 12 months': 'outcome'})
+        df = df[['education', 'Public health coverage', 'private health coverage', 'medicare for people 65 and older', 'insurance through employer', 'gender', 'Age', 'treatment', 'outcome']]
+        df.to_pickle(self.CACHE_FILE)
+        return df
 

@@ -1,7 +1,9 @@
 from typing import List
 import pandas as pd
 
+from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
+from search_methods.probe_ATE_search import ProbeATESearch
 from search_methods.pruning_ATE_search import PruneATESearch
 
 
@@ -26,7 +28,17 @@ class Experiment:
                                        max_seq_length=self.max_length)
 
     def run_parallel_prune(self):
-        return PruneATESearch().parallel_search(df=self.df, common_causes=self.common_causes,
+        return PruneATESearch().search_parallel_f(df=self.df, common_causes=self.common_causes,
+                                                target_ate=self.target_ate,
+                                                epsilon=self.epsilon,
+                                                max_seq_length=self.max_length)
+    def run_AStar(self):
+        return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
+                                                target_ate=self.target_ate,
+                                                epsilon=self.epsilon,
+                                                max_seq_length=self.max_length)
+    def run_probe(self):
+        return ProbeATESearch().search(df=self.df, common_causes=self.common_causes,
                                                 target_ate=self.target_ate,
                                                 epsilon=self.epsilon,
                                                 max_seq_length=self.max_length)
