@@ -8,7 +8,7 @@ import pandas as pd
 from search_methods.ATE_search import ATESearch
 from search_methods.pruning_ATE_search import canonical
 from utils import get_transformations, apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
-    df_signature_fast
+    df_signature_fast, get_moves_and_moveBit
 
 
 # --- PCFG Class to Manage Weights ---
@@ -96,15 +96,16 @@ class ProbeATESearch(ATESearch):
         Implements the adaptive Best-First Search guided by the PCFG cost.
         """
         pcfg = PCFG([func_name for func_name, func in get_transformations().items()], common_causes)
+        fast_moves = get_moves_and_moveBit(common_causes, get_transformations().keys())
+
         # Priority Queue stores tuples: (cost, sequence)
         # The cost is the PCFG cost, NOT the ATE error.
         pq = []
-        transformations_dict = get_transformations().items()
-
+        transformations_dict = get_transformations()
         # 1. Start with the empty sequence (Cost calculated from PCFG)
-        initial_sequence = []
+        initial_sequence = ()
         initial_cost = pcfg.get_cost(initial_sequence)
-        heapq.heappush(pq, (initial_cost, initial_sequence))
+        heapq.heappush(pq, (initial_cost, initial_sequence, 0))
 
         steps = 0
         best_ate_error = float('inf')
@@ -114,9 +115,10 @@ class ProbeATESearch(ATESearch):
         seen_dfs.add(df_signature_fast(df.copy(), common_causes))
 
         start_time = time.time()
-
+        popped_order = []
         while pq:
-            cost, sequence = heapq.heappop(pq)
+            cost, sequence, mask = heapq.heappop(pq)
+            popped_order.append(( cost, sequence, mask))
             steps += 1
 
             # --- ATE Evaluation & Goal Check ---
@@ -131,6 +133,7 @@ class ProbeATESearch(ATESearch):
                 print(f"\n🏆 **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
                 print(f"run took {time.time() - start_time:.2f} seconds")
                 print(f"checked {steps} combinations")
+                print(f"pop order:\n{popped_order}")
                 return sequence
 
             # --- Probe Trigger (JIT Learning) ---
@@ -149,73 +152,55 @@ class ProbeATESearch(ATESearch):
                     current_frontier = []
                     while pq:
                         # We only stored (cost, sequence). We need to extract the sequence.
-                        old_cost, seq = heapq.heappop(pq)
-                        current_frontier.append(seq)
+                        old_cost, seq , mask= heapq.heappop(pq)
+                        current_frontier.append((seq, mask))
 
                     # 2. Re-calculate the cost for every sequence using the updated PCFG
-                    for seq in current_frontier:
+                    for seq, mask in current_frontier:
                         new_cost = pcfg.get_cost(seq)
                         # 3. Push the sequence back with the new, correct cost
-                        heapq.heappush(pq, (new_cost, seq))
+                        heapq.heappush(pq, (new_cost, seq, mask))
 
                     print(f"✅ Frontier refreshed. Queue size: {len(pq)}")
 
             # --- Expansion (Generating Children) ---
             # Generate new sequences by appending one operation
             if len(sequence) < max_seq_length:
-                for func_name, func in transformations_dict:
-                    for col in common_causes:
-                        new_op = (func_name, col)
-                        new_sequence = sequence + [new_op]
+                for func_name, col, move_bit in fast_moves:
+                    new_mask = mask | move_bit
+                    new_sequence = sequence + ((func_name, col),)
 
-                        if not (func_name.startswith("fill_") and curr_df[col].isna().sum() > 0) and not (
-                                func_name.startswith("bin_") and any(
-                            curr_func_name.startswith("bin_") and curr_col == col for curr_func_name, curr_col in
-                            sequence)) and not (
-                                func_name.startswith("zscore_clip") and any(
-                            curr_func_name.startswith("zscore_clip") and curr_col == col for curr_func_name, curr_col in
-                            sequence)):
-                            new_col = func(curr_df[col].copy())
+                    # Q.append((new_path, new_mask))
 
-                            canonical_sequence = canonical(new_sequence)
-                            if canonical_sequence in seen_seq or new_col.equals(
-                                    curr_df[col]):  # col hasn't changed - so same df!
-                                continue
+                    if mask & move_bit or (func_name.startswith("fill_") and curr_df[col].isna().sum() == 0):
+                        continue
+                    new_col = transformations_dict[func_name](curr_df[col].copy())
 
-                            seen_seq.add(canonical_sequence)
-                            new_df = curr_df.copy(deep=False)
-                            new_df[col] = new_col
-                            df_new_signature = df_signature_fast(new_df, common_causes)
+                    canonical_sequence = canonical(new_sequence)
+                    if canonical_sequence in seen_seq or new_col.equals(
+                            curr_df[col]):  # col hasn't changed - so same df!
+                        continue
 
-                            if df_new_signature in seen_dfs:
-                                continue
+                    seen_seq.add(canonical_sequence)
+                    new_df = curr_df.copy(deep=False)
+                    new_df[col] = new_col
+                    df_new_signature = df_signature_fast(new_df, common_causes)
 
-                            # if df hasnt been explored:
-                            else:
-                                # print(f"added func {func_name}", flush=True)
-                                seen_dfs.add(df_new_signature)
+                    if df_new_signature in seen_dfs:
+                        continue
 
-                                # Calculate cost using the *CURRENT* (and potentially updated) PCFG
-                                new_cost = pcfg.get_cost(new_sequence)
+                    # if df hasnt been explored:
+                    else:
+                        # print(f"added func {func_name}", flush=True)
+                        seen_dfs.add(df_new_signature)
 
-                                # Push the new sequence to the priority queue
-                                heapq.heappush(pq, (new_cost, new_sequence))
+                        # Calculate cost using the *CURRENT* (and potentially updated) PCFG
+                        new_cost = pcfg.get_cost(new_sequence)
+
+                        # Push the new sequence to the priority queue
+                        heapq.heappush(pq, (new_cost, new_sequence, new_mask))
 
         print(f"run took {time.time() - start_time:.2f} seconds")
         print(f"checked {steps} combinations")
         return "Search failed to find a solution within max steps."
 
-# --- Run the Search ---
-# if __name__ == '__main__':
-#     from data_loader import TwinsDataLoader
-#     from utils import get_transformations, apply_data_preparations_seq, calculate_ate_linear_regression_lstsq
-#
-#     df = TwinsDataLoader().load_data()
-#     common_causes = df.columns.difference(["treatment", "outcome"]).tolist()#['wt', 'hydra', 'nprevistq', 'gestat10']
-#     target_ate = 0.003#0.005
-#     epsilon = 0.0033#0.0001
-#     max_length = 10#5
-#     print(f"--- Starting JIT ATE Search (Target ATE: {target_ate} +/- {epsilon}) ---")
-#     pcfg = PCFG([func_name for func_name, func in get_transformations().items()], common_causes)
-#     result = jit_ate_search(df, target_ate, epsilon, pcfg, max_length, common_causes)
-#     print(result)

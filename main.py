@@ -9,7 +9,6 @@ if __name__ == "__main__":
     parser.add_argument("mode", type=str, choices=["brute", "prune", "parallel", "astar", "probe"],
                         help="Which mode to run: brute prune or parallel prune")
     args = parser.parse_args()
-
     config = EXPERIMENTS.get(args.exp_name)
     if config is None:
         raise ValueError(f"Experiment {args.exp_name} not found. Available: {list(EXPERIMENTS.keys())}")
@@ -21,7 +20,6 @@ if __name__ == "__main__":
         epsilon=config["epsilon"],
         max_length=config["max_length"]
     )
-
     # Call the correct run method
     if args.mode == "brute":
         experiment.run_brute()

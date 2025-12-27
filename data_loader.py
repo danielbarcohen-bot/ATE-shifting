@@ -118,3 +118,22 @@ class ACSDataLoader:
         df.to_pickle(self.CACHE_FILE)
         return df
 
+
+class IHDPDataLoader:
+    def __init__(self):
+        self.CACHE_FILE = "IHDP_data.pkl"
+
+    def load_data(self) -> pd.DataFrame:
+        if os.path.exists(self.CACHE_FILE):
+            print("loaded cached data")
+            return pd.read_pickle(self.CACHE_FILE)
+        print("bring data")
+        df = pd.read_csv(
+            "https://raw.githubusercontent.com/AMLab-Amsterdam/CEVAE/master/datasets/IHDP/csv/ihdp_npci_1.csv", header=None)
+        col = ["treatment", "y_factual", "y_cfactual", "mu0", "mu1", ]
+        for i in range(1, 26):
+            col.append("x" + str(i))
+        df.columns = col
+        df = df.rename(columns={'y_factual': 'outcome'})
+        df.to_pickle(self.CACHE_FILE)
+        return df

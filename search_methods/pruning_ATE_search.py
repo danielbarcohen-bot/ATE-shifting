@@ -12,7 +12,7 @@ from dowhy import CausalModel
 from fast_dowhy_ATE import FastDoWhyATE
 from search_methods.ATE_search import ATESearch
 from utils import get_transformations, df_signature_fast, apply_data_preparations_seq, get_base_line, \
-    df_signature_fast_rounds, calculate_ate_linear_regression_lstsq
+    df_signature_fast_rounds, calculate_ate_linear_regression_lstsq, get_moves_and_moveBit
 
 
 def canonical(seq):
@@ -35,7 +35,7 @@ class PruneATESearch(ATESearch):
 
         base_line_ate = get_base_line(common_causes, df_)
         print(f"start ATE is {base_line_ate}")
-        Q = deque([[]])
+        Q = deque([((), 0)])
         seen_dfs = set()
         seen_seq = set()  # ONLY TRUE WHEN OPERATIONS AFFECT 1 COL AT A TIME
         prune_count = 0
@@ -45,14 +45,14 @@ class PruneATESearch(ATESearch):
         run_times = []
         run_times_pop = []
         Q_poped_num = 0
-        transformations_dict = get_transformations().items()
-        # fast_dowhy_ate = FastDoWhyATE(df_, 'treatment', 'outcome', common_causes)
+        transformations_dict = get_transformations()
+        fast_moves = get_moves_and_moveBit(common_causes, get_transformations().keys())
 
         start_time = time.time()
         while len(Q) > 0:
             start_pop_Q_time = time.time()
             Q_poped_num += 1
-            seq_arr = Q.popleft()
+            seq_arr, mask = Q.popleft()
             curr_df = apply_data_preparations_seq(df_, seq_arr)
             curr_df_filled = curr_df.dropna()  # curr_df.fillna(value=curr_df.mean())
             # model = CausalModel(data=curr_df_filled, treatment='treatment', outcome='outcome', common_causes=common_causes)
@@ -73,6 +73,8 @@ class PruneATESearch(ATESearch):
             #
             #     print(find_interesting(seq_ates,5))
             #     print("-" * 120)
+            # if Q_poped_num % 100 ==0:
+            #     print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
 
             if abs(new_ate - target_ate) < epsilon:
                 print(
@@ -82,45 +84,42 @@ class PruneATESearch(ATESearch):
                 break
 
             if len(seq_arr) < max_seq_length:
-                for col in common_causes:
-                    for func_name, func in transformations_dict:
-                        try_count += 1
-                        if not (func_name.startswith("fill_") and curr_df[col].isna().sum() > 0) and not (
-                                func_name.startswith("bin_") and any(
-                            curr_func_name.startswith("bin_") and curr_col == col for curr_func_name, curr_col in
-                            seq_arr)) and not (
-                                func_name.startswith("zscore_clip") and any(
-                            curr_func_name.startswith("zscore_clip") and curr_col == col for curr_func_name, curr_col in
-                            seq_arr)):
-                            time_col_func_start = time.time()
-                            # new_df = curr_df.copy()
-                            # new_df[col] = func(new_df[col])
-                            new_col = func(curr_df[col].copy())
+                for func_name, col, move_bit in fast_moves:
+                    try_count += 1
+                    if mask & move_bit or (func_name.startswith("fill_") and curr_df[col].isna().sum() == 0):
+                        prune_count += 1
+                        continue
+                    time_col_func_start = time.time()
+                    # new_df = curr_df.copy()
+                    # new_df[col] = func(new_df[col])
+                    new_col = transformations_dict[func_name](curr_df[col].copy())
 
-                            canonical_sequence = canonical(seq_arr + [(func_name, col)])
-                            if canonical_sequence in seen_seq or new_col.equals(
-                                    curr_df[col]):  # col hasn't changed - so same df!
-                                prune_count += 1
-                                continue
+                    canonical_sequence = canonical(seq_arr + ((func_name, col),))
+                    if canonical_sequence in seen_seq or new_col.equals(
+                            curr_df[col]):  # col hasn't changed - so same df!
+                        prune_count += 1
+                        continue
 
-                            seen_seq.add(canonical_sequence)
-                            new_df = curr_df.copy(deep=False)
-                            new_df[col] = new_col
-                            df_new_signature = df_signature_fast(new_df, common_causes)
+                    seen_seq.add(canonical_sequence)
+                    new_df = curr_df.copy(deep=False)
+                    new_df[col] = new_col
+                    df_new_signature = df_signature_fast(new_df, common_causes)
 
-                            if df_new_signature in seen_dfs:
-                                prune_count += 1
+                    if df_new_signature in seen_dfs:
+                        prune_count += 1
 
-                            # if df hasnt been explored:
-                            else:
-                                # print(f"added func {func_name}", flush=True)
-                                seen_dfs.add(df_new_signature)
-                                Q.append(seq_arr + [(func_name, col)])
+                    # if df hasnt been explored:
+                    else:
+                        # print(f"added func {func_name}", flush=True)
+                        seen_dfs.add(df_new_signature)
+                        new_mask = mask | move_bit
+                        new_path = seq_arr + ((func_name, col),)
 
-                            time_col_func_end = time.time()
-                            run_times.append(time_col_func_end - time_col_func_start)
-                        else:
-                            prune_count += 1
+                        Q.append((new_path, new_mask))
+                        # Q.append(seq_arr + [(func_name, col)])
+
+                    time_col_func_end = time.time()
+                    run_times.append(time_col_func_end - time_col_func_start)
 
             end_pop_Q_time = time.time()
             run_times_pop.append(end_pop_Q_time - start_pop_Q_time)
@@ -139,7 +138,7 @@ class PruneATESearch(ATESearch):
             f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",
             flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: len(x[0]))}", flush=True)
-        print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
+        # print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
 
         return solution_seq
 
