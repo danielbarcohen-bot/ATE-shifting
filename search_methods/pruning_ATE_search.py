@@ -73,8 +73,9 @@ class PruneATESearch(ATESearch):
             #
             #     print(find_interesting(seq_ates,5))
             #     print("-" * 120)
-            # if Q_poped_num % 100 ==0:
-            #     print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
+            # if Q_poped_num % 1000 ==0:
+            #     print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}")
+            #     print("="*100)
 
             if abs(new_ate - target_ate) < epsilon:
                 print(
@@ -138,7 +139,7 @@ class PruneATESearch(ATESearch):
             f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",
             flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: len(x[0]))}", flush=True)
-        # print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
+        print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
 
         return solution_seq
 

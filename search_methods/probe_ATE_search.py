@@ -115,10 +115,8 @@ class ProbeATESearch(ATESearch):
         seen_dfs.add(df_signature_fast(df.copy(), common_causes))
 
         start_time = time.time()
-        popped_order = []
         while pq:
             cost, sequence, mask = heapq.heappop(pq)
-            popped_order.append(( cost, sequence, mask))
             steps += 1
 
             # --- ATE Evaluation & Goal Check ---
@@ -133,7 +131,6 @@ class ProbeATESearch(ATESearch):
                 print(f"\n🏆 **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
                 print(f"run took {time.time() - start_time:.2f} seconds")
                 print(f"checked {steps} combinations")
-                print(f"pop order:\n{popped_order}")
                 return sequence
 
             # --- Probe Trigger (JIT Learning) ---
@@ -152,14 +149,14 @@ class ProbeATESearch(ATESearch):
                     current_frontier = []
                     while pq:
                         # We only stored (cost, sequence). We need to extract the sequence.
-                        old_cost, seq , mask= heapq.heappop(pq)
-                        current_frontier.append((seq, mask))
+                        old_cost, seq , mask_ = heapq.heappop(pq)
+                        current_frontier.append((seq, mask_))
 
                     # 2. Re-calculate the cost for every sequence using the updated PCFG
-                    for seq, mask in current_frontier:
+                    for seq, mask_ in current_frontier:
                         new_cost = pcfg.get_cost(seq)
                         # 3. Push the sequence back with the new, correct cost
-                        heapq.heappush(pq, (new_cost, seq, mask))
+                        heapq.heappush(pq, (new_cost, seq, mask_))
 
                     print(f"✅ Frontier refreshed. Queue size: {len(pq)}")
 

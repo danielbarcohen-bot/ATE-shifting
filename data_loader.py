@@ -135,5 +135,6 @@ class IHDPDataLoader:
             col.append("x" + str(i))
         df.columns = col
         df = df.rename(columns={'y_factual': 'outcome'})
+        df = df[["x" + str(i) for i in range(1, 26)] + ["treatment", "outcome"]]
         df.to_pickle(self.CACHE_FILE)
         return df
