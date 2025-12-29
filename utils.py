@@ -132,6 +132,25 @@ def apply_data_preparations_seq(df: pd.DataFrame, seq_arr):
         df_[col] = transformations[func_name](df_[col])
     return df_
 
+def get_moves_and_moveBit(common_causes, transformations_names):
+    bit_map = {}
+    counter = 0
+    for f in transformations_names:
+        group = f.split('_')[0]
+        for c in common_causes:
+            if (group, c) not in bit_map:
+                bit_map[(group, c)] = counter
+                counter += 1
+
+    # Pre-calculate moves: (func, col, bit_value)
+    # bit_value is 2^counter (e.g., 1, 2, 4, 8, 16...)
+    fast_moves = []
+    for c in common_causes:
+        for f in transformations_names:
+            group = f.split('_')[0]
+            bit_pos = bit_map[(group, c)]
+            fast_moves.append((f, c, 1 << bit_pos))
+    return fast_moves
 
 # def calculate_ate_linear_regression_algebra(df: pd.DataFrame, treatment: str, outcome: str , common_causes: List[str]):
 #     Y = df[outcome].values.reshape(-1, 1)
