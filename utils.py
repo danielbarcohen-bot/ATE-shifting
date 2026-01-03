@@ -31,6 +31,7 @@ def get_base_line(common_causes, df):
     return calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
 
 
+# fill
 def fill_median(s):
     return s.fillna(s.median())
 
@@ -39,54 +40,70 @@ def fill_min(s):
     return s.fillna(s.min())
 
 
-def zscore_clip_3(s):
-    return s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
-
-
-def bin_2(s):
-    if s.nunique() == 1:
+# bin
+def bin_equal_frequency_2(s):
+    if s.nunique() < 2:
         return s
     return pd.qcut(s, q=2, labels=False, duplicates="drop")
 
 
-def bin_5_equal_width(s):
-    if s.nunique() <= 1:
-        return pd.Series(np.zeros(len(s)), index=s.index)
-    bins = pd.cut(s, bins=5, labels=False, duplicates="drop")
-    return bins.fillna(0)
+def bin_equal_frequency_5(s):
+    if s.nunique() < 5:
+        return s
+    return pd.qcut(s, q=2, labels=False, duplicates="drop")
 
 
-def log1p_safe(s):
-    return np.log1p(s.clip(lower=0))
+def bin_equal_frequency_10(s):
+    if s.nunique() < 10:
+        return s
+    return pd.qcut(s, q=2, labels=False, duplicates="drop")
 
 
-def square(s):
-    return s ** 2
+def bin_equal_width_2(s):
+    if s.nunique() < 2:
+        return s#pd.Series(np.zeros(len(s)), index=s.index)
+    bins = pd.cut(s, bins=2, labels=False, include_lowest=True)
+    return bins
 
 
-def sqrt_clip(s):
-    return np.sqrt(s.clip(lower=0))
+def bin_equal_width_5(s):
+    if s.nunique() < 5:
+        return s#pd.Series(np.zeros(len(s)), index=s.index)
+    bins = pd.cut(s, bins=5, labels=False, include_lowest=True)
+    return bins
 
 
-def exp_norm(s):
-    z = (s - s.mean()) / (s.std() + 1e-8)
-    e = np.exp(z)
-    return e / (e.mean() + 1e-8)
+def bin_equal_width_10(s):
+    if s.nunique() < 10:
+        return s#pd.Series(np.zeros(len(s)), index=s.index)
+    bins = pd.cut(s, bins=10, labels=False, include_lowest=True)
+    return bins
+
+#normalizing
+
+def min_max_norm(s: pd.Series) -> pd.Series:
+    min_v = s.min()
+    max_v = s.max()
+
+    if min_v == max_v:
+        return pd.Series(0.0, index=s.index)
+
+    return (s - min_v) / (max_v - min_v)
 
 
-def get_transformations():
-    strategies = {
-        "fill_median": fill_median,
-        "fill_min": fill_min,
-        "zscore_clip_3": zscore_clip_3,
-        "bin_2": bin_2,
-        # "bin_5_equal_width": bin_5_equal_width,
-        # "log1p_safe": log1p_safe,
-        # "square": square,
-        # "sqrt_clip": sqrt_clip,
-        # "exp_norm": exp_norm
-    }
-    return strategies
+def log_norm(s: pd.Series) -> pd.Series:
+    return np.sign(s) * np.log1p(np.abs(s))
+
+
+#outlier detection
+def zscore_clip_3(s):
+    return s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
+
+def winsorize(s: pd.Series, lower_quantile=0.01, upper_quantile=0.99) -> pd.Series:
+    lower = s.quantile(lower_quantile)
+    upper = s.quantile(upper_quantile)
+    return s.clip(lower, upper)
+
 
 
 def df_signature(df: pd.DataFrame):
@@ -125,12 +142,12 @@ def df_signature_fast_rounds(df: pd.DataFrame, cols: List[str], decimals=10) -> 
     return hashlib.sha1(row_hashes.tobytes()).hexdigest()
 
 
-def apply_data_preparations_seq(df: pd.DataFrame, seq_arr):
+def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict):
     df_ = df.copy()
-    transformations = get_transformations()
     for func_name, col in seq_arr:
-        df_[col] = transformations[func_name](df_[col])
+        df_[col] = transformations_dict[func_name](df_[col])
     return df_
+
 
 def get_moves_and_moveBit(common_causes, transformations_names):
     bit_map = {}
@@ -151,6 +168,7 @@ def get_moves_and_moveBit(common_causes, transformations_names):
             bit_pos = bit_map[(group, c)]
             fast_moves.append((f, c, 1 << bit_pos))
     return fast_moves
+
 
 # def calculate_ate_linear_regression_algebra(df: pd.DataFrame, treatment: str, outcome: str , common_causes: List[str]):
 #     Y = df[outcome].values.reshape(-1, 1)
@@ -200,7 +218,7 @@ def bin_sequences(data, num_bins=10):
     return result
 
 
-def find_interesting(entries, threshold=2 , round_after_n_digit=3):
+def find_interesting(entries, threshold=2, round_after_n_digit=3):
     """
     entries: list of tuples like (lst, float_num)
 

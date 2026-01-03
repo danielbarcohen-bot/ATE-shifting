@@ -1,101 +1,94 @@
+from sklearn.linear_model import LinearRegression
 import heapq
 import time
 from typing import List, Callable
 
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
 
 from search_methods.ATE_search import ATESearch
+from search_methods.probe_ATE_search import PCFG
 from search_methods.pruning_ATE_search import canonical
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
     df_signature_fast, get_moves_and_moveBit
 
 
-# --- PCFG Class to Manage Weights ---
+class CausalHeuristicPCFG(PCFG):
+    def __init__(self, df, treatment_col, outcome_col, operations, temperature=1.0):
+        self.df = df.copy().dropna()
+        self.treatment_col = treatment_col
+        self.outcome_col = outcome_col
+        self.temperature = temperature
 
-class PCFG:
-    def __init__(self, operations, columns):
-        self.rules = {}  # Stores {rule_name: probability}
-        self.non_terminals = {}  # Stores {non_terminal: [rule_names]}
-        self._initialize_weights(operations, columns)
+        # Columns used for transformations (excluding T and Y)
+        self.target_columns = [c for c in df.columns if c not in [treatment_col, outcome_col]]
+
+        super().__init__(operations, self.target_columns)
 
     def _initialize_weights(self, operations, columns):
-        # 1. Operation Selection Rules (Non-terminal O)
+        """Overrides parent to use Sensitivity Scores for initial weights."""
+        # 1. Calculate Sensitivity Scores (The Heuristic)
+        scores = self._calculate_sensitivity_scores(columns)
+
+        # 2. Softmax-like weight assignment for each column
+        # Prob(column_i) = exp(score_i / T) / sum(exp(scores / T))
+        exp_scores = np.exp(scores / self.temperature)
+        col_probs = exp_scores / np.sum(exp_scores)
+        col_prob_map = dict(zip(columns, col_probs))
+
+        # 3. Distribute probabilities across op_col combinations
+        # Prob(op_col) = Prob(column) / num_operations
         op_rules = []
-        for op in operations:
-            for col in columns:
+        num_ops = len(operations)
+
+        for col in columns:
+            p_col = col_prob_map[col]
+            for op in operations:
                 rule_name = f"{op}_{col}"
-                self.rules[rule_name] = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                # The sum of all op_col probabilities will equal 1.0
+                self.rules[rule_name] = p_col / num_ops
                 op_rules.append(rule_name)
+
         self.non_terminals['O'] = op_rules
 
-        # 2. Sequence Continuation/Termination Rules (Non-terminal S)
-        # S -> O S (Continue)
+        # 4. Standard Sequence Rules
         self.rules['S_continue'] = 0.8
-        # S -> E (End)
         self.rules['S_end'] = 0.2
         self.non_terminals['S'] = ['S_continue', 'S_end']
 
-    def get_prob(self, rule_name):
-        """Get the probability of a specific rule."""
-        return self.rules.get(rule_name, 0.0)
+    def _calculate_sensitivity_scores(self, columns):
+        """The core heuristic logic: |Beta_std| * |Corr(T, X)|"""
+        X = self.df[columns]
+        T = self.df[self.treatment_col]
+        y = self.df[self.outcome_col]
 
-    def get_cost(self, sequence):
-        """Calculates -log(Probability) for the entire sequence."""
-        if not sequence:
-            return -np.log(self.rules['S_end'])  # Cost of just terminating
+        # Standardize for coefficient comparison
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
 
-        # Start with the probability of the first operation
-        log_prob = 0.0
+        # Regression: Y ~ T + X_scaled
+        X_design = np.column_stack((T, X_scaled))
+        model = LinearRegression().fit(X_design, y)
 
-        # Add probability of each operation choice and sequence continuation
-        for op, col in sequence:
-            # P(O) for the specific operation choice
-            rule_name = f"{op}_{col}"
-            log_prob += np.log(self.rules.get(rule_name, 1e-10))
-            # P(S -> O S) for sequence continuation (except the last one)
-            log_prob += np.log(self.rules.get('S_continue', 1e-10))
+        # Extract Standardized Betas (ignore intercept and T)
+        betas_std = np.abs(model.coef_[1:])
 
-        # Add probability of termination
-        log_prob += np.log(self.rules.get('S_end', 1e-10))
+        # Correlations with Treatment
+        correlations = np.array([abs(np.corrcoef(self.df[c], T)[0, 1]) for c in columns])
 
-        return -log_prob / (len(sequence) + 1)  # -log_prob  # Cost = -log(P)
-
-    def update_weights(self, probe_sequence, alpha=0.2):
-        """
-        Updates weights using the interpolation method based on a successful probe.
-        """
-        # Calculate the empirical distribution D_probe from the sequence
-        rule_counts = {}
-        for op, col in probe_sequence:
-            rule_name = f"{op}_{col}"
-            rule_counts[rule_name] = rule_counts.get(rule_name, 0) + 1
-
-        # 1. Update Operation Selection Rules ('O')
-        for rule_name in self.non_terminals['O']:
-            # D_probe is 1 if the rule was used, 0 otherwise (in this simplified view)
-            is_used = 1.0 if rule_name in rule_counts else 0.0
-
-            # Interpolation: W_new = (1-a)*W_current + a*W_probe
-            self.rules[rule_name] = (1.0 - alpha) * self.rules[rule_name] + alpha * is_used
-
-        # 2. Normalize the Operation Selection Rules (must sum to 1)
-        # This is a critical step: ensure the weights of competing rules still sum to 1.
-        total_prob = sum(self.rules[r] for r in self.non_terminals['O'])
-        for r in self.non_terminals['O']:
-            self.rules[r] /= total_prob
-
-        # Optional: You could update S_continue/S_end if you want to learn sequence length,
-        # but we keep them fixed here for simplicity.
+        # Sensitivity Score
+        return (betas_std * correlations) + 1e-6
 
 
-class ProbeATESearch(ATESearch):
+class ProbeATESearchLinearRegHeuristic(ATESearch):
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable]):
         """
         Implements the adaptive Best-First Search guided by the PCFG cost.
         """
-        pcfg = PCFG([func_name for func_name, func in transformations_dict.items()], common_causes)
+        pcfg = CausalHeuristicPCFG(df, 'treatment', 'outcome',[func_name for func_name, func in transformations_dict.items()])
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
 
         # Priority Queue stores tuples: (cost, sequence)
@@ -114,10 +107,6 @@ class ProbeATESearch(ATESearch):
         seen_dfs.add(df_signature_fast(df.copy(), common_causes))
 
         start_time = time.time()
-
-        # smallest_ate = np.inf
-        # largest_ate = -np.inf
-
         while pq:
             cost, sequence, mask = heapq.heappop(pq)
             steps += 1
@@ -128,12 +117,7 @@ class ProbeATESearch(ATESearch):
             current_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome', common_causes)
             current_error = abs(current_ate - target_ate)
 
-            # if current_ate > largest_ate:
-            #     largest_ate = current_ate
-            #     print(f"LARGEST ATE now is {largest_ate} with sequence:\n{sequence}\n")
-            # elif current_ate < smallest_ate:
-            #     smallest_ate = current_ate
-            #     print(f"SMALLEST ATE now is {smallest_ate} with sequence:\n{sequence}\n")
+            # print(f"Step {steps:03d} | Sequence: {sequence} | Cost: {cost:.2f} | ATE: {current_ate:.3f} | Error: {current_error:.3f}")
 
             if current_error < epsilon:
                 print(f"\n🏆 **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")

@@ -6,7 +6,7 @@ from experiments import EXPERIMENTS
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("exp_name", type=str, help="Experiment name, e.g., EXP1")
-    parser.add_argument("mode", type=str, choices=["brute", "prune", "parallel", "astar", "probe"],
+    parser.add_argument("mode", type=str, choices=["brute", "prune", "parallel", "astar", "probe", "probe_lin_reg"],
                         help="Which mode to run: brute prune or parallel prune")
     args = parser.parse_args()
     config = EXPERIMENTS.get(args.exp_name)
@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     experiment = Experiment(
         df=config["df"],
+        transformations_dict=config["transformations_dict"],
         common_causes=config["common_causes"],
         target_ate=config["target_ate"],
         epsilon=config["epsilon"],
@@ -29,5 +30,7 @@ if __name__ == "__main__":
         experiment.run_parallel_prune()
     if args.mode == "astar":
         experiment.run_AStar()
-    elif args.mode == "probe":
+    if args.mode == "probe":
         experiment.run_probe()
+    elif args.mode == "probe_lin_reg":
+        experiment.run_probe_line_reg_heuristic()
