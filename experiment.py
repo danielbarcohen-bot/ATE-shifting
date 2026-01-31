@@ -1,6 +1,7 @@
 from typing import List, Callable
 import pandas as pd
 
+from search_methods.Random_search import RandomSearch
 # from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
 from search_methods.probe_ATE_search import ProbeATESearch
@@ -10,8 +11,8 @@ from search_methods.pruning_ATE_search import PruneATESearch
 
 class Experiment:
     def __init__(
-            self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str], target_ate: float, epsilon: float = 0.0001,
-            max_length: int = 5) -> None:
+            self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str], target_ate: float, epsilon: float,
+            max_length: int):
         self.df = df
         self.transformations_dict = transformations_dict
         self.common_causes = common_causes
@@ -50,3 +51,24 @@ class Experiment:
                                                 target_ate=self.target_ate,
                                                 epsilon=self.epsilon,
                                                 max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+
+
+class RandomExperiment:
+    def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str], target_ate: float, epsilon: float,
+            sequence_length: int):
+        self.df = df
+        self.transformations_dict = transformations_dict
+        self.common_causes = common_causes
+        self.target_ate = target_ate
+        self.epsilon = epsilon
+        self.sequence_length = sequence_length
+
+    def run_random(self):
+        ates = []
+        for _ in range(10):
+            seq, ate = RandomSearch().search(df=self.df, transformations_dict=self.transformations_dict, common_causes=self.common_causes,sequence_length=self.sequence_length)
+            ates.append(ate.item())
+            if abs(ate - self.target_ate) < self.epsilon:
+                print(f"found solution, ATE is {ate}, sequence is \n{seq}")
+        print(f"ATEs are {sorted(ates)}")
+        print(f"distances from target:\n{sorted([abs(ate - self.target_ate) - self.epsilon for ate in ates])}")

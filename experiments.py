@@ -1,7 +1,9 @@
+import random
+
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader
 from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, winsorize
-
+random.seed(42)
 df_twins = TwinsDataLoader().load_data()
 df_lalonde = LalondeDataLoader().load_data()
 df_acs = ACSDataLoader().load_data()
@@ -119,33 +121,21 @@ EXPERIMENTS = {
     },
     ########################################################################################################################
     ######### df Does not have missing values |adding new probe mechanics
-    # "EXP7": {  # twins - small common cause, no double bin\zscore AND df.DROPNA for check ATE
-    #     "df": df_twins_no_missing_values,
-    #     "transformations_dict": small_data_transformations_no_fill,
-    #     "common_causes": ['wt', 'hydra', 'nprevistq', 'gestat10'],
-    #     "target_ate": 0.0014,
-    #     "epsilon": 0.00005,
-    #     "max_length": 5
-    #     ### best sequence:
-    #     ### start ATE :
-    #     ### brute takes:  sec | popped  (optimal solution)
-    #     ### prune takes:  sec | popped from Q | pruned  (optimal solution)
-    #     ### probe takes: sec | popped | restarts
-    #     ### probe (lin reg heu) takes: sec | popped | restarts
-    # },
+
     "EXP8": {  # run algorithms on the whole dataset, different target
         "df": df_twins_no_missing_values,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0.0019,  # 0,
         "epsilon": 0.000001,  # 0.0019,
-        "max_length": 5
+        "max_length": 5,
+        "sequence_length": 3
         # best sequence:
         # start ATE : (('zscore_clip_3', 'adequacy'), ('bin_2', 'lung'), ('bin_2', 'wt'))
-        # brute takes: 397 sec | popped 1663008 (optimal solution)
-        # prune takes: 1587 sec | popped from Q 6020 | pruned 449137 (optimal solution)
-        # probe takes: 18 sec | popped 61| restarts 2 (optimal solution)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # brute takes: 215 sec | popped 1663008 (optimal solution)
+        # prune takes: 1535 sec | popped from Q 6020 | pruned 449137 (optimal solution)
+        # probe takes: 28 sec | popped 61| restarts 2 (optimal solution)
+        # probe (lin reg heu) takes: 9 sec | popped 15| restarts 2 (optimal solution)
     },
     "EXP9": {  # the result need to be with 3 operations
         "df": df_twins_no_missing_values,
@@ -156,10 +146,10 @@ EXPERIMENTS = {
         "max_length": 5
         # best sequence:  (('zscore_clip_3', 'gestat10'), ('bin_2', 'wt'))
         # start ATE : 0.06
-        # brute takes: 147 sec | popped 494598 (optimal solution)
-        # prune takes: 920 sec | popped from Q 2444 | pruned 172225 (optimal solution)
-        # probe takes: 55 sec | popped 117 | restarts 1 (optimal solution)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # brute takes: 63 sec | popped 494598 (optimal solution)
+        # prune takes: 628 sec | popped from Q 2444 | pruned 172225 (optimal solution)
+        # probe takes: 61 sec | popped 117 | restarts 1 (optimal solution)
+        # probe (lin reg heu) takes: 34 sec | popped 67| restarts 1 (optimal solution)
     },
     "EXP10": {  # poc example - shift ATE LALONDE
         "df": df_lalonde_no_missing_values,
@@ -170,10 +160,10 @@ EXPERIMENTS = {
         "max_length": 10
         # best sequence: (('zscore_clip_3', 'age'), ('bin_2', 'black'), ('zscore_clip_3', 'education'), ('bin_2', 'education'), ('bin_2', 'hispanic'))
         # start ATE : 1671
-        # brute takes: 60 sec | popped 179376 (optimal solution)
-        # prune takes: 2 sec | popped from Q 201 | pruned 2139 (optimal solution)
-        # probe takes: 0.5 sec | popped 48| restarts 3
-        # probe (lin reg heu) takes: 0.6 sec | popped 56| restarts 3
+        # brute takes: 85 sec | popped 179376 (optimal solution)
+        # prune takes: 3 sec | popped from Q 201 | pruned 2139 (optimal solution)
+        # probe takes: 1 sec | popped 48| restarts 3 (optimal solution)
+        # probe (lin reg heu) takes: 1 sec | popped 56| restarts 3 (optimal solution)
     },
     "EXP11": {  # poc example - shift ATE ACS
         "df": df_acs_no_missing_values,
@@ -183,11 +173,11 @@ EXPERIMENTS = {
         "epsilon": 1,
         "max_length": 5
         # best sequence: (('bin_2', 'Public health coverage'), ('bin_2', 'gender'), ('bin_2', 'insurance through employer'), ('bin_2', 'medicare for people 65 and older'), ('bin_2', 'private health coverage'))
-        # start ATE :
+        # start ATE :8774
         # brute takes:  sec | popped  (optimal solution)
-        # prune takes: 273 sec | popped from Q 175 | pruned 1798 (optimal solution)
-        # probe takes: 46 sec | popped 29| restarts 4 (optimal)
-        # probe (lin reg heu) takes: 45 sec | popped 24| restarts 3 (optimal)
+        # prune takes: 190 sec | popped from Q 175 | pruned 1798 (optimal solution)
+        # probe takes: 48 sec | popped 29| restarts 4 (optimal)
+        # probe (lin reg heu) takes: 43 sec | popped 24| restarts 3 (optimal)
     },
     "EXP12": {  # poc example - shift ATE IHDP
         "df": df_IHDP_no_missing_values,
@@ -198,10 +188,10 @@ EXPERIMENTS = {
         "max_length": 5
         # best sequence: (('bin_2', 'x6'), ('bin_2', 'x11'), ('bin_2', 'x22'))
         # start ATE : 3.92
-        # brute takes: 104 sec | popped 1468700 (optimal solution)
-        # prune takes: 135 sec | popped from Q 3205 | pruned  132235(optimal solution)
-        # probe takes: 1.7 sec | popped 40| restarts 4 (NOT optimal solution len 5)
-        # probe (lin reg heu) takes:  sec | popped | restart
+        # brute takes: 158 sec | popped 1468700 (optimal solution)
+        # prune takes: 252 sec | popped from Q 3205 | pruned  132235(optimal solution)
+        # probe takes: 5 sec | popped 41| restarts 4 (NOT optimal solution len 5)
+        # probe (lin reg heu) takes: 5 sec | popped 54| restart 5 (NOT optimal solution len 5)
     },
     ##################################################################################
     ###################SAME EXP WITH LARGE TRANSFORM DICT############################
@@ -212,12 +202,12 @@ EXPERIMENTS = {
         "target_ate": 0.0019,  # 0,
         "epsilon": 0.000001,  # 0.0019,
         "max_length": 5
-        # best sequence:
-        # start ATE : (('zscore_clip_3', 'adequacy'), ('bin_2', 'lung'), ('bin_2', 'wt'))
-        # brute takes:  sec | popped 1663008 (optimal solution)
+        # best sequence: (('zscore_clip_3', 'adequacy'), ('bin_2', 'lung'), ('bin_2', 'wt'))
+        # start ATE : 0.06
+        # brute takes: 16085 sec | popped 150936030 (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 73 sec | popped 61| restarts 2(optimal solution)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # probe takes: 130 sec | popped 61| restarts 2(optimal solution)
+        # probe (lin reg heu) takes: 79 sec | popped 35| restarts 2(optimal solution)
     },
     "EXP9_large": {  # the result need to be with 3 operations
         "df": df_twins_no_missing_values,
@@ -226,12 +216,12 @@ EXPERIMENTS = {
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5
-        # best sequence:  (('zscore_clip_3', 'gestat10'), ('bin_2', 'wt'))
+        # best sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt'))
         # start ATE : 0.06
-        # brute takes:  sec | popped  (optimal solution)
+        # brute takes: 2574 sec | popped 61646250 (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 266 sec | popped 199 | restarts 1(optimal solution len 2)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # probe takes: 271 sec | popped 199 | restarts 1(optimal solution len 2)
+        # probe (lin reg heu) takes: 200 sec | popped 155| restarts 1 (optimal solution len 2)
     },
     "EXP10_large": {  # poc example - shift ATE LALONDE
         "df": df_lalonde_no_missing_values,
@@ -242,10 +232,10 @@ EXPERIMENTS = {
         "max_length": 10
         # best sequence: (('bin_equal_width_5', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_frequency_2', 'education'), ('bin_equal_frequency_2', 'hispanic'))
         # start ATE : 1671
-        # brute takes:  sec | popped  (optimal solution)
-        # prune takes: 331 sec | popped from Q 8471 | pruned 459057 (optimal solution)
-        # probe takes: 24 sec | popped 601| restarts 9 (len 6)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # brute takes: 2544 sec | popped 41179500 (optimal solution)
+        # prune takes: 317 sec | popped from Q 8495 | pruned 460032 (optimal solution)
+        # probe takes: 25 sec | popped 589| restarts 9 (len 6)
+        # probe (lin reg heu) takes:  sec 36| popped 709| restarts 5(len 6)
     },
     "EXP11_large": {  # poc example - shift ATE ACS
         "df": df_acs_no_missing_values,
@@ -258,8 +248,8 @@ EXPERIMENTS = {
         # start ATE :
         # brute takes:  sec | popped  (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 215 sec | popped 29| restarts 4 (optimal - 5)
-        # probe (lin reg heu) takes:  sec | popped | restarts  (optimal)
+        # probe takes: 183 sec | popped 29| restarts 4 (optimal - 5)
+        # probe (lin reg heu) takes:  sec | popped | restarts
     },
     "EXP12_large": {  # poc example - shift ATE IHDP
         "df": df_IHDP_no_missing_values,
@@ -270,10 +260,10 @@ EXPERIMENTS = {
         "max_length": 5
         # best sequence: (('bin_equal_width_10', 'x1'), ('norm_log', 'x6'), ('bin_equal_width_2', 'x6'))
         # start ATE : 3.92
-        # brute takes:  sec | popped  (optimal solution)
-        # prune takes: 5063 sec | popped from Q 22087| pruned 4801245(optimal solution)
-        # probe takes: 15 sec | popped 41| restarts 4 (len 5)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # brute takes: 3686 sec | popped  91647500(optimal solution)
+        # prune takes: 4729 sec | popped from Q 22087| pruned 4801245(optimal solution)
+        # probe takes: 15 sec | popped 40| restarts 4 (len 5)
+        # probe (lin reg heu) takes: 30 sec | popped 132| restarts 6 (len 5)
     },
 
     ######################################################################
@@ -282,8 +272,8 @@ EXPERIMENTS = {
         "df": df_lalonde_no_missing_values,
         "transformations_dict": large_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 0,#1900,
-        "epsilon": 1300,#15,
+        "target_ate": 0,  # 1900,
+        "epsilon": 1300,  # 15,
         "max_length": 10
         # best sequence:   (('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))
         # start ATE : 1671.130
@@ -301,10 +291,10 @@ EXPERIMENTS = {
         "max_length": 10
         # best sequence: (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))
         # start ATE : 1671.130
-        # brute takes: 6463 sec | popped 34181460 (optimal solution)
-        # prune takes: 409 sec | popped from Q  6492| pruned 348895(optimal solution)
-        # probe takes: 30 sec | popped 476 | restarts 7(not optimal solution - 6)
-        # probe (lin reg heu) takes: 479 sec | popped 7797| restarts 7 (len 5)
+        # brute takes: 2276 sec | popped 33703140 (optimal solution)
+        # prune takes: 268 sec | popped from Q  6324| pruned 341125(optimal solution)
+        # probe takes: 22 sec | popped 455 | restarts 7 (not optimal solution - 6)
+        # probe (lin reg heu) takes: 127 sec | popped 2454| restarts 7 (len 5)
     },
     "EXP14": {  # poc example - shift ATE ACS | HELPER TO CHECK!
         "df": df_acs_no_missing_values,
@@ -331,8 +321,8 @@ EXPERIMENTS = {
         # start ATE : 8774
         # brute takes:  sec | popped  (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 3070 sec | popped 418| restarts  ()
-        # probe (lin reg heu) takes:  sec | popped | restarts 4 ( len - 6)
+        # probe takes: 1626 sec | popped 382| restarts 4 (len 6)
+        # probe (lin reg heu) takes: 8634 sec | popped 12062| restarts 5 ( len - 10)
     },
     "EXP14.5.1": {  # poc example - shift ATE ACS
         "df": df_acs_no_missing_values,
@@ -345,8 +335,8 @@ EXPERIMENTS = {
         # start ATE : 8774
         # brute takes:  sec | popped  (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 1304 sec | popped 118| restarts 4 (  len - 6)
-        # probe (lin reg heu) takes:  sec | popped | restarts  ()
+        # probe takes: 482 sec | popped 118| restarts 4 (  len - 6)
+        # probe (lin reg heu) takes: 12696 sec | popped 13843| restarts 4 (len 10)
     },
     "EXP15": {  # poc example - shift ATE IHDP | HELPER TO CHECK!
         "df": df_IHDP_no_missing_values,
@@ -373,15 +363,15 @@ EXPERIMENTS = {
         # start ATE : 3.92
         # brute takes:  sec | popped  (optimal solution)
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 1509 sec | popped 4446| restarts 1 (len 3)
-        # probe (lin reg heu) takes:  sec | popped | restarts
+        # probe takes: 532 sec | popped 4441| restarts 1 (len 3)
+        # probe (lin reg heu) takes: 35 sec | popped 259| restarts 1 (len 3)
     },
     "EXP16": {  # the result need to be with 3 operations | HELPER TO CHECK!
         "df": df_twins_no_missing_values,
         "transformations_dict": large_data_transformations,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": -1,
-        "epsilon": 1,
+        "target_ate": 0.0022,  # -1,
+        "epsilon": 0.0002,  # 1,
         "max_length": 10
         # best sequence:
         # start ATE : 0.06
@@ -389,6 +379,93 @@ EXPERIMENTS = {
         # prune takes:  sec | popped from Q  | pruned  (optimal solution)
         # probe takes:  sec | popped | restarts  ( solution)
         # probe (lin reg heu) takes:  sec | popped | restarts
-    }
+    },
 
+    ##########################################################################################
+    ################################### SCALABILITY EVALUATIONS ##############################
+    ##########################################################################################
+    **{f"EXP17.{k}": {  # TWINS CHECK - k% of the data
+        "df": df_twins_no_missing_values.sample(frac=0.1 * k, random_state=42),
+        "transformations_dict": large_data_transformations,
+        "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+        # best sequence:
+        # start ATE : 0.06
+        # probe 10% takes:  sec | popped | restarts  ( solution)
+        # probe 20% takes:  sec | popped | restarts  ( solution)
+        # probe 30% takes:  sec | popped | restarts  ( solution)
+        # probe 40% takes:  sec | popped | restarts  ( solution)
+        # probe 50% takes:  sec | popped | restarts  ( solution)
+        # probe 60% takes:  sec | popped | restarts  ( solution)
+        # probe 70% takes:  sec | popped | restarts  ( solution)
+        # probe 80% takes:  sec | popped | restarts  ( solution)
+        # probe 90% takes:  sec | popped | restarts  ( solution)
+    }
+        for k in range(1, 10)
+    },
+
+    **{f"EXP18.{k}": {  # ACS CHECK - k% of the data
+        "df": df_acs_no_missing_values.sample(frac=0.1 * k, random_state=42),
+        "transformations_dict": large_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+        # best sequence:
+        # start ATE : 8774
+        # probe 10% takes:  sec | popped | restarts  ( solution)
+        # probe 20% takes:  sec | popped | restarts  ( solution)
+        # probe 30% takes:  sec | popped | restarts  ( solution)
+        # probe 40% takes:  sec | popped | restarts  ( solution)
+        # probe 50% takes:  sec | popped | restarts  ( solution)
+        # probe 60% takes:  sec | popped | restarts  ( solution)
+        # probe 70% takes:  sec | popped | restarts  ( solution)
+        # probe 80% takes:  sec | popped | restarts  ( solution)
+        # probe 90% takes:  sec | popped | restarts  ( solution)
+    }
+        for k in range(1, 10)
+    },
+
+    **{"EXP19.1": {  # TWINS CHECK - k random confunder
+        "transformations_dict": large_data_transformations,
+        "common_causes": (cols := random.sample(df_twins.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+        # best sequence:
+        # start ATE : 0.06
+        # probe 3 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 6 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 9 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 12 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 15 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 18 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 21 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 24 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 27 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 30 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 33 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 36 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 39 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 42 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 45 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 48 confunders takes:  sec | popped | restarts  ( solution)
+    } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
+**{"EXP19.1": {  # ACS CHECK - k random confunder
+        "transformations_dict": large_data_transformations,
+        "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+        # best sequence:
+        # start ATE : 8774
+        # probe 3 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 6 confunders takes:  sec | popped | restarts  ( solution)
+    } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
 }

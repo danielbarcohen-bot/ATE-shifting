@@ -97,7 +97,6 @@ class ProbeATESearch(ATESearch):
         """
         pcfg = PCFG([func_name for func_name, func in transformations_dict.items()], common_causes)
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
-
         # Priority Queue stores tuples: (cost, sequence)
         # The cost is the PCFG cost, NOT the ATE error.
         pq = []
@@ -115,8 +114,8 @@ class ProbeATESearch(ATESearch):
 
         start_time = time.time()
 
-        # smallest_ate = np.inf
-        # largest_ate = -np.inf
+        smallest_ate = np.inf
+        largest_ate = -np.inf
 
         while pq:
             cost, sequence, mask = heapq.heappop(pq)
@@ -128,15 +127,15 @@ class ProbeATESearch(ATESearch):
             current_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome', common_causes)
             current_error = abs(current_ate - target_ate)
 
-            # if current_ate > largest_ate:
-            #     largest_ate = current_ate
-            #     print(f"LARGEST ATE now is {largest_ate} with sequence:\n{sequence}\n")
-            # elif current_ate < smallest_ate:
-            #     smallest_ate = current_ate
-            #     print(f"SMALLEST ATE now is {smallest_ate} with sequence:\n{sequence}\n")
+            if current_ate > largest_ate:
+                largest_ate = current_ate
+                print(f"LARGEST ATE now is {largest_ate}\nit took {time.time() - start_time} sec to get here\nwith sequence:\n{sequence}\n")
+            elif current_ate < smallest_ate:
+                smallest_ate = current_ate
+                print(f"SMALLEST ATE now is {smallest_ate} with sequence:\n{sequence}\n")
 
             if current_error < epsilon:
-                print(f"\n🏆 **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
+                print(f"\n **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
                 print(f"run took {time.time() - start_time:.2f} seconds")
                 print(f"checked {steps} combinations")
                 return sequence
