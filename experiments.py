@@ -3,7 +3,6 @@ import random
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader
 from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, winsorize
-random.seed(42)
 df_twins = TwinsDataLoader().load_data()
 df_lalonde = LalondeDataLoader().load_data()
 df_acs = ACSDataLoader().load_data()
@@ -215,7 +214,8 @@ EXPERIMENTS = {
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
-        "max_length": 5
+        "max_length": 5,
+        "sequence_length": 2
         # best sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt'))
         # start ATE : 0.06
         # brute takes: 2574 sec | popped 61646250 (optimal solution)
@@ -288,7 +288,8 @@ EXPERIMENTS = {
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 1871,  # wanted - 1883.3,
         "epsilon": 1,  # 15,
-        "max_length": 10
+        "max_length": 10,
+        'sequence_length': 4
         # best sequence: (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))
         # start ATE : 1671.130
         # brute takes: 2276 sec | popped 33703140 (optimal solution)
@@ -316,7 +317,8 @@ EXPERIMENTS = {
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
         "epsilon": 100,
-        "max_length": 10
+        "max_length": 10,
+        "sequence_length": 6
         # best sequence:
         # start ATE : 8774
         # brute takes:  sec | popped  (optimal solution)
@@ -358,7 +360,8 @@ EXPERIMENTS = {
         "common_causes": ["x" + str(i) for i in range(1, 26)],
         "target_ate": 4.5,
         "epsilon": 0.5,
-        "max_length": 10
+        "max_length": 10,
+        "sequence_length": 3
         # best sequence:
         # start ATE : 3.92
         # brute takes:  sec | popped  (optimal solution)
@@ -385,7 +388,8 @@ EXPERIMENTS = {
     ################################### SCALABILITY EVALUATIONS ##############################
     ##########################################################################################
     **{f"EXP17.{k}": {  # TWINS CHECK - k% of the data
-        "df": df_twins_no_missing_values.sample(frac=0.1 * k, random_state=42),
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_twins_no_missing_values.sample(frac=0.1 * k),
         "transformations_dict": large_data_transformations,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -0.06,
@@ -393,21 +397,22 @@ EXPERIMENTS = {
         "max_length": 5
         # best sequence:
         # start ATE : 0.06
-        # probe 10% takes:  sec | popped | restarts  ( solution)
-        # probe 20% takes:  sec | popped | restarts  ( solution)
-        # probe 30% takes:  sec | popped | restarts  ( solution)
-        # probe 40% takes:  sec | popped | restarts  ( solution)
-        # probe 50% takes:  sec | popped | restarts  ( solution)
-        # probe 60% takes:  sec | popped | restarts  ( solution)
-        # probe 70% takes:  sec | popped | restarts  ( solution)
-        # probe 80% takes:  sec | popped | restarts  ( solution)
-        # probe 90% takes:  sec | popped | restarts  ( solution)
+        # probe 10% takes: 42 sec | popped 51| restarts 0 ( len 1)
+        # probe 20% takes: 48 sec | popped 52| restarts 1 ( len 2)
+        # probe 30% takes: 191 sec | popped 195| restarts 1 ( len 2)
+        # probe 40% takes: 60 sec | popped 51| restarts 0 ( len 1)
+        # probe 50% takes: 65 sec | popped 51| restarts 0 ( len 1)
+        # probe 60% takes: 247 sec | popped 197| restarts  1( len 2)
+        # probe 70% takes: 271 sec | popped 200| restarts 1 ( len 2)
+        # probe 80% takes: 535 sec | popped 413| restarts 2 ( len 3)
+        # probe 90% takes: 295 sec | popped 200 | restarts  1( len 2)
     }
         for k in range(1, 10)
     },
 
     **{f"EXP18.{k}": {  # ACS CHECK - k% of the data
-        "df": df_acs_no_missing_values.sample(frac=0.1 * k, random_state=42),
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_acs_no_missing_values.sample(frac=0.1 * k),
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
@@ -415,20 +420,21 @@ EXPERIMENTS = {
         "max_length": 10
         # best sequence:
         # start ATE : 8774
-        # probe 10% takes:  sec | popped | restarts  ( solution)
-        # probe 20% takes:  sec | popped | restarts  ( solution)
-        # probe 30% takes:  sec | popped | restarts  ( solution)
-        # probe 40% takes:  sec | popped | restarts  ( solution)
-        # probe 50% takes:  sec | popped | restarts  ( solution)
-        # probe 60% takes:  sec | popped | restarts  ( solution)
-        # probe 70% takes:  sec | popped | restarts  ( solution)
-        # probe 80% takes:  sec | popped | restarts  ( solution)
-        # probe 90% takes:  sec | popped | restarts  ( solution)
+        # probe 10% takes: 24 sec | popped 27| restarts 3 ( len 4)
+        # probe 20% takes: 520 sec | popped 665| restarts 7 ( len 8)
+        # probe 30% takes: 246 sec | popped 201| restarts 5 ( len 6)
+        # probe 40% takes: 570 sec | popped 382| restarts 4 ( len 6)
+        # probe 50% takes: 719 sec | popped 382| restarts 4 ( len 6)
+        # probe 60% takes: 889 sec | popped 382| restarts 4 ( len 6)
+        # probe 70% takes: 1015 sec | popped 382| restarts 4 ( len 6)
+        # probe 80% takes: 1172 sec | popped 382| restarts 4 ( len 6)
+        # probe 90% takes: 1478 sec | popped 382| restarts 4 ( len 6)
     }
         for k in range(1, 10)
     },
 
-    **{"EXP19.1": {  # TWINS CHECK - k random confunder
+    **{f"EXP19.{k}": {  # TWINS CHECK - k random confunder
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
         "common_causes": (cols := random.sample(df_twins.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
         "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
@@ -455,7 +461,8 @@ EXPERIMENTS = {
         # probe 48 confunders takes:  sec | popped | restarts  ( solution)
     } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
-**{"EXP19.1": {  # ACS CHECK - k random confunder
+**{f"EXP20.{k}": {  # ACS CHECK - k random confunder
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
         "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
         "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
@@ -464,8 +471,8 @@ EXPERIMENTS = {
         "max_length": 10
         # best sequence:
         # start ATE : 8774
-        # probe 3 confunders takes:  sec | popped | restarts  ( solution)
-        # probe 6 confunders takes:  sec | popped | restarts  ( solution)
+        # probe 3 confunders takes: 199.24 sec | popped 216| restarts 3 ( DIDNT FIND SOLUTION)
+        # probe 6 confunders takes: 694 sec | popped 252| restarts 3 ( len 5)
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
 }

@@ -591,4 +591,6 @@ def run_expirement(df, target_ATE, epsilon):
 
 if __name__ == "__main__":
     # run_expirement(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001)
-    run_expirement(LalondeDataLoader().load_data().dropna(), 1871, 1)
+    # run_expirement(LalondeDataLoader().load_data().dropna(), 1871, 1)
+    run_expirement(ACSDataLoader().load_data().dropna(), 16500, 100)
+    # run_expirement(IHDPDataLoader().load_data().dropna(), 4.5, 0.5)

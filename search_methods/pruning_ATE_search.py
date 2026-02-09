@@ -42,6 +42,11 @@ class PruneATESearch(ATESearch):
         Q_poped_num = 0
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
 
+        smallest_ate = np.inf
+        largest_ate = -np.inf
+        largest_ate_and_time_list = []
+        smallest_ate_and_time_list = []
+
         start_time = time.time()
         while len(Q) > 0:
             start_pop_Q_time = time.time()
@@ -52,6 +57,17 @@ class PruneATESearch(ATESearch):
             new_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome',
                                                             common_causes)
             seq_ates.append((seq_arr, new_ate))
+
+            if new_ate > largest_ate:
+                largest_ate = new_ate
+                largest_ate_and_time_list.append((largest_ate.item(), time.time() - start_time))
+                print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+                print(f"largest lists: {largest_ate_and_time_list}", flush=True)
+            if new_ate < smallest_ate:
+                smallest_ate = new_ate
+                smallest_ate_and_time_list.append((smallest_ate.item(), time.time() - start_time))
+                print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+                print(f"largest lists: {largest_ate_and_time_list}", flush=True)
 
             # if len(seq_arr) > 2 and Q_poped_num % 5 == 0:
                 # for bin in bin_sequences(seq_ates, 300):
@@ -133,7 +149,6 @@ class PruneATESearch(ATESearch):
             flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: len(x[0]))}", flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
-
         return solution_seq
 
     # def parallel_search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,

@@ -116,6 +116,8 @@ class ProbeATESearch(ATESearch):
 
         smallest_ate = np.inf
         largest_ate = -np.inf
+        largest_ate_and_time_list = []
+        smallest_ate_and_time_list = []
 
         while pq:
             cost, sequence, mask = heapq.heappop(pq)
@@ -127,18 +129,26 @@ class ProbeATESearch(ATESearch):
             current_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome', common_causes)
             current_error = abs(current_ate - target_ate)
 
-            if current_ate > largest_ate:
-                largest_ate = current_ate
-                print(f"LARGEST ATE now is {largest_ate}\nit took {time.time() - start_time} sec to get here\nwith sequence:\n{sequence}\n")
-            elif current_ate < smallest_ate:
-                smallest_ate = current_ate
-                print(f"SMALLEST ATE now is {smallest_ate} with sequence:\n{sequence}\n")
+            # if current_ate > largest_ate:
+            #     largest_ate = current_ate
+            #     #print(f"LARGEST ATE now is {largest_ate}\nit took {time.time() - start_time} sec to get here\nwith sequence:\n{sequence}\n")
+            #     largest_ate_and_time_list.append((largest_ate.item(), time.time() - start_time))
+            #     print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+            #     print(f"largest lists: {largest_ate_and_time_list}", flush=True)
+            # if current_ate < smallest_ate:
+            #     smallest_ate = current_ate
+            #     # print(f#"SMALLEST ATE now is {smallest_ate} with sequence:\n{sequence}\n")
+            #     smallest_ate_and_time_list.append((smallest_ate.item(), time.time() - start_time))
+            #
+            #     print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+            #     print(f"largest lists: {largest_ate_and_time_list}", flush=True)
+
 
             if current_error < epsilon:
                 print(f"\n **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
                 print(f"run took {time.time() - start_time:.2f} seconds")
                 print(f"checked {steps} combinations")
-                return sequence
+                return sequence, time.time() - start_time
 
             # --- Probe Trigger (JIT Learning) ---
             # A probe is triggered if this sequence is significantly better than the best error seen so far.
@@ -151,6 +161,9 @@ class ProbeATESearch(ATESearch):
                 # reset the pq:
                 if pq:
                     print("💡 Re-scoring search frontier...")
+                    # restart the smallest \ largest ive seen
+                    smallest_ate = np.inf
+                    largest_ate = -np.inf
 
                     # 1. Extract all items from the current queue
                     current_frontier = []
@@ -204,6 +217,7 @@ class ProbeATESearch(ATESearch):
                         # Push the new sequence to the priority queue
                         heapq.heappush(pq, (new_cost, new_sequence, new_mask))
 
+        print("\nFAILED TO FIND SOLUTION\n")
         print(f"run took {time.time() - start_time:.2f} seconds")
         print(f"checked {steps} combinations")
-        return "Search failed to find a solution within max steps."
+        return "Search failed to find a solution within max steps.", time.time() - start_time

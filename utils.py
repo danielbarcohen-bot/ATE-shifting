@@ -1,7 +1,6 @@
 import hashlib
 from typing import List
 
-import numpy as np
 import pandas as pd
 from dowhy import CausalModel
 
