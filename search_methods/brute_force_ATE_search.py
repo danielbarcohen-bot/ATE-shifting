@@ -68,6 +68,7 @@ class BruteForceATESearch(ATESearch):
         end_time = time.time()
         execution_time = end_time - start_time
         print(f"Execution time: {execution_time} seconds", flush=True)
+        print(f"popped {i} from Q", flush=True)
         print(f"checked {try_count} combinations", flush=True)
         print(
             f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",

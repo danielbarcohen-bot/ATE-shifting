@@ -407,6 +407,7 @@
 """
 Sklearn AutoML baseline with column-specific preprocessing.
 """
+import time
 
 import numpy as np
 import pandas as pd
@@ -581,12 +582,18 @@ def make_ate_scorer(epsilon, target_ate, treatment_col, outcome_col, common_caus
     return scorer
 
 def run_expirement(df, target_ATE, epsilon):
+    start = time.time()
     common_causes = df.columns.difference(['treatment', 'outcome']).tolist()
     scorer = make_ate_scorer(epsilon=epsilon,target_ate=target_ATE,treatment_col="treatment",outcome_col="outcome",common_causes=common_causes)
+    start = time.time()
     print(f"RUNNING EXPERIMENT with R2. target ATE: {target_ATE}, epsilon: {epsilon}")
     print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes)
+    print("took: ", time.time() - start)
+
+    start = time.time()
     print(f"\nRUNNING EXPERIMENT with ATE scorer.")
     print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, scorer)
+    print("took: ", time.time() - start)
     print("~" * 150)
 
 if __name__ == "__main__":

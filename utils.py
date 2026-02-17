@@ -1,8 +1,12 @@
 import hashlib
 from typing import List
 
+import numpy as np
 import pandas as pd
 from dowhy import CausalModel
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LinearRegression, LassoCV, LogisticRegression
+from sklearn.model_selection import KFold
 
 
 def calculate_ate(model: CausalModel):
@@ -60,25 +64,26 @@ def bin_equal_frequency_10(s):
 
 def bin_equal_width_2(s):
     if s.nunique() < 2:
-        return s#pd.Series(np.zeros(len(s)), index=s.index)
+        return s  # pd.Series(np.zeros(len(s)), index=s.index)
     bins = pd.cut(s, bins=2, labels=False, include_lowest=True)
     return bins
 
 
 def bin_equal_width_5(s):
     if s.nunique() < 5:
-        return s#pd.Series(np.zeros(len(s)), index=s.index)
+        return s  # pd.Series(np.zeros(len(s)), index=s.index)
     bins = pd.cut(s, bins=5, labels=False, include_lowest=True)
     return bins
 
 
 def bin_equal_width_10(s):
     if s.nunique() < 10:
-        return s#pd.Series(np.zeros(len(s)), index=s.index)
+        return s  # pd.Series(np.zeros(len(s)), index=s.index)
     bins = pd.cut(s, bins=10, labels=False, include_lowest=True)
     return bins
 
-#normalizing
+
+# normalizing
 
 def min_max_norm(s: pd.Series) -> pd.Series:
     min_v = s.min()
@@ -94,15 +99,15 @@ def log_norm(s: pd.Series) -> pd.Series:
     return np.sign(s) * np.log1p(np.abs(s))
 
 
-#outlier detection
+# outlier detection
 def zscore_clip_3(s):
     return s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
+
 
 def winsorize(s: pd.Series, lower_quantile=0.01, upper_quantile=0.99) -> pd.Series:
     lower = s.quantile(lower_quantile)
     upper = s.quantile(upper_quantile)
     return s.clip(lower, upper)
-
 
 
 def df_signature(df: pd.DataFrame):
@@ -146,6 +151,13 @@ def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict)
     for func_name, col in seq_arr:
         df_[col] = transformations_dict[func_name](df_[col])
     return df_
+
+
+def list_seq_to_tuple_seq(list_seq):
+    tuple_seq = ()
+    for seq_dict in list_seq:
+        tuple_seq = tuple_seq + ((seq_dict["operation"], seq_dict["column"]),)
+    return tuple_seq
 
 
 def get_moves_and_moveBit(common_causes, transformations_names):
@@ -249,11 +261,6 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
-import pandas as pd
-import numpy as np
-from typing import List
-
-
 def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
     # Extract outcome variable
     Y = df[outcome].values
@@ -284,122 +291,55 @@ def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outc
     ate = beta[0]
 
     return ate
-# import pandas as pd
-# import numpy as np
-# from sklearn.linear_model import LinearRegression
-# from sklearn.preprocessing import StandardScaler
-#
-#
-# def analyze_ate_risk(df, treatment_col, outcome_col, mandatory_keep_features=[]):
-#     """
-#     Analyzes the worst-case ATE bias risk for every feature if it were dropped.
-#
-#     This function calculates the ROBUST STATISTICAL BOUND risk, which is
-#     invariant to changes in other features (X_k) and accounts for sample noise.
-#
-#     Args:
-#         df (DataFrame): The input data.
-#         treatment_col (str): Name of the treatment column (T).
-#         outcome_col (str): Name of the outcome column (Y).
-#         mandatory_keep_features (list): Features that cannot be dropped
-#                                         (e.g., known strong confounders).
-#     """
-#
-#     # 1. Setup
-#     features = [c for c in df.columns if c not in [treatment_col, outcome_col]]
-#     n = len(df)
-#
-#     # Calculate Global Scaling Factor (Sigma_Y / Sigma_T)
-#     sigma_y = df[outcome_col].std()
-#     sigma_t = df[treatment_col].std()
-#
-#     if sigma_t == 0:
-#         scale_factor = 0
-#     else:
-#         scale_factor = sigma_y / sigma_t
-#
-#     # Statistical Floor: Accounts for sample noise (2 * StD of correlation estimate)
-#     statistical_floor = 2.0 / np.sqrt(n)
-#
-#     analysis_data = []
-#
-#     # 2. Analyze every feature
-#     corr_matrix = df[[treatment_col, outcome_col] + features].corr()
-#
-#     for feat in features:
-#         # Rho_ZT: Correlation between Feature and Treatment
-#         rho_zt = corr_matrix.loc[feat, treatment_col]
-#
-#         # Rho_ZY: Correlation between Feature and Outcome
-#         rho_zy = corr_matrix.loc[feat, outcome_col]
-#
-#         if np.isnan(rho_zt): rho_zt = 0.0
-#         if np.isnan(rho_zy): rho_zy = 0.0
-#
-#         # THE FORMULA: Robust Statistical Worst-Case Bias Bound
-#         # We use the maximal possible correlation (point estimate + floor)
-#         risk_zt = abs(rho_zt) + statistical_floor
-#         risk_zy = abs(rho_zy) + statistical_floor
-#
-#         worst_case_bias = risk_zy * risk_zt * scale_factor
-#
-#         is_kept = feat in mandatory_keep_features
-#
-#         analysis_data.append({
-#             'feature': feat,
-#             'corr_with_treatment': rho_zt,
-#             'corr_with_outcome': rho_zy,
-#             'worst_case_bias_risk': worst_case_bias,
-#             'is_mandatory_kept': is_kept
-#         })
-#
-#     detail_df = pd.DataFrame(analysis_data)
-#
-#     kept_df = detail_df[detail_df['is_mandatory_kept'] == True]
-#
-#     summary = {
-#         'total_features': len(features),
-#         'features_to_keep': kept_df['feature'].tolist(),
-#         'statistical_floor_used': statistical_floor
-#     }
-#
-#     # Sort all features by risk (lowest first) for budget analysis
-#     return summary, detail_df.sort_values(by='worst_case_bias_risk', ascending=True)
-#
-#
-# def find_droppable_features_by_budget(detail_df, max_bias_budget):
-#     """
-#     Determines the maximum number of features that can be dropped while staying
-#     under a specified total ATE bias budget. This is the core function for the user's request.
-#
-#     Args:
-#         detail_df (DataFrame): The detailed risk output from analyze_ate_risk.
-#         max_bias_budget (float): The maximum allowed sum of bias risk (K).
-#     Returns:
-#         tuple: (list of features to drop, cumulative risk)
-#     """
-#
-#     # 1. Filter out features that MUST be kept
-#     drop_candidates = detail_df.copy()
-#
-#     if drop_candidates.empty:
-#         return [], 0.0
-#
-#     # Candidates are already sorted by risk (lowest first) from analyze_ate_risk
-#
-#     dropped_features = []
-#     cumulative_risk = 0.0
-#
-#     # 2. Iteratively add features until the budget is hit
-#     for index, row in drop_candidates.iterrows():
-#         feature_risk = row['worst_case_bias_risk']
-#
-#         # Check if adding this feature exceeds the budget
-#         if cumulative_risk + feature_risk > max_bias_budget:
-#             break  # Budget exceeded, stop dropping
-#
-#         # Add feature and update cumulative risk
-#         dropped_features.append(row['feature'])
-#         cumulative_risk += feature_risk
-#
-#     return dropped_features, cumulative_risk
+
+
+def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):
+    X = df.drop(columns=[outcome_col, treatment_col])
+    y = df[outcome_col].values
+    T = df[treatment_col].values
+
+    y_res = np.zeros_like(y, dtype=float)
+    T_res = np.zeros_like(T, dtype=float)
+
+    # Use 2-fold cross-fitting for maximum speed
+    # random_state=42 makes it deterministic
+    kf = KFold(n_splits=2, shuffle=True, random_state=42)
+
+    for train_idx, test_idx in kf.split(X):
+        # LassoCV is extremely fast compared to Random Forest
+        model_y = LassoCV(cv=3).fit(X.iloc[train_idx], y[train_idx])
+        model_t = LassoCV(cv=3).fit(X.iloc[train_idx], T[train_idx])
+
+        y_res[test_idx] = y[test_idx] - model_y.predict(X.iloc[test_idx])
+        T_res[test_idx] = T[test_idx] - model_t.predict(X.iloc[test_idx])
+
+    # Final step: Simple Linear Regression on residuals
+    final_model = LinearRegression(fit_intercept=False).fit(T_res.reshape(-1, 1), y_res)
+    return final_model.coef_[0]
+
+
+def manual_dr_ate(df, outcome_col='outcome', treatment_col='treatment'):
+    X = df.drop(columns=[outcome_col, treatment_col])
+    y = df[outcome_col].values
+    T = df[treatment_col].values
+    n = len(y)
+
+    # 1. Propensity Score (Probability of Treatment) -> Fast & Deterministic
+    clf = LogisticRegression(max_iter=1000).fit(X, T)
+    e = np.clip(clf.predict_proba(X)[:, 1], 0.01, 0.99)  # Clip to avoid division by zero
+
+    # 2. Outcome Models -> Fast & Deterministic
+    model_0 = LassoCV(cv=3).fit(X[T == 0], y[T == 0])
+    model_1 = LassoCV(cv=3).fit(X[T == 1], y[T == 1])
+
+    mu_0 = model_0.predict(X)
+    mu_1 = model_1.predict(X)
+
+    # 3. Individual AIPW Scores (The "Double Robust" Magic)
+    # We calculate the treatment effect for every single row
+    scores = (mu_1 + (T * (y - mu_1) / e)) - (mu_0 + ((1 - T) * (y - mu_0) / (1 - e)))
+
+    # 4. Average Treatment Effect (ATE)
+    ate = np.mean(scores)
+
+    return ate

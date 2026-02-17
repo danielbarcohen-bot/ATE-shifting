@@ -58,16 +58,16 @@ class PruneATESearch(ATESearch):
                                                             common_causes)
             seq_ates.append((seq_arr, new_ate))
 
-            if new_ate > largest_ate:
-                largest_ate = new_ate
-                largest_ate_and_time_list.append((largest_ate.item(), time.time() - start_time))
-                print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
-                print(f"largest lists: {largest_ate_and_time_list}", flush=True)
-            if new_ate < smallest_ate:
-                smallest_ate = new_ate
-                smallest_ate_and_time_list.append((smallest_ate.item(), time.time() - start_time))
-                print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
-                print(f"largest lists: {largest_ate_and_time_list}", flush=True)
+            # if new_ate > largest_ate:
+            #     largest_ate = new_ate
+            #     largest_ate_and_time_list.append((largest_ate.item(), time.time() - start_time))
+            #     print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+            #     print(f"largest lists: {largest_ate_and_time_list}", flush=True)
+            # if new_ate < smallest_ate:
+            #     smallest_ate = new_ate
+            #     smallest_ate_and_time_list.append((smallest_ate.item(), time.time() - start_time))
+            #     print(f"smallest lists: {smallest_ate_and_time_list}",flush=True)
+            #     print(f"largest lists: {largest_ate_and_time_list}", flush=True)
 
             # if len(seq_arr) > 2 and Q_poped_num % 5 == 0:
                 # for bin in bin_sequences(seq_ates, 300):

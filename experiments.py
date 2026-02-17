@@ -9,6 +9,8 @@ df_acs = ACSDataLoader().load_data()
 df_IHDP = IHDPDataLoader().load_data()
 
 df_twins_no_missing_values = df_twins.dropna()
+print(f"\n\n{'#'*100}\n             DELETE THIS{'#'*100}\n\n\n\n")
+df_twins_no_missing_values = df_twins_no_missing_values[['wt', 'gestat10'] + [c for c in df_twins_no_missing_values.columns if c not in ['wt', 'gestat10']]]
 df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()
@@ -211,7 +213,7 @@ EXPERIMENTS = {
     "EXP9_large": {  # the result need to be with 3 operations
         "df": df_twins_no_missing_values,
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
@@ -287,7 +289,7 @@ EXPERIMENTS = {
         "transformations_dict": large_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 1871,  # wanted - 1883.3,
-        "epsilon": 1,  # 15,
+        "epsilon": 10,  # 1,
         "max_length": 10,
         'sequence_length': 4
         # best sequence: (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))
@@ -319,10 +321,10 @@ EXPERIMENTS = {
         "epsilon": 100,
         "max_length": 10,
         "sequence_length": 6
-        # best sequence:
+        # best sequence:(('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))
         # start ATE : 8774
         # brute takes:  sec | popped  (optimal solution)
-        # prune takes:  sec | popped from Q  | pruned  (optimal solution)
+        # prune takes: ~20000 sec | popped from Q  | pruned  (optimal solution)
         # probe takes: 1626 sec | popped 382| restarts 4 (len 6)
         # probe (lin reg heu) takes: 8634 sec | popped 12062| restarts 5 ( len - 10)
     },
@@ -372,7 +374,7 @@ EXPERIMENTS = {
     "EXP16": {  # the result need to be with 3 operations | HELPER TO CHECK!
         "df": df_twins_no_missing_values,
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 0.0022,  # -1,
         "epsilon": 0.0002,  # 1,
         "max_length": 10
@@ -391,7 +393,7 @@ EXPERIMENTS = {
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "df": df_twins_no_missing_values.sample(frac=0.1 * k),
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5
@@ -436,7 +438,7 @@ EXPERIMENTS = {
     **{f"EXP19.{k}": {  # TWINS CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
-        "common_causes": (cols := random.sample(df_twins.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "common_causes": (cols := random.sample(df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
         "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
         "target_ate": -0.06,
         "epsilon": 0.06,

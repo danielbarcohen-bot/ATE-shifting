@@ -5,6 +5,9 @@ from typing import List, Callable
 import numpy as np
 import pandas as pd
 
+from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
+    FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK
+from search_methods.LLM_search import LLMSearch
 from search_methods.Random_search import RandomSearch
 # from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
@@ -14,6 +17,7 @@ from search_methods.probe_ATE_search_no_bit_mask import ProbeATESearchNoBitMask
 from search_methods.probe_ATE_search_no_hash import ProbeATESearchNoHash
 from search_methods.probe_ATE_search_no_lazy_eval import ProbeATESearchNoLazyEval
 from search_methods.pruning_ATE_search import PruneATESearch
+from utils import calculate_ate_linear_regression_lstsq
 
 
 class Experiment:
@@ -127,6 +131,27 @@ class Experiment:
 
     def run_probe_no_lazy_eval(self):
         return ProbeATESearchNoLazyEval().search(df=self.df, common_causes=self.common_causes,
+                                                 target_ate=self.target_ate,
+                                                 epsilon=self.epsilon,
+                                                 max_seq_length=self.max_length,
+                                                 transformations_dict=self.transformations_dict)
+    def run_llm_zero_shot(self, with_COT = False):
+        curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes)
+        prompt = create_compact_steering_prompt(self.df, curr_ate, self.target_ate, self.epsilon, 'treatment', 'outcome')
+        if not with_COT:
+            prompt = prompt + DO_NOT_THINK
+        return LLMSearch(SYSTEM_PROMPT_CLAUDE, prompt).search(df=self.df, common_causes=self.common_causes,
+                                                 target_ate=self.target_ate,
+                                                 epsilon=self.epsilon,
+                                                 max_seq_length=self.max_length,
+                                                 transformations_dict=self.transformations_dict)
+    def run_llm_few_shot(self, with_COT = False):
+        curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes,)
+        prompt = create_compact_steering_prompt(self.df, curr_ate, self.target_ate, self.epsilon, 'treatment',
+                                                'outcome', create_few_shots_prompt([FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE]))
+        if not with_COT:
+            prompt = prompt + DO_NOT_THINK
+        return LLMSearch(SYSTEM_PROMPT_CLAUDE, prompt).search(df=self.df, common_causes=self.common_causes,
                                                  target_ate=self.target_ate,
                                                  epsilon=self.epsilon,
                                                  max_seq_length=self.max_length,

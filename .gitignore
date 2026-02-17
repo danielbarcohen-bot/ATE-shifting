@@ -12,6 +12,7 @@ venv/
 .venv/
 env/
 .env
+secret.py
 
 # --- OS Generated ---
 .DS_Store
