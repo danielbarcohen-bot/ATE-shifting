@@ -4,7 +4,7 @@ from typing import List, Callable
 
 import pandas as pd
 
-from search_methods.probe_ATE_search import ProbeATESearch, PCFG
+from search_methods.probe_ATE_search import ProbeATESearch
 from search_methods.pruning_ATE_search import canonical
 from utils import get_moves_and_moveBit, df_signature_fast, calculate_ate_linear_regression_lstsq, \
     apply_data_preparations_seq
@@ -16,7 +16,7 @@ class ProbeATESearchNoLazyEval(ProbeATESearch):
         """
         Implements the adaptive Best-First Search guided by the PCFG cost.
         """
-        pcfg = PCFG([func_name for func_name, func in transformations_dict.items()], common_causes)
+        pcfg = None#PCFG([func_name for func_name, func in transformations_dict.items()], common_causes)
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
         # Priority Queue stores tuples: (cost, sequence)
         # The cost is the PCFG cost, NOT the ATE error.

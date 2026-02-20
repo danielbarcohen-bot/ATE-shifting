@@ -411,15 +411,11 @@ import time
 
 import numpy as np
 import pandas as pd
-
-from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, FunctionTransformer
-from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
-from sklearn.metrics import make_scorer
-
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
 
 from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader
 from utils import bin_equal_frequency_2, bin_equal_frequency_5, bin_equal_frequency_10, bin_equal_width_2, \
@@ -438,35 +434,46 @@ large_data_transformations = {
     "zscore_clip_3": zscore_clip_3,
     "winsorize": winsorize
 }
-def make_sklearn_transformer(series_func):
-    """
-    Wrap a function that expects a Series so it works with sklearn.
 
-    - Input: X (DataFrame or 2D array)
-    - Output: 2D array (n_samples, n_features)
-    """
-    def wrapper(X):
-        # convert to DataFrame if numpy
+def make_sklearn_transformer(series_func, name="unknown"):
+    def wrapper(X, name=None):  # name as kwarg, ignored in transform
         if isinstance(X, np.ndarray):
             X = pd.DataFrame(X)
         X_transformed = pd.DataFrame(index=X.index)
-
-        # apply your function to each column
         for col in X.columns:
             X_transformed[col] = series_func(X[col])
-        return X_transformed.values  # return 2D array for sklearn
-    return FunctionTransformer(wrapper, validate=False)
+        return X_transformed.values
+
+    return FunctionTransformer(wrapper, validate=False, kw_args={"name": name})
+# def make_sklearn_transformer(series_func):
+#     """
+#     Wrap a function that expects a Series so it works with sklearn.
+#
+#     - Input: X (DataFrame or 2D array)
+#     - Output: 2D array (n_samples, n_features)
+#     """
+#     def wrapper(X):
+#         # convert to DataFrame if numpy
+#         if isinstance(X, np.ndarray):
+#             X = pd.DataFrame(X)
+#         X_transformed = pd.DataFrame(index=X.index)
+#
+#         # apply your function to each column
+#         for col in X.columns:
+#             X_transformed[col] = series_func(X[col])
+#         return X_transformed.values  # return 2D array for sklearn
+#     return FunctionTransformer(wrapper, validate=False)
 
 def ate_epsilon_hinge_score(
-    estimator,
-    X,
-    y,
-    *,
-    treatment_col,
-    outcome_col,
-    common_causes,
-    target_ate,
-    epsilon,
+        estimator,
+        X,
+        y,
+        *,
+        treatment_col,
+        outcome_col,
+        common_causes,
+        target_ate,
+        epsilon,
 ):
     # prep = estimator.named_steps["prep"]
     # # X_trans = prep.transform(X)
@@ -487,20 +494,41 @@ def ate_epsilon_hinge_score(
     #     outcome=outcome_col,
     #     common_causes=common_causes,
     # )
-    df_for_ate = X.copy()
-    df_for_ate[outcome_col] = y.values
+    prep = estimator.named_steps["prep"]
+
+    ####
+    # chosen = prep.named_transformers_["covariates"]
+    # name = chosen.kw_args.get("name", "identity") if chosen.kw_args else "identity"
+    # print("Current transformation:", name)
+    ####
+    X_trans = prep.transform(X)
+
+    df_trans = pd.DataFrame(
+        X_trans[:, :len(common_causes)],
+        columns=common_causes,
+        index=X.index
+    )
+    df_trans[treatment_col] = X_trans[:, len(common_causes)]  # treatment is last
+    df_trans[outcome_col] = y.values
 
     ate_hat = calculate_ate_linear_regression_lstsq(
-        df_for_ate,
-        treatment_col,
-        outcome_col,
-        common_causes
+        df_trans, treatment_col, outcome_col, common_causes
     )
+    # df_for_ate = X.copy()
+    # df_for_ate[outcome_col] = y.values
+    #
+    # ate_hat = calculate_ate_linear_regression_lstsq(
+    #     df_for_ate,
+    #     treatment_col,
+    #     outcome_col,
+    #     common_causes
+    # )
     # Hinge loss
     excess = abs(ate_hat - target_ate) - epsilon
     return -max(0.0, excess)
 
-def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, common_causes: list[str], scorer = None):
+
+def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, common_causes: list[str], scorer=None):
     # ----------------------------
     # 1. Dataset
     # ----------------------------
@@ -525,9 +553,13 @@ def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, comm
     # -------------------------
     # 3. Build AutoML search space
     # -------------------------
+    # transform_candidates = [
+    #     make_sklearn_transformer(fn)
+    #     for fn in large_data_transformations.values()
+    # ]
     transform_candidates = [
-        make_sklearn_transformer(fn)
-        for fn in large_data_transformations.values()
+        make_sklearn_transformer(fn, name=name)
+        for name, fn in large_data_transformations.items()
     ]
     # Add identity (no-op)
     transform_candidates.append(FunctionTransformer(lambda X: X, validate=False))
@@ -567,6 +599,7 @@ def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, comm
 
     print(f"Test {"r2" if scorer == "r2" else "ATE scorer"}:", round(automl.score(X_test, y_test), 4))
 
+
 def make_ate_scorer(epsilon, target_ate, treatment_col, outcome_col, common_causes):
     def scorer(estimator, X, y):
         return ate_epsilon_hinge_score(
@@ -579,12 +612,14 @@ def make_ate_scorer(epsilon, target_ate, treatment_col, outcome_col, common_caus
             target_ate=target_ate,
             epsilon=epsilon,
         )
+
     return scorer
 
+
 def run_expirement(df, target_ATE, epsilon):
-    start = time.time()
     common_causes = df.columns.difference(['treatment', 'outcome']).tolist()
-    scorer = make_ate_scorer(epsilon=epsilon,target_ate=target_ATE,treatment_col="treatment",outcome_col="outcome",common_causes=common_causes)
+    scorer = make_ate_scorer(epsilon=epsilon, target_ate=target_ATE, treatment_col="treatment", outcome_col="outcome",
+                             common_causes=common_causes)
     start = time.time()
     print(f"RUNNING EXPERIMENT with R2. target ATE: {target_ATE}, epsilon: {epsilon}")
     print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes)
@@ -596,8 +631,9 @@ def run_expirement(df, target_ATE, epsilon):
     print("took: ", time.time() - start)
     print("~" * 150)
 
+
 if __name__ == "__main__":
-    # run_expirement(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001)
-    # run_expirement(LalondeDataLoader().load_data().dropna(), 1871, 1)
+    run_expirement(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001)
+    run_expirement(LalondeDataLoader().load_data().dropna(), 1871, 10)
     run_expirement(ACSDataLoader().load_data().dropna(), 16500, 100)
-    # run_expirement(IHDPDataLoader().load_data().dropna(), 4.5, 0.5)
+    run_expirement(IHDPDataLoader().load_data().dropna(), 4.5, 0.5)

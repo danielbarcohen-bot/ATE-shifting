@@ -10,7 +10,7 @@ df_IHDP = IHDPDataLoader().load_data()
 
 df_twins_no_missing_values = df_twins.dropna()
 print(f"\n\n{'#'*100}\n             DELETE THIS{'#'*100}\n\n\n\n")
-df_twins_no_missing_values = df_twins_no_missing_values[['wt', 'gestat10'] + [c for c in df_twins_no_missing_values.columns if c not in ['wt', 'gestat10']]]
+# df_twins_no_missing_values = df_twins_no_missing_values[['wt', 'gestat10'] + [c for c in df_twins_no_missing_values.columns if c not in ['wt', 'gestat10']]]
 df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()

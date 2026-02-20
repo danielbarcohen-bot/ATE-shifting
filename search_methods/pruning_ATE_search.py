@@ -41,6 +41,7 @@ class PruneATESearch(ATESearch):
         run_times_pop = []
         Q_poped_num = 0
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
+        found_solution = False
 
         # smallest_ate = np.inf
         # largest_ate = -np.inf
@@ -51,6 +52,8 @@ class PruneATESearch(ATESearch):
 
         start_time = time.time()
         while len(Q) > 0:
+            if found_solution:
+                break
             start_pop_Q_time = time.time()
             Q_poped_num += 1
             seq_arr, mask = Q.popleft()
@@ -102,6 +105,8 @@ class PruneATESearch(ATESearch):
 
             if len(seq_arr) < max_seq_length:
                 for func_name, col, move_bit in fast_moves:
+                    if found_solution:
+                        break
                     try_count += 1
                     if mask & move_bit or (func_name.startswith("fill_") and curr_df[col].isna().sum() == 0):
                         prune_count += 1
@@ -128,6 +133,16 @@ class PruneATESearch(ATESearch):
                     # if df hasnt been explored:
                     else:
                         # print(f"added func {func_name}", flush=True)
+                        new_ate = calculate_ate_linear_regression_lstsq(new_df.copy(), 'treatment', 'outcome',
+                                                                        common_causes)
+                        if abs(new_ate - target_ate) < epsilon:
+                            solution_seq = seq_arr + ((func_name, col),)
+                            print(
+                                f"""***\nOHHH YEEEE\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {solution_seq}\n***""",
+                                flush=True)
+
+                            found_solution = True
+                            break
                         seen_dfs.add(df_new_signature)
                         new_mask = mask | move_bit
                         new_path = seq_arr + ((func_name, col),)
