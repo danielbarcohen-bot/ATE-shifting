@@ -42,10 +42,12 @@ class PruneATESearch(ATESearch):
         Q_poped_num = 0
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
 
-        smallest_ate = np.inf
-        largest_ate = -np.inf
-        largest_ate_and_time_list = []
-        smallest_ate_and_time_list = []
+        # smallest_ate = np.inf
+        # largest_ate = -np.inf
+        # largest_ate_and_time_list = []
+        # smallest_ate_and_time_list = []
+        smallest_distance_from_target = abs(base_line_ate - target_ate)
+        distances_at_time_from_target = [(smallest_distance_from_target, 0)]
 
         start_time = time.time()
         while len(Q) > 0:
@@ -58,6 +60,11 @@ class PruneATESearch(ATESearch):
                                                             common_causes)
             seq_ates.append((seq_arr, new_ate))
 
+
+            new_distance = abs(new_ate - target_ate)
+            if new_distance < smallest_distance_from_target:
+                smallest_distance_from_target = new_distance
+                distances_at_time_from_target.append((new_distance, time.time() - start_time))
             # if new_ate > largest_ate:
             #     largest_ate = new_ate
             #     largest_ate_and_time_list.append((largest_ate.item(), time.time() - start_time))
@@ -147,6 +154,7 @@ class PruneATESearch(ATESearch):
         print(
             f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",
             flush=True)
+        print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: len(x[0]))}", flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
         return solution_seq

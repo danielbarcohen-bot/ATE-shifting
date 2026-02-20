@@ -8,7 +8,7 @@ import pandas as pd
 from search_methods.ATE_search import ATESearch
 from search_methods.pruning_ATE_search import canonical
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
-    df_signature_fast, get_moves_and_moveBit, manual_dml_ate, manual_dr_ate
+    df_signature_fast, get_moves_and_moveBit, manual_dml_ate, manual_dr_ate, get_base_line
 
 
 # --- PCFG Class to Manage Weights ---
@@ -113,11 +113,13 @@ class ProbeATESearch(ATESearch):
         seen_dfs.add(df_signature_fast(df.copy(), common_causes))
 
         start_time = time.time()
-
-        smallest_ate = np.inf
-        largest_ate = -np.inf
-        largest_ate_and_time_list = []
-        smallest_ate_and_time_list = []
+        base_line_ate = get_base_line(common_causes, df.copy())
+        # smallest_ate = np.inf
+        # largest_ate = -np.inf
+        # largest_ate_and_time_list = []
+        # smallest_ate_and_time_list = []
+        smallest_distance_from_target = abs(base_line_ate - target_ate)
+        distances_at_time_from_target = [(smallest_distance_from_target, 0)]
 
         while pq:
             cost, sequence, mask = heapq.heappop(pq)
@@ -129,6 +131,9 @@ class ProbeATESearch(ATESearch):
             current_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome', common_causes)
             current_error = abs(current_ate - target_ate)
 
+            if current_error < smallest_distance_from_target:
+                smallest_distance_from_target = current_error
+                distances_at_time_from_target.append((current_error, time.time() - start_time))
             # if current_ate > largest_ate:
             #     largest_ate = current_ate
             #     #print(f"LARGEST ATE now is {largest_ate}\nit took {time.time() - start_time} sec to get here\nwith sequence:\n{sequence}\n")
@@ -148,6 +153,7 @@ class ProbeATESearch(ATESearch):
                 print(f"\n **GOAL REACHED!** Final Sequence: {sequence} with ATE {current_ate:.7f}")
                 print(f"run took {time.time() - start_time:.2f} seconds")
                 print(f"checked {steps} combinations")
+                print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
                 return sequence, time.time() - start_time
 
             # --- Probe Trigger (JIT Learning) ---
@@ -162,8 +168,10 @@ class ProbeATESearch(ATESearch):
                 if pq:
                     print("💡 Re-scoring search frontier...")
                     # restart the smallest \ largest ive seen
-                    smallest_ate = np.inf
-                    largest_ate = -np.inf
+                    # smallest_ate = np.inf
+                    # largest_ate = -np.inf
+                    smallest_distance_from_target = abs(base_line_ate - target_ate)
+                    distances_at_time_from_target.append((smallest_distance_from_target, time.time() - start_time))
 
                     # 1. Extract all items from the current queue
                     current_frontier = []
@@ -220,4 +228,5 @@ class ProbeATESearch(ATESearch):
         print("\nFAILED TO FIND SOLUTION\n")
         print(f"run took {time.time() - start_time:.2f} seconds")
         print(f"checked {steps} combinations")
+        print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
         return "Search failed to find a solution within max steps.", time.time() - start_time
