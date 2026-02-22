@@ -5,7 +5,7 @@ from typing import List, Callable
 import pandas as pd
 
 from search_methods.probe_ATE_search import ProbeATESearch
-from search_methods.pruning_ATE_search import canonical
+from search_methods.prune_ATE_search import canonical
 from utils import df_signature_fast, calculate_ate_linear_regression_lstsq, \
     apply_data_preparations_seq
 

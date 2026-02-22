@@ -1,5 +1,7 @@
 import random
 
+import pandas as pd
+
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader
 from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, winsorize
@@ -476,5 +478,27 @@ EXPERIMENTS = {
         # probe 3 confunders takes: 199.24 sec | popped 216| restarts 3 ( DIDNT FIND SOLUTION)
         # probe 6 confunders takes: 694 sec | popped 252| restarts 3 ( len 5)
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
+    **{f"EXP21.{k}": {  # TWINS CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_twins_no_missing_values] * k, ignore_index=True),
+        "transformations_dict": large_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+
+    } for k in range(1,6)
+    },
+**{f"EXP22.{k}": {  # ACS CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
+        "transformations_dict": large_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+
+    } for k in range(1,6)
     },
 }

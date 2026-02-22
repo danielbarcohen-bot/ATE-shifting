@@ -16,7 +16,9 @@ from search_methods.probe_ATE_search import ProbeATESearch
 from search_methods.probe_ATE_search_no_bit_mask import ProbeATESearchNoBitMask
 from search_methods.probe_ATE_search_no_hash import ProbeATESearchNoHash
 from search_methods.probe_ATE_search_no_lazy_eval import ProbeATESearchNoLazyEval
-from search_methods.pruning_ATE_search import PruneATESearch
+from search_methods.prune_ATE_search import PruneATESearch
+from search_methods.prune_ATE_search_no_bit_mask import PruneATESearchNoBitMask
+from search_methods.prune_ATE_search_no_hash import PruneATESearchNoHash
 from utils import calculate_ate_linear_regression_lstsq
 
 
@@ -122,8 +124,21 @@ class Experiment:
                                              max_seq_length=self.max_length,
                                              transformations_dict=self.transformations_dict)
 
+    def run_prune_no_hash(self):
+        return PruneATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
+                                             target_ate=self.target_ate,
+                                             epsilon=self.epsilon,
+                                             max_seq_length=self.max_length,
+                                             transformations_dict=self.transformations_dict)
+
     def run_probe_no_bit_mask(self):
         return ProbeATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
+                                                target_ate=self.target_ate,
+                                                epsilon=self.epsilon,
+                                                max_seq_length=self.max_length,
+                                                transformations_dict=self.transformations_dict)
+    def run_prune_no_bit_mask(self):
+        return PruneATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
                                                 target_ate=self.target_ate,
                                                 epsilon=self.epsilon,
                                                 max_seq_length=self.max_length,

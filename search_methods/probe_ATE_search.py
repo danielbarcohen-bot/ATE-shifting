@@ -296,7 +296,7 @@ class ProbeATESearch(ATESearch):
 
         smallest_distance_from_target = abs(base_line_ate - target_ate)
         distances_at_time_from_target = [(smallest_distance_from_target, 0)]
-
+        checked = 0
         start_time = time.time()
         while True:
             should_restart = False
@@ -314,6 +314,7 @@ class ProbeATESearch(ATESearch):
                     #TODO: check bit mask... should be better?
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq  if c == col):
                         continue
+                    checked = checked + 1
                     curr_df = apply_data_preparations_seq(df_, new_seq, transformations_dict)
                     new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome',
                                                                     common_causes)
@@ -328,8 +329,9 @@ class ProbeATESearch(ATESearch):
                             f"""***\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {new_seq}\n***""",
                             flush=True)
                         solution_seq = new_seq
-                        print(f"run took {time.time() - start_time:.3f} sec")
+                        print(f"Execution time: {time.time() - start_time:.3f} sec")
                         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
+                        print(f"checked:\n{checked}", flush=True)
 
                         exit()
                     df_new_signature = df_signature_fast(curr_df, common_causes)
@@ -339,7 +341,7 @@ class ProbeATESearch(ATESearch):
                     bank[cost].append(new_seq)
                     seen_dfs.add(df_new_signature)
                     if current_error < best_ate_error * 0.9:
-                        print(f"🔥 PROBE TRIGGERED! Error reduced from {best_ate_error:.3f} to {current_error:.3f} (ATE went to {new_ate}).")
+                        print(f"PROBE TRIGGERED! Error reduced from {best_ate_error:.3f} to {current_error:.3f} (ATE went to {new_ate}).")
                         prob_manager.update_weights(new_seq)
 
                         smallest_distance_from_target = abs(base_line_ate - target_ate)

@@ -138,7 +138,7 @@ class PruneATESearch(ATESearch):
                         if abs(new_ate - target_ate) < epsilon:
                             solution_seq = seq_arr + ((func_name, col),)
                             print(
-                                f"""***\nOHHH YEEEE\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {solution_seq}\n***""",
+                                f"""***\n\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {solution_seq}\n***""",
                                 flush=True)
 
                             found_solution = True
@@ -162,13 +162,13 @@ class PruneATESearch(ATESearch):
         print(f"Execution time: {execution_time} seconds", flush=True)
         print(f"pruned {prune_count}", flush=True)
         print(f"popped from Q {Q_poped_num} nodes", flush=True)
-        print(
-            f"run time per popped from Q: mean: {np.mean(run_times_pop)}, percentiles={np.percentile(run_times_pop, [25, 75, 90, 95, 99]).tolist()}",
-            flush=True)
+        # print(
+        #     f"run time per popped from Q: mean: {np.mean(run_times_pop)}, percentiles={np.percentile(run_times_pop, [25, 75, 90, 95, 99]).tolist()}",
+        #     flush=True)
         print(f"checked {try_count} combinations", flush=True)
-        print(
-            f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",
-            flush=True)
+        # print(
+        #     f"run time per neighbor: mean: {np.mean(run_times)}, percentiles={np.percentile(run_times, [25, 75, 90, 95, 99]).tolist()}",
+        #     flush=True)
         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: len(x[0]))}", flush=True)
         # print(f"all ates: {sorted(seq_ates, key=lambda x: x[1])}", flush=True)
