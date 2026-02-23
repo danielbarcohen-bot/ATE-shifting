@@ -212,7 +212,7 @@ EXPERIMENTS = {
         # probe takes: 130 sec | popped 61| restarts 2(optimal solution)
         # probe (lin reg heu) takes: 79 sec | popped 35| restarts 2(optimal solution)
     },
-    "EXP9_large": {  # the result need to be with 3 operations
+    "EXP9_large": {
         "df": df_twins_no_missing_values,
         "transformations_dict": large_data_transformations,
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
@@ -220,12 +220,13 @@ EXPERIMENTS = {
         "epsilon": 0.06,
         "max_length": 5,
         "sequence_length": 2
-        # best sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt'))
-        # start ATE : 0.06
-        # brute takes: 2574 sec | popped 61646250 (optimal solution)
-        # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 271 sec | popped 199 | restarts 1(optimal solution len 2)
-        # probe (lin reg heu) takes: 200 sec | popped 155| restarts 1 (optimal solution len 2)
+        # prune sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt')) | ATE: -0.0053
+        # probe sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt')) | ATE: -0.0053
+        # random sequence: (('bin_equal_width_5', 'nprevistq'), ('bin_equal_width_2', 'othermr'))| ATE: 0.06
+        # llm zero shot sequence: [{"column": "wt", "operation": "bin_equal_frequency_5"},{"column": "wt", "operation": "norm_log"},{"column": "gestat10", "operation": "bin_equal_width_5"},{"column": "gestat10", "operation": "winsorize"},{"column": "nprevistq", "operation": "bin_equal_frequency_5"},{"column": "nprevistq", "operation": "zscore_clip_3"}, {"column": "hydra", "operation": "bin_equal_width_2"},  {"column": "incervix", "operation": "bin_equal_width_2"},  {"column": "csex", "operation": "bin_equal_width_2"},{"column": "tobacco", "operation": "bin_equal_width_2"}]| ATE: 0.003
+        # llm few shot sequence: [{"column": "wt","operation": "bin_equal_frequency_2"},{"column": "gestat10","operation": "bin_equal_frequency_5"},{"column": "nprevistq","operation": "bin_equal_width_2"},{"column": "hydra","operation": "bin_equal_frequency_2"},{"column": "incervix","operation": "bin_equal_frequency_2"}]| ATE:0.0126
+        # llm cot sequence: [{"column": "wt", "operation": "bin_equal_frequency_5"},{"column": "gestat10", "operation": "bin_equal_frequency_5"},{"column": "nprevistq", "operation": "bin_equal_width_5"},{"column": "hydra", "operation": "norm_log"},{"column": "incervix", "operation": "norm_log"}]| ATE:0.009
+
     },
     "EXP10_large": {  # poc example - shift ATE LALONDE
         "df": df_lalonde_no_missing_values,
@@ -294,12 +295,16 @@ EXPERIMENTS = {
         "epsilon": 10,  # 1,
         "max_length": 10,
         'sequence_length': 4
-        # best sequence: (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))
-        # start ATE : 1671.130
-        # brute takes: 2276 sec | popped 33703140 (optimal solution)
-        # prune takes: 268 sec | popped from Q  6324| pruned 341125(optimal solution)
-        # probe takes: 22 sec | popped 455 | restarts 7 (not optimal solution - 6)
-        # probe (lin reg heu) takes: 127 sec | popped 2454| restarts 7 (len 5)
+
+        # prune sequence:  (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree')) | ATE:1870
+        # probe sequence:  (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))| ATE:1870
+        # random sequence: (('bin_equal_width_5', 'age'), ('norm_min_max', 'married'), ('norm_log', 'age'), ('zscore_clip_3', 'hispanic'))| ATE:1624
+        # llm zero shot sequence: [{"column": "nodegree", "operation": "bin_equal_frequency_5"},{"column": "education", "operation": "bin_equal_frequency_5"},{"column": "age", "operation": "norm_log"},{"column": "black", "operation": "bin_equal_width_2"}]| ATE:  1623.59
+        # llm few shot sequence:[{"column": "nodegree","operation": "norm_log"},{"column": "black","operation": "norm_log"},{"column": "education","operation": "norm_log"},{"column": "age","operation": "norm_min_max"}] | ATE: 1676.146
+        # llm cot sequence: [{"column": "nodegree","operation": "bin_equal_frequency_2"},{"column": "hispanic","operation": "bin_equal_frequency_2"},{"column": "education","operation": "norm_min_max"},{"column": "age","operation": "bin_equal_width_5"}]| ATE:1667.79
+
+
+
     },
     "EXP14": {  # poc example - shift ATE ACS | HELPER TO CHECK!
         "df": df_acs_no_missing_values,
@@ -323,12 +328,14 @@ EXPERIMENTS = {
         "epsilon": 100,
         "max_length": 10,
         "sequence_length": 6
-        # best sequence:(('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))
-        # start ATE : 8774
-        # brute takes:  sec | popped  (optimal solution)
-        # prune takes: ~20000 sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 1626 sec | popped 382| restarts 4 (len 6)
-        # probe (lin reg heu) takes: 8634 sec | popped 12062| restarts 5 ( len - 10)
+
+        # prune sequence:   | ATE:
+        # probe sequence:  (('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_frequency_2', 'Age'))  | ATE:  16421
+        # random sequence: (('bin_equal_width_2', 'gender'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_5', 'Public health coverage'), ('bin_equal_width_10', 'insurance through employer'), ('bin_equal_width_5', 'education'), ('winsorize', 'Public health coverage'))| ATE:6540.8
+        # llm zero shot sequence: [{"column": "Public health coverage", "operation": "bin_equal_frequency_10"},{"column": "medicare for people 65 and older", "operation": "bin_equal_frequency_10"},{"column": "Age", "operation": "bin_equal_frequency_10"},{"column": "insurance through employer", "operation": "bin_equal_frequency_5"},{"column": "private health coverage", "operation": "bin_equal_frequency_5"},{"column": "education", "operation": "bin_equal_frequency_10"}]| ATE: 6540.81
+        # llm few shot sequence: [{"column": "Age","operation": "bin_equal_frequency_5"},{"column": "Public health coverage","operation": "bin_equal_frequency_2"},{"column": "medicare for people 65 and older","operation": "bin_equal_frequency_2"},{"column": "education","operation": "bin_equal_frequency_5"}]| ATE: 13535.11
+        # llm cot sequence: [{"column": "Age", "operation": "bin_equal_frequency_5"},{"column": "Public health coverage", "operation": "bin_equal_frequency_2"},{"column": "medicare for people 65 and older", "operation": "bin_equal_frequency_2"},{"column": "insurance through employer", "operation": "bin_equal_frequency_2"},{"column": "education", "operation": "norm_min_max"}]| ATE:15692.30
+
     },
     "EXP14.5.1": {  # poc example - shift ATE ACS
         "df": df_acs_no_missing_values,
@@ -366,12 +373,13 @@ EXPERIMENTS = {
         "epsilon": 0.5,
         "max_length": 10,
         "sequence_length": 3
-        # best sequence:
-        # start ATE : 3.92
-        # brute takes:  sec | popped  (optimal solution)
-        # prune takes:  sec | popped from Q  | pruned  (optimal solution)
-        # probe takes: 532 sec | popped 4441| restarts 1 (len 3)
-        # probe (lin reg heu) takes: 35 sec | popped 259| restarts 1 (len 3)
+        # prune sequence:  | ATE:4.001
+        # probe sequence:   | ATE:
+        # random sequence: (('norm_min_max', 'x15'), ('norm_min_max', 'x21'), ('norm_log', 'x3'))| ATE: 3.92
+        # llm zero shot sequence: [{"column": "x6", "operation": "bin_equal_frequency_5"},{"column": "x9", "operation": "bin_equal_width_5"},{"column": "x25", "operation": "norm_min_max"},{"column": "x15", "operation": "bin_equal_frequency_5"},{"column": "x17", "operation": "bin_equal_width_5"}]| ATE: 3.97
+        # llm few shot sequence: [{"column": "x6","operation": "bin_equal_frequency_5"},{"column": "x9","operation": "bin_equal_frequency_5"},{"column": "x25","operation": "bin_equal_frequency_5"},{"column": "x17","operation": "bin_equal_frequency_5"}]| ATE:3.97
+        # llm cot sequence: [{"column": "x6", "operation": "norm_min_max"},{"column": "x10", "operation": "bin_equal_frequency_2"},{"column": "x23", "operation": "bin_equal_frequency_2"},{"column": "x24", "operation": "bin_equal_frequency_2"},{"column": "x1", "operation": "norm_min_max"}]| ATE:3.9
+
     },
     "EXP16": {  # the result need to be with 3 operations | HELPER TO CHECK!
         "df": df_twins_no_missing_values,

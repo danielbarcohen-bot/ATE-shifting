@@ -189,6 +189,7 @@ class RandomExperiment:
         for _ in range(10):
             seq, ate = RandomSearch().search(df=self.df, transformations_dict=self.transformations_dict,
                                              common_causes=self.common_causes, sequence_length=self.sequence_length)
+            print(seq)
             ates.append(ate.item())
             if abs(ate - self.target_ate) < self.epsilon:
                 print(f"found solution, ATE is {ate}, sequence is \n{seq}")
