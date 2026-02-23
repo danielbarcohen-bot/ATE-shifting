@@ -329,7 +329,7 @@ EXPERIMENTS = {
         "max_length": 10,
         "sequence_length": 6
 
-        # prune sequence:   | ATE:
+        # prune sequence:    (('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))| ATE: 16421
         # probe sequence:  (('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_frequency_2', 'Age'))  | ATE:  16421
         # random sequence: (('bin_equal_width_2', 'gender'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_5', 'Public health coverage'), ('bin_equal_width_10', 'insurance through employer'), ('bin_equal_width_5', 'education'), ('winsorize', 'Public health coverage'))| ATE:6540.8
         # llm zero shot sequence: [{"column": "Public health coverage", "operation": "bin_equal_frequency_10"},{"column": "medicare for people 65 and older", "operation": "bin_equal_frequency_10"},{"column": "Age", "operation": "bin_equal_frequency_10"},{"column": "insurance through employer", "operation": "bin_equal_frequency_5"},{"column": "private health coverage", "operation": "bin_equal_frequency_5"},{"column": "education", "operation": "bin_equal_frequency_10"}]| ATE: 6540.81
@@ -373,8 +373,8 @@ EXPERIMENTS = {
         "epsilon": 0.5,
         "max_length": 10,
         "sequence_length": 3
-        # prune sequence:  | ATE:4.001
-        # probe sequence:   | ATE:
+        # prune sequence: (('norm_log', 'x6'), ('bin_equal_width_2', 'x6'), ('bin_equal_frequency_2', 'x11')) | ATE:4.001
+        # probe sequence:   (('bin_equal_frequency_2', 'x9'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x11'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_2', 'x6')) | ATE:4.008
         # random sequence: (('norm_min_max', 'x15'), ('norm_min_max', 'x21'), ('norm_log', 'x3'))| ATE: 3.92
         # llm zero shot sequence: [{"column": "x6", "operation": "bin_equal_frequency_5"},{"column": "x9", "operation": "bin_equal_width_5"},{"column": "x25", "operation": "norm_min_max"},{"column": "x15", "operation": "bin_equal_frequency_5"},{"column": "x17", "operation": "bin_equal_width_5"}]| ATE: 3.97
         # llm few shot sequence: [{"column": "x6","operation": "bin_equal_frequency_5"},{"column": "x9","operation": "bin_equal_frequency_5"},{"column": "x25","operation": "bin_equal_frequency_5"},{"column": "x17","operation": "bin_equal_frequency_5"}]| ATE:3.97
