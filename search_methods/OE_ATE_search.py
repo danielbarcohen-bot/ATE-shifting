@@ -22,7 +22,7 @@ def canonical(seq):
     return key
 
 
-class PruneATESearch(ATESearch):
+class OEATESearch(ATESearch):
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable]):
         df_ = df.copy()

@@ -7,10 +7,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("exp_name", type=str, help="Experiment name, e.g., EXP1")
     parser.add_argument("mode", type=str,
-                        choices=["brute", "prune", "parallel", "astar", "probe", "prune_no_bit_mask", "llm_zero_shot",
+                        choices=["brute", "oe", "parallel", "astar", "probe", "oe_no_bit_mask", "llm_zero_shot",
                                  "llm_few_shot", "llm_zero_shot_cot", "llm_few_shot_cot", "random", "probe_no_hash",
-                                 "prune_no_hash"],
-                        help="Which mode to run: brute prune or parallel prune")
+                                 "oe_no_hash"],
+                        help="Which mode to run: brute OE or probe")
     args = parser.parse_args()
     config = EXPERIMENTS.get(args.exp_name)
     if config is None:
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         # Call the correct run method
         if args.mode == "brute":
             experiment.run_brute()
-        if args.mode == "prune":
+        if args.mode == "oe":
             experiment.run_prune()
         # if args.mode == "astar":
         #     experiment.run_AStar()
@@ -45,9 +45,9 @@ if __name__ == "__main__":
             experiment.run_probe()
         if args.mode == "probe_no_hash":
             experiment.run_probe_no_hash()
-        if args.mode == "prune_no_hash":
+        if args.mode == "oe_no_hash":
             experiment.run_prune_no_hash()
-        if args.mode == "prune_no_bit_mask":
+        if args.mode == "oe_no_bit_mask":
             experiment.run_prune_no_bit_mask()
         if args.mode == "llm_zero_shot":
             experiment.run_llm_zero_shot()

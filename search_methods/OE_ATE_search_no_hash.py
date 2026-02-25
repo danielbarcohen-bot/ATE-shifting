@@ -2,12 +2,11 @@ import time
 from collections import deque
 from typing import List, Callable
 
-import numpy as np
 import pandas as pd
 
 from search_methods.ATE_search import ATESearch
-from utils import df_signature_fast, apply_data_preparations_seq, get_base_line, \
-    calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, find_interesting
+from utils import apply_data_preparations_seq, get_base_line, \
+    calculate_ate_linear_regression_lstsq, get_moves_and_moveBit
 
 
 def canonical(seq):
@@ -23,7 +22,7 @@ def canonical(seq):
     return key
 
 
-class PruneATESearchNoHash(ATESearch):
+class OEATESearchNoHash(ATESearch):
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable]):
         df_ = df.copy()
@@ -43,10 +42,6 @@ class PruneATESearchNoHash(ATESearch):
         fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
         found_solution = False
 
-        # smallest_ate = np.inf
-        # largest_ate = -np.inf
-        # largest_ate_and_time_list = []
-        # smallest_ate_and_time_list = []
         smallest_distance_from_target = abs(base_line_ate - target_ate)
         distances_at_time_from_target = [(smallest_distance_from_target, 0)]
 
@@ -62,7 +57,6 @@ class PruneATESearchNoHash(ATESearch):
             new_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome',
                                                             common_causes)
             seq_ates.append((seq_arr, new_ate))
-
 
             new_distance = abs(new_ate - target_ate)
             if new_distance < smallest_distance_from_target:
@@ -103,7 +97,6 @@ class PruneATESearchNoHash(ATESearch):
 
                     # if df hasnt been explored:
                     else:
-                        # print(f"added func {func_name}", flush=True)
                         new_ate = calculate_ate_linear_regression_lstsq(new_df.copy(), 'treatment', 'outcome',
                                                                         common_causes)
                         if abs(new_ate - target_ate) < epsilon:

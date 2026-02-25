@@ -10,7 +10,7 @@ The framework provides several strategies to navigate the exponential search spa
 
 ### 1. Exact & Pruned Search
 * **Brute Force (`brute`)**: Explores all possible combinations. **Guarantees the shortest sequence** to reach the target ATE, but has high computational complexity.
-* **Pruned (`prune`)**: An optimized version of brute force. It leverages **Observational Equivalence** to prune sequences that produce identical data states, significantly reducing redundant computations while maintaining the shortest-path guarantee.
+* **Pruned (`OE`)**: An optimized version of brute force. It leverages **Observational Equivalence** to prune sequences that produce identical data states, significantly reducing redundant computations while maintaining the shortest-path guarantee.
 
 ### 2. Probabilistic & LLM Search
 * **Probe (`probe`)**: Uses probability-guided search to find a solution. While it does not guarantee the shortest path, it offers a **very fast search** suitable for large spaces.

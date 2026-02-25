@@ -11,9 +11,9 @@ from search_methods.brute_force_ATE_search import BruteForceATESearch
 from search_methods.probe_ATE_search import ProbeATESearch
 # from search_methods.probe_ATE_search_heuristic_linear_reg import ProbeATESearchLinearRegHeuristic
 from search_methods.probe_ATE_search_no_hash import ProbeATESearchNoHash
-from search_methods.prune_ATE_search import PruneATESearch
-from search_methods.prune_ATE_search_no_bit_mask import PruneATESearchNoBitMask
-from search_methods.prune_ATE_search_no_hash import PruneATESearchNoHash
+from search_methods.OE_ATE_search import OEATESearch
+from search_methods.OE_ATE_search_no_bit_mask import OEATESearchNoBitMask
+from search_methods.OE_ATE_search_no_hash import OEATESearchNoHash
 from utils import calculate_ate_linear_regression_lstsq
 
 
@@ -36,9 +36,9 @@ class Experiment:
                                             transformations_dict=self.transformations_dict)
 
     def run_prune(self):
-        return PruneATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+        return OEATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
+                                    epsilon=self.epsilon,
+                                    max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
 
     # def run_AStar(self):
     #     return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
@@ -59,18 +59,18 @@ class Experiment:
                                              transformations_dict=self.transformations_dict)
 
     def run_prune_no_hash(self):
-        return PruneATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
+        return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
+                                          target_ate=self.target_ate,
+                                          epsilon=self.epsilon,
+                                          max_seq_length=self.max_length,
+                                          transformations_dict=self.transformations_dict)
+
+    def run_prune_no_bit_mask(self):
+        return OEATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
                                              target_ate=self.target_ate,
                                              epsilon=self.epsilon,
                                              max_seq_length=self.max_length,
                                              transformations_dict=self.transformations_dict)
-
-    def run_prune_no_bit_mask(self):
-        return PruneATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
-                                                target_ate=self.target_ate,
-                                                epsilon=self.epsilon,
-                                                max_seq_length=self.max_length,
-                                                transformations_dict=self.transformations_dict)
 
     def run_llm_zero_shot(self, with_COT=False):
         curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes)
