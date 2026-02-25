@@ -1,6 +1,6 @@
-import pandas as pd
 import os
-import dowhy.datasets
+
+import pandas as pd
 
 
 class TwinsDataLoader:
@@ -98,7 +98,7 @@ class LalondeDataLoader:
         print("bring data")
         df = pd.read_stata("http://www.nber.org/~rdehejia/data/nsw_dw.dta")
         df = df.rename(columns={'treat': 'treatment', 're78': 'outcome'})
-        df = df[['nodegree','black', 'hispanic', 'age', 'education', 'married','treatment', 'outcome']]
+        df = df[['nodegree', 'black', 'hispanic', 'age', 'education', 'married', 'treatment', 'outcome']]
         df.to_pickle(self.CACHE_FILE)
         return df
 
@@ -113,8 +113,14 @@ class ACSDataLoader:
             return pd.read_pickle(self.CACHE_FILE)
         print("bring data")
         df = pd.read_csv("acs.csv")
-        df = df.rename(columns={'Educational attainment': 'education', 'Private health insurance coverage': 'private health coverage', 'Medicare, for people 65 and older, or people with certain disabilities': 'medicare for people 65 and older', 'Insurance through a current or former employer or union': 'insurance through employer', 'Sex': 'gender', 'With a disability': 'treatment', 'Wages or salary income past 12 months': 'outcome'})
-        df = df[['education', 'Public health coverage', 'private health coverage', 'medicare for people 65 and older', 'insurance through employer', 'gender', 'Age', 'treatment', 'outcome']]
+        df = df.rename(columns={'Educational attainment': 'education',
+                                'Private health insurance coverage': 'private health coverage',
+                                'Medicare, for people 65 and older, or people with certain disabilities': 'medicare for people 65 and older',
+                                'Insurance through a current or former employer or union': 'insurance through employer',
+                                'Sex': 'gender', 'With a disability': 'treatment',
+                                'Wages or salary income past 12 months': 'outcome'})
+        df = df[['education', 'Public health coverage', 'private health coverage', 'medicare for people 65 and older',
+                 'insurance through employer', 'gender', 'Age', 'treatment', 'outcome']]
         df.to_pickle(self.CACHE_FILE)
         return df
 
@@ -129,7 +135,8 @@ class IHDPDataLoader:
             return pd.read_pickle(self.CACHE_FILE)
         print("bring data")
         df = pd.read_csv(
-            "https://raw.githubusercontent.com/AMLab-Amsterdam/CEVAE/master/datasets/IHDP/csv/ihdp_npci_1.csv", header=None)
+            "https://raw.githubusercontent.com/AMLab-Amsterdam/CEVAE/master/datasets/IHDP/csv/ihdp_npci_1.csv",
+            header=None)
         col = ["treatment", "y_factual", "y_cfactual", "mu0", "mu1", ]
         for i in range(1, 26):
             col.append("x" + str(i))

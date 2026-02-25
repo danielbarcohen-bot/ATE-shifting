@@ -327,7 +327,7 @@ EXPERIMENTS = {
         "target_ate": 16500,
         "epsilon": 100,
         "max_length": 10,
-        "sequence_length": 6
+        "sequence_length": 4#6
 
         # prune sequence:    (('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))| ATE: 16421
         # probe sequence:  (('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_frequency_2', 'Age'))  | ATE:  16421
