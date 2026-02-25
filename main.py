@@ -6,7 +6,10 @@ from experiments import EXPERIMENTS
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("exp_name", type=str, help="Experiment name, e.g., EXP1")
-    parser.add_argument("mode", type=str, choices=["brute", "prune", "parallel", "astar", "probe", "prune_no_bit_mask", "probe_lin_reg", "llm_zero_shot", "llm_few_shot", "llm_zero_shot_cot", "llm_few_shot_cot", "random", "probe_no_hash", "prune_no_hash", "probe_no_bit_mask", "probe_no_lazy_eval"],
+    parser.add_argument("mode", type=str,
+                        choices=["brute", "prune", "parallel", "astar", "probe", "prune_no_bit_mask", "llm_zero_shot",
+                                 "llm_few_shot", "llm_zero_shot_cot", "llm_few_shot_cot", "random", "probe_no_hash",
+                                 "prune_no_hash"],
                         help="Which mode to run: brute prune or parallel prune")
     args = parser.parse_args()
     config = EXPERIMENTS.get(args.exp_name)
@@ -36,8 +39,6 @@ if __name__ == "__main__":
             experiment.run_brute()
         if args.mode == "prune":
             experiment.run_prune()
-        # if args.mode == "parallel":
-        #     experiment.run_parallel_prune()
         # if args.mode == "astar":
         #     experiment.run_AStar()
         if args.mode == "probe":
@@ -46,19 +47,13 @@ if __name__ == "__main__":
             experiment.run_probe_no_hash()
         if args.mode == "prune_no_hash":
             experiment.run_prune_no_hash()
-        if args.mode == "probe_no_bit_mask":
-            experiment.run_probe_no_bit_mask()
         if args.mode == "prune_no_bit_mask":
             experiment.run_prune_no_bit_mask()
-        if args.mode == "probe_no_lazy_eval":
-            experiment.run_probe_no_lazy_eval()
         if args.mode == "llm_zero_shot":
             experiment.run_llm_zero_shot()
         if args.mode == "llm_few_shot":
             experiment.run_llm_few_shot()
         if args.mode == "llm_zero_shot_cot":
             experiment.run_llm_zero_shot(True)
-        if args.mode == "llm_few_shot_cot":
+        elif args.mode == "llm_few_shot_cot":
             experiment.run_llm_few_shot(True)
-        elif args.mode == "probe_lin_reg":
-            experiment.run_probe_line_reg_heuristic()
