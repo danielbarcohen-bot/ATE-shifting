@@ -77,7 +77,6 @@ class ProbeATESearch(ATESearch):
                     if len(new_seq) > max_seq_length:
                         continue
 
-                    # TODO: check bit mask... should be better?
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
                         continue
                     checked = checked + 1
