@@ -223,6 +223,8 @@ EXPERIMENTS = {
         # prune sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt')) | ATE: -0.0053
         # probe sequence:  (('norm_log', 'gestat10'), ('bin_equal_frequency_2', 'wt')) | ATE: -0.0053
         # random sequence: (('bin_equal_width_5', 'nprevistq'), ('bin_equal_width_2', 'othermr'))| ATE: 0.06
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
         # llm zero shot sequence: [{"column": "wt", "operation": "bin_equal_frequency_5"},{"column": "wt", "operation": "norm_log"},{"column": "gestat10", "operation": "bin_equal_width_5"},{"column": "gestat10", "operation": "winsorize"},{"column": "nprevistq", "operation": "bin_equal_frequency_5"},{"column": "nprevistq", "operation": "zscore_clip_3"}, {"column": "hydra", "operation": "bin_equal_width_2"},  {"column": "incervix", "operation": "bin_equal_width_2"},  {"column": "csex", "operation": "bin_equal_width_2"},{"column": "tobacco", "operation": "bin_equal_width_2"}]| ATE: 0.003
         # llm few shot sequence: [{"column": "wt","operation": "bin_equal_frequency_2"},{"column": "gestat10","operation": "bin_equal_frequency_5"},{"column": "nprevistq","operation": "bin_equal_width_2"},{"column": "hydra","operation": "bin_equal_frequency_2"},{"column": "incervix","operation": "bin_equal_frequency_2"}]| ATE:0.0126
         # llm cot sequence: [{"column": "wt", "operation": "bin_equal_frequency_5"},{"column": "gestat10", "operation": "bin_equal_frequency_5"},{"column": "nprevistq", "operation": "bin_equal_width_5"},{"column": "hydra", "operation": "norm_log"},{"column": "incervix", "operation": "norm_log"}]| ATE:0.009
@@ -299,6 +301,8 @@ EXPERIMENTS = {
         # prune sequence:  (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree')) | ATE:1870
         # probe sequence:  (('bin_equal_width_2', 'age'), ('bin_equal_frequency_2', 'black'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'nodegree'))| ATE:1870
         # random sequence: (('bin_equal_width_5', 'age'), ('norm_min_max', 'married'), ('norm_log', 'age'), ('zscore_clip_3', 'hispanic'))| ATE:1624
+        # auto-sklearn-vanila sequence: norm_min_max | ATE: 1671.1
+        # auto-sklearn-ate sequence: bin_equal_width_5 | ATE: 1652
         # llm zero shot sequence: [{"column": "nodegree", "operation": "bin_equal_frequency_5"},{"column": "education", "operation": "bin_equal_frequency_5"},{"column": "age", "operation": "norm_log"},{"column": "black", "operation": "bin_equal_width_2"}]| ATE:  1623.59
         # llm few shot sequence:[{"column": "nodegree","operation": "norm_log"},{"column": "black","operation": "norm_log"},{"column": "education","operation": "norm_log"},{"column": "age","operation": "norm_min_max"}] | ATE: 1676.146
         # llm cot sequence: [{"column": "nodegree","operation": "bin_equal_frequency_2"},{"column": "hispanic","operation": "bin_equal_frequency_2"},{"column": "education","operation": "norm_min_max"},{"column": "age","operation": "bin_equal_width_5"}]| ATE:1667.79
@@ -332,6 +336,8 @@ EXPERIMENTS = {
         # prune sequence:    (('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))| ATE: 16421
         # probe sequence:  (('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_frequency_2', 'Age'))  | ATE:  16421
         # random sequence: (('bin_equal_width_2', 'gender'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_5', 'Public health coverage'), ('bin_equal_width_10', 'insurance through employer'), ('bin_equal_width_5', 'education'), ('winsorize', 'Public health coverage'))| ATE:6540.8
+        # auto-sklearn-vanila sequence: zscore_clip_3 | ATE: 8398
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 19911
         # llm zero shot sequence: [{"column": "Public health coverage", "operation": "bin_equal_frequency_10"},{"column": "medicare for people 65 and older", "operation": "bin_equal_frequency_10"},{"column": "Age", "operation": "bin_equal_frequency_10"},{"column": "insurance through employer", "operation": "bin_equal_frequency_5"},{"column": "private health coverage", "operation": "bin_equal_frequency_5"},{"column": "education", "operation": "bin_equal_frequency_10"}]| ATE: 6540.81
         # llm few shot sequence: [{"column": "Age","operation": "bin_equal_frequency_5"},{"column": "Public health coverage","operation": "bin_equal_frequency_2"},{"column": "medicare for people 65 and older","operation": "bin_equal_frequency_2"},{"column": "education","operation": "bin_equal_frequency_5"}]| ATE: 13535.11
         # llm cot sequence: [{"column": "Age", "operation": "bin_equal_frequency_5"},{"column": "Public health coverage", "operation": "bin_equal_frequency_2"},{"column": "medicare for people 65 and older", "operation": "bin_equal_frequency_2"},{"column": "insurance through employer", "operation": "bin_equal_frequency_2"},{"column": "education", "operation": "norm_min_max"}]| ATE:15692.30
@@ -376,6 +382,8 @@ EXPERIMENTS = {
         # prune sequence: (('norm_log', 'x6'), ('bin_equal_width_2', 'x6'), ('bin_equal_frequency_2', 'x11')) | ATE:4.001
         # probe sequence:   (('bin_equal_frequency_2', 'x9'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x11'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_2', 'x6')) | ATE:4.008
         # random sequence: (('norm_min_max', 'x15'), ('norm_min_max', 'x21'), ('norm_log', 'x3'))| ATE: 3.92
+        # auto-sklearn-vanila sequence: none | ATE: 3.92
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 3.93
         # llm zero shot sequence: [{"column": "x6", "operation": "bin_equal_frequency_5"},{"column": "x9", "operation": "bin_equal_width_5"},{"column": "x25", "operation": "norm_min_max"},{"column": "x15", "operation": "bin_equal_frequency_5"},{"column": "x17", "operation": "bin_equal_width_5"}]| ATE: 3.97
         # llm few shot sequence: [{"column": "x6","operation": "bin_equal_frequency_5"},{"column": "x9","operation": "bin_equal_frequency_5"},{"column": "x25","operation": "bin_equal_frequency_5"},{"column": "x17","operation": "bin_equal_frequency_5"}]| ATE:3.97
         # llm cot sequence: [{"column": "x6", "operation": "norm_min_max"},{"column": "x10", "operation": "bin_equal_frequency_2"},{"column": "x23", "operation": "bin_equal_frequency_2"},{"column": "x24", "operation": "bin_equal_frequency_2"},{"column": "x1", "operation": "norm_min_max"}]| ATE:3.9
