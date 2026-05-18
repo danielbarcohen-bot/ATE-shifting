@@ -6,26 +6,37 @@ import pandas as pd
 
 from search_methods.ATE_search import ATESearch
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
-    get_base_line, df_signature_fast
+    get_base_line, df_signature_fast, calculate_ate_with_uncertainty
 
 
 class ProbManager:
-    def __init__(self, operations, columns):
+    def __init__(self, operations, columns, op_probs=None):
         self.probs = {}
         self.costs = {}
-        self._initialize_weights(operations, columns)
+        self._initialize_weights(operations, columns, op_probs)
 
-    def _initialize_weights(self, operations, columns):
+
+
+    def _initialize_weights(self, operations, columns, op_probs):
         for op in operations:
             for col in columns:
                 rule_name = f"{op}#{col}"
-                prob = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                if op_probs is None:
+                    prob = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                else:
+                    prob = op_probs[op] / len(columns)
                 self.probs[rule_name] = prob
                 self.costs[rule_name] = self._get_cost(rule_name)
 
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
 
+    def get_sequence_probability(self, sequence):
+        probability = 1
+        for func_name, col in sequence:
+            rule_name = f"{func_name}#{col}"
+            probability *= self.probs[rule_name]
+        return probability
     def update_weights(self, probe_sequence, alpha=0.2):
 
         """
@@ -48,15 +59,18 @@ class ProbManager:
 
 
 class ProbeATESearch(ATESearch):
+    def __init__(self, use_restart=True, op_probs=None):
+        self.use_restart = use_restart
+        self.op_probs = op_probs
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable]):
+               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int=14400):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
         bank = {0: [()]}  # init with the empty sequence
         seen_dfs = {df_signature_fast(df.copy(), common_causes)}
-        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes)
+        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes, self.op_probs)
         cost = 1
         best_ate_error = float('inf')
 
@@ -65,6 +79,9 @@ class ProbeATESearch(ATESearch):
         checked = 0
         start_time = time.time()
         while True:
+            if time.time() - start_time > time_out_sec:
+                print("\n\n*** TIMED OUT!! ***\n")
+                break
             should_restart = False
             bank[cost] = []
             for move in self.moves_under_cost(cost, prob_manager):
@@ -77,6 +94,8 @@ class ProbeATESearch(ATESearch):
                     if len(new_seq) > max_seq_length:
                         continue
 
+                    if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq):
+                        continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
                         continue
                     checked = checked + 1
@@ -96,6 +115,17 @@ class ProbeATESearch(ATESearch):
                         solution_seq = new_seq
                         print(f"Execution time: {time.time() - start_time:.3f} sec")
                         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
+                        if self.op_probs is not None:
+                            if self.use_restart:
+                                temp_prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()],
+                                            common_causes, self.op_probs)
+                                print(f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                            print(f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
+                        try:
+                            print(
+                                f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
+                        except Exception as e:
+                            print(f"Failed to calculate uncertainty:\n{e}")
                         print(f"checked:\n{checked}", flush=True)
 
                         exit()
@@ -105,7 +135,7 @@ class ProbeATESearch(ATESearch):
                         break
                     bank[cost].append(new_seq)
                     seen_dfs.add(df_new_signature)
-                    if current_error < best_ate_error * 0.9:
+                    if self.use_restart and current_error < best_ate_error * 0.9:
                         print(
                             f"PROBE TRIGGERED! Error reduced from {best_ate_error:.3f} to {current_error:.3f} (ATE went to {new_ate}).")
                         prob_manager.update_weights(new_seq)

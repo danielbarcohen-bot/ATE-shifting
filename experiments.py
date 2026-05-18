@@ -4,18 +4,26 @@ import pandas as pd
 
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader
 from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
-    bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, winsorize
+    bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, \
+    winsorize_aux, \
+    zscore_filter_3, IQR, isolationForest
+
 df_twins = TwinsDataLoader().load_data()
 df_lalonde = LalondeDataLoader().load_data()
 df_acs = ACSDataLoader().load_data()
 df_IHDP = IHDPDataLoader().load_data()
 
 df_twins_no_missing_values = df_twins.dropna()
-print(f"\n\n{'#'*100}\n             DELETE THIS{'#'*100}\n\n\n\n")
-# df_twins_no_missing_values = df_twins_no_missing_values[['wt', 'gestat10'] + [c for c in df_twins_no_missing_values.columns if c not in ['wt', 'gestat10']]]
 df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()
+
+prob_dict = {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.016233766233766232,
+             'bin_equal_frequency_10': 0.012987012987012988, 'bin_equal_width_2': 1e-10,
+             'bin_equal_width_5': 0.006493506493506494, 'bin_equal_width_10': 1e-10, 'norm_min_max': 0.577922077922078,
+             'norm_log': 0.22727272727272727, 'zscore_clip_3': 0.025974025974025976,
+             'zscore_filter_3': 0.025974025974025976, 'winsorize': 1e-10, 'IQR': 0.09090909090909091,
+             'isolationForest': 0.04220779220779221}
 
 small_data_transformations_no_fill = {
     "zscore_clip_3": zscore_clip_3,
@@ -38,7 +46,23 @@ large_data_transformations = {
     "norm_min_max": min_max_norm,
     "norm_log": log_norm,
     "zscore_clip_3": zscore_clip_3,
-    "winsorize": winsorize
+    "winsorize": winsorize_aux
+}
+
+largest_data_transformations = {
+    "bin_equal_frequency_2": bin_equal_frequency_2,
+    "bin_equal_frequency_5": bin_equal_frequency_5,
+    "bin_equal_frequency_10": bin_equal_frequency_10,
+    "bin_equal_width_2": bin_equal_width_2,
+    "bin_equal_width_5": bin_equal_width_5,
+    "bin_equal_width_10": bin_equal_width_10,
+    "norm_min_max": min_max_norm,
+    "norm_log": log_norm,
+    "zscore_clip_3": zscore_clip_3,
+    "zscore_filter_3": zscore_filter_3,
+    "winsorize": winsorize_aux,
+    "IQR": IQR,
+    "isolationForest": isolationForest
 }
 
 EXPERIMENTS = {
@@ -307,8 +331,6 @@ EXPERIMENTS = {
         # llm few shot sequence:[{"column": "nodegree","operation": "norm_log"},{"column": "black","operation": "norm_log"},{"column": "education","operation": "norm_log"},{"column": "age","operation": "norm_min_max"}] | ATE: 1676.146
         # llm cot sequence: [{"column": "nodegree","operation": "bin_equal_frequency_2"},{"column": "hispanic","operation": "bin_equal_frequency_2"},{"column": "education","operation": "norm_min_max"},{"column": "age","operation": "bin_equal_width_5"}]| ATE:1667.79
 
-
-
     },
     "EXP14": {  # poc example - shift ATE ACS | HELPER TO CHECK!
         "df": df_acs_no_missing_values,
@@ -331,7 +353,7 @@ EXPERIMENTS = {
         "target_ate": 16500,
         "epsilon": 100,
         "max_length": 10,
-        "sequence_length": 4#6
+        "sequence_length": 4  # 6
 
         # prune sequence:    (('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'))| ATE: 16421
         # probe sequence:  (('bin_equal_width_2', 'education'), ('bin_equal_frequency_2', 'medicare for people 65 and older'), ('bin_equal_frequency_2', 'Public health coverage'), ('bin_equal_frequency_2', 'Age'))  | ATE:  16421
@@ -456,7 +478,8 @@ EXPERIMENTS = {
     **{f"EXP19.{k}": {  # TWINS CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
-        "common_causes": (cols := random.sample(df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
+        "common_causes": (cols := random.sample(
+            df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
         "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
         "target_ate": -0.06,
         "epsilon": 0.06,
@@ -481,7 +504,7 @@ EXPERIMENTS = {
         # probe 48 confunders takes:  sec | popped | restarts  ( solution)
     } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
-**{f"EXP20.{k}": {  # ACS CHECK - k random confunder
+    **{f"EXP20.{k}": {  # ACS CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
         "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
@@ -504,9 +527,9 @@ EXPERIMENTS = {
         "epsilon": 0.06,
         "max_length": 5
 
-    } for k in range(1,6)
+    } for k in range(1, 6)
     },
-**{f"EXP22.{k}": {  # ACS CHECK - duplication of df
+    **{f"EXP22.{k}": {  # ACS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
         "transformations_dict": large_data_transformations,
@@ -515,6 +538,159 @@ EXPERIMENTS = {
         "epsilon": 100,
         "max_length": 10
 
-    } for k in range(1,6)
+    } for k in range(1, 6)
+    },
+    #############################   LARGEST DICT   ################################
+    "EXP23_low": {
+        "df": df_twins_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate":  -0.06,
+        "epsilon": 0.06,
+        "max_length": 5,
+        "sequence_length": 2,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP23_high": {
+        "df": df_twins_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 0.12,
+        "epsilon": 0.06,
+        "max_length": 5,
+        # "sequence_length": 3,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP24_low": {
+        "df": df_lalonde_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 0,#1571,
+        "epsilon": 500,#10,
+        "max_length": 7,#3,
+        # 'sequence_length': 4,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP24_high": {
+        "df": df_lalonde_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 3342,
+        "epsilon": 500,
+        "max_length": 7,
+        # 'sequence_length': 5,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP25_low": {
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 5774,
+        "epsilon": 250,
+        "max_length": 5,
+        'sequence_length': 4,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP25_high": {
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 11774,
+        "epsilon": 250,
+        "max_length": 5,
+        'sequence_length': 4,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP26_low": {
+        "df": df_IHDP_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 4.22,
+        "epsilon": 0.04,
+        "max_length": 7,
+        # 'sequence_length': 4,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP26_high": {
+        "df": df_IHDP_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 3.62,
+        "epsilon": 0.04,
+        "max_length": 7,
+        # 'sequence_length': 4,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
     },
 }

@@ -94,7 +94,7 @@
 #     #
 #     #         # Expand operations
 #     #         if len(node.sequence) < max_seq_length:
-#     #             nigger_time = time.time()
+#     #             time = time.time()
 #     #             for col in common_causes:
 #     #                 for func_name, func in get_transformations().items():
 #     #                     if not (func_name.startswith("fill_") and curr_df[col].isna().sum() > 0):
@@ -126,7 +126,7 @@
 #     #
 #     #                         visited[new_hash] = g_new
 #     #                         heapq.heappush(open_heap, new_node)
-#     #             print(f"expand node all son took {time.time() - nigger_time}")
+#     #             print(f"expand node all son took {time.time() - time}")
 #     #         # # Scale operations with parameters
 #     #         # for k in SCALE_FACTORS:
 #     #         #     new_df = op_scale(node.df, target_col, k=k)

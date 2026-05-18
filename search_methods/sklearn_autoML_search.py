@@ -9,22 +9,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
 from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader
-from utils import bin_equal_frequency_2, bin_equal_frequency_5, bin_equal_frequency_10, bin_equal_width_2, \
-    bin_equal_width_5, bin_equal_width_10, min_max_norm, log_norm, zscore_clip_3, winsorize, \
-    calculate_ate_linear_regression_lstsq, apply_data_preparations_seq
-
-large_data_transformations = {
-    "bin_equal_frequency_2": bin_equal_frequency_2,
-    "bin_equal_frequency_5": bin_equal_frequency_5,
-    "bin_equal_frequency_10": bin_equal_frequency_10,
-    "bin_equal_width_2": bin_equal_width_2,
-    "bin_equal_width_5": bin_equal_width_5,
-    "bin_equal_width_10": bin_equal_width_10,
-    "norm_min_max": min_max_norm,
-    "norm_log": log_norm,
-    "zscore_clip_3": zscore_clip_3,
-    "winsorize": winsorize
-}
+from experiments import large_data_transformations, largest_data_transformations
+from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq
 
 
 def make_sklearn_transformer(series_func, name="unknown"):
@@ -60,7 +46,7 @@ def ate_epsilon_hinge_score(estimator, X, y, *, treatment_col, outcome_col, comm
     return -max(0.0, excess)
 
 
-def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, common_causes: list[str], scorer=None):
+def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, common_causes: list[str], data_transformations, scorer=None):
     # ----------------------------
     # 1. Dataset
     # ----------------------------
@@ -88,7 +74,7 @@ def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, comm
 
     transform_candidates = [
         make_sklearn_transformer(fn, name=name)
-        for name, fn in large_data_transformations.items()
+        for name, fn in data_transformations.items()
     ]
     # Add identity (no-op)
     transform_candidates.append(FunctionTransformer(lambda X: X, validate=False))
@@ -119,15 +105,15 @@ def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, comm
     best_pipeline = automl.best_estimator_
     chosen_transformer = best_pipeline.named_steps["prep"].named_transformers_["covariates"]
 
-
     if chosen_transformer.kw_args is None:
         print("AutoML chose identity (no preprocessing)")
     else:
         print(chosen_transformer.kw_args)
         chosen_seq = tuple((chosen_transformer.kw_args["name"], item) for item in common_causes)
         print(chosen_seq)
-        transformed_df = apply_data_preparations_seq(df.copy(), chosen_seq, large_data_transformations)
-        print(f"\nNEW ATE IS: {calculate_ate_linear_regression_lstsq(transformed_df, treatment, outcome, common_causes)}\n")
+        transformed_df = apply_data_preparations_seq(df.copy(), chosen_seq, data_transformations)
+        print(
+            f"\nNEW ATE IS: {calculate_ate_linear_regression_lstsq(transformed_df, treatment, outcome, common_causes)}\n")
 
     print(f"Test {"r2" if scorer == "r2" else "ATE scorer"}:", round(automl.score(X_test, y_test), 4))
 
@@ -148,24 +134,27 @@ def make_ate_scorer(epsilon, target_ate, treatment_col, outcome_col, common_caus
     return scorer
 
 
-def run_experiment(df, target_ATE, epsilon):
+def run_experiment(df, target_ATE, epsilon, data_transformations):
     common_causes = df.columns.difference(['treatment', 'outcome']).tolist()
     scorer = make_ate_scorer(epsilon=epsilon, target_ate=target_ATE, treatment_col="treatment", outcome_col="outcome",
                              common_causes=common_causes)
     start = time.time()
     print(f"RUNNING EXPERIMENT with R2. target ATE: {target_ATE}, epsilon: {epsilon}")
-    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes)
+    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, data_transformations)
     print("took: ", time.time() - start)
 
     start = time.time()
     print(f"\nRUNNING EXPERIMENT with ATE scorer.")
-    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, scorer)
+    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, data_transformations, scorer)
     print("took: ", time.time() - start)
     print("~" * 150)
 
 
 if __name__ == "__main__":
-    run_experiment(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001)
-    run_experiment(LalondeDataLoader().load_data().dropna(), 1871, 10)
-    run_experiment(ACSDataLoader().load_data().dropna(), 16500, 100)
-    run_experiment(IHDPDataLoader().load_data().dropna(), 4.5, 0.5)
+    data_transformations = large_data_transformations
+    # data_transformations = largest_data_transformations
+
+    run_experiment(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001, data_transformations)
+    run_experiment(LalondeDataLoader().load_data().dropna(), 1871, 10, data_transformations)
+    run_experiment(ACSDataLoader().load_data().dropna(), 16500, 100, data_transformations)
+    run_experiment(IHDPDataLoader().load_data().dropna(), 4.5, 0.5, data_transformations)

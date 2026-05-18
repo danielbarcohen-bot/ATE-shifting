@@ -4,7 +4,9 @@ from typing import List
 import numpy as np
 import pandas as pd
 from dowhy import CausalModel
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from scipy import stats
+from scipy.stats._mstats_basic import winsorize
+from sklearn.ensemble import IsolationForest
 from sklearn.linear_model import LinearRegression, LassoCV, LogisticRegression
 from sklearn.model_selection import KFold
 
@@ -35,79 +37,149 @@ def get_base_line(common_causes, df):
 
 
 # fill
-def fill_median(s):
-    return s.fillna(s.median())
+def fill_median(df, col):
+    df_ = df.copy()
+    df_[col] = df_[col].fillna(df_[col].median())
+    return df_
 
 
-def fill_min(s):
-    return s.fillna(s.min())
+def fill_min(df, col):
+    df_ = df.copy()
+    df_[col] = df_[col].fillna(df_[col].min())
+    return df_
 
 
 # bin
-def bin_equal_frequency_2(s):
-    if s.nunique() < 2:
-        return s
-    return pd.qcut(s, q=2, labels=False, duplicates="drop")
+def bin_equal_frequency_k(df, col, k) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+    if s.nunique() <= k:
+        return df_
+
+    try:
+        binnded_col = pd.qcut(s, q=k, labels=False)
+    except:
+        return df_
+
+    df_[col] = binnded_col
+    return df_
 
 
-def bin_equal_frequency_5(s):
-    if s.nunique() < 5:
-        return s
-    return pd.qcut(s, q=2, labels=False, duplicates="drop")
+def bin_equal_frequency_2(df, col) -> pd.DataFrame:
+    return bin_equal_frequency_k(df, col, 2)
 
 
-def bin_equal_frequency_10(s):
-    if s.nunique() < 10:
-        return s
-    return pd.qcut(s, q=2, labels=False, duplicates="drop")
+def bin_equal_frequency_5(df, col) -> pd.DataFrame:
+    return bin_equal_frequency_k(df, col, 5)
 
 
-def bin_equal_width_2(s):
-    if s.nunique() < 2:
-        return s  # pd.Series(np.zeros(len(s)), index=s.index)
-    bins = pd.cut(s, bins=2, labels=False, include_lowest=True)
-    return bins
+def bin_equal_frequency_10(df, col) -> pd.DataFrame:
+    return bin_equal_frequency_k(df, col, 10)
 
 
-def bin_equal_width_5(s):
-    if s.nunique() < 5:
-        return s  # pd.Series(np.zeros(len(s)), index=s.index)
-    bins = pd.cut(s, bins=5, labels=False, include_lowest=True)
-    return bins
+def bin_equal_width_k(df, col, k) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+    if s.nunique() <= k:
+        return df_
+    df_[col] = pd.cut(s, bins=k, labels=False, include_lowest=True)
+    return df_
 
 
-def bin_equal_width_10(s):
-    if s.nunique() < 10:
-        return s  # pd.Series(np.zeros(len(s)), index=s.index)
-    bins = pd.cut(s, bins=10, labels=False, include_lowest=True)
-    return bins
+def bin_equal_width_2(df, col) -> pd.DataFrame:
+    return bin_equal_width_k(df, col, 2)
+
+
+def bin_equal_width_5(df, col) -> pd.DataFrame:
+    return bin_equal_width_k(df, col, 5)
+
+
+def bin_equal_width_10(df, col) -> pd.DataFrame:
+    return bin_equal_width_k(df, col, 10)
 
 
 # normalizing
+def min_max_norm(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
 
-def min_max_norm(s: pd.Series) -> pd.Series:
     min_v = s.min()
     max_v = s.max()
 
     if min_v == max_v:
-        return pd.Series(0.0, index=s.index)
+        df_[col] = pd.Series(0.0, index=s.index)
+        return df_
 
-    return (s - min_v) / (max_v - min_v)
+    df_[col] = (s - min_v) / (max_v - min_v)
+    return df_
 
 
-def log_norm(s: pd.Series) -> pd.Series:
-    return np.sign(s) * np.log1p(np.abs(s))
+def log_norm(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+
+    df_[col] = np.sign(s) * np.log1p(np.abs(s))
+    return df_
 
 
 # outlier detection
-def zscore_clip_3(s):
-    return s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
+def zscore_clip_3(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+
+    df_[col] = s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
+    return df_
 
 
-def winsorize(s: pd.Series, lower_quantile=0.01, upper_quantile=0.99) -> pd.Series:
-    lower = s.quantile(lower_quantile)
-    upper = s.quantile(upper_quantile)
-    return s.clip(lower, upper)
+def zscore_filter_3(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+
+    if s.nunique() <= 2:
+        return df_
+
+    z_score = np.abs((s - s.mean()) / (s.std() + 1e-8))
+    mask = (z_score < 3) & (~s.isna())
+
+    return df_[mask]
+
+
+def winsorize_aux(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+
+    # lower = s.quantile(lower_quantile)
+    # upper = s.quantile(upper_quantile)
+    # df_[col] = s.clip(lower, upper)
+    df_[col] = winsorize(df_[col], limits=[0.01, 0.01])
+    return df_
+
+
+def IQR(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    s = df_[col]
+
+    q1 = s.quantile(0.25)
+    q3 = s.quantile(0.75)
+    iqr = q3 - q1
+    if iqr == 0:
+        return df
+    df_ = df_[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)]
+    return df_
+
+
+def isolationForest(df, col) -> pd.DataFrame:
+    if df.empty:
+        return df
+    df_ = df.copy()
+    common_causes = df.columns.difference(["treatment", "outcome"]).tolist()
+    iso = IsolationForest(random_state=42)
+    df_['outlier_label'] = iso.fit_predict(df_[common_causes])
+    df_clean = df_[df_['outlier_label'] == 1].drop(columns=['outlier_label'])
+
+    if df_clean.empty:
+        return df
+
+    return df_clean
 
 
 def df_signature(df: pd.DataFrame):
@@ -149,7 +221,8 @@ def df_signature_fast_rounds(df: pd.DataFrame, cols: List[str], decimals=10) -> 
 def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict):
     df_ = df.copy()
     for func_name, col in seq_arr:
-        df_[col] = transformations_dict[func_name](df_[col])
+        # df_[col] = transformations_dict[func_name](df_[col])
+        df_ = transformations_dict[func_name](df_, col)
     return df_
 
 
@@ -179,6 +252,58 @@ def get_moves_and_moveBit(common_causes, transformations_names):
             bit_pos = bit_map[(group, c)]
             fast_moves.append((f, c, 1 << bit_pos))
     return fast_moves
+
+
+def analyze_ate_search_space(seq_ates):
+    """
+    Groups ATE results into bucket ranges and extracts the shortest
+    sequence for each range.
+    """
+    # 1. Setup DataFrame
+    df = pd.DataFrame(seq_ates, columns=['sequence', 'ate'])
+    df['length'] = df['sequence'].apply(len)
+
+    # Remove inf/nan to prevent binning errors
+    df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=['ate'])
+
+    if df.empty:
+        return "No valid data to analyze."
+
+    # 2. Auto-Calculate Bin Width (Freedman-Diaconis)
+    ates = df['ate'].values
+    q75, q25 = np.percentile(ates, [75, 25])
+    iqr = q75 - q25
+
+    # Calculate width; default to 0.1 if data is too tight
+    bin_width = (2 * iqr * (len(ates) ** (-1 / 3))) if iqr > 1e-6 else 0.1
+
+    # 3. Create the actual ranges (Buckets)
+    # We create bins from the floor of the min to the ceil of the max
+    min_ate, max_ate = df['ate'].min(), df['ate'].max()
+
+    # Create an array of edge points for the bins
+    bins = np.arange(min_ate - bin_width, max_ate + bin_width, bin_width)
+
+    # Categorize the data into these ranges
+    df['bucket_range'] = pd.cut(df['ate'], bins=bins)
+
+    # 4. Extract the best (shortest) representative for every bucket
+    summary = []
+    for bucket, group in df.groupby('bucket_range', observed=True):
+        # Find the shortest path in this specific range
+        min_len = group['length'].min()
+        shortest_path_row = group[group['length'] == min_len].iloc[0]
+
+        summary.append({
+            'bucket_range': bucket,
+            'min_ate_in_bin': group['ate'].min(),
+            'max_ate_in_bin': group['ate'].max(),
+            'min_length': min_len,
+            'best_sequence': shortest_path_row['sequence'],
+            'count': len(group)
+        })
+
+    return pd.DataFrame(summary)
 
 
 # def calculate_ate_linear_regression_algebra(df: pd.DataFrame, treatment: str, outcome: str , common_causes: List[str]):
@@ -291,6 +416,41 @@ def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outc
     ate = beta[0]
 
     return ate
+
+
+def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
+    Y = df[outcome].values
+    T = df[treatment].values.reshape(-1, 1)
+    X_confounders = df[common_causes].values
+    X_intercept = np.ones((df.shape[0], 1))
+    X_full = np.hstack([T, X_intercept, X_confounders])
+    X_full = np.asarray(X_full)
+    n, k = X_full.shape
+    beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
+    ate = beta[0]
+    ssr = np.sum((Y - X_full @ beta) ** 2)
+    sigma_sq = ssr / (n - k)
+
+    # 4. Calculate Variance-Covariance Matrix: sigma^2 * (X^T X)^-1
+    # This tells us how much each coefficient "wiggles"
+    xtx_inv = np.linalg.inv(X_full.T @ X_full)
+    var_cov_matrix = sigma_sq * xtx_inv
+
+    # 5. Extract Standard Error for ATE (the first diagonal element)
+    ate_se = np.sqrt(var_cov_matrix[0, 0])
+
+    # 6. Calculate 95% Confidence Interval
+    # For 95%, we use a t-distribution critical value (approx 1.96)
+    t_critical = stats.t.ppf(0.975, df=n - k)
+    ci_lower = ate - (t_critical * ate_se)
+    ci_upper = ate + (t_critical * ate_se)
+
+    return {
+        'ate': ate,
+        'se': ate_se,
+        'ci': (ci_lower, ci_upper),
+        'significant': not (ci_lower <= 0 <= ci_upper)
+    }
 
 
 def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):

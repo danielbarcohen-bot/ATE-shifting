@@ -8,6 +8,7 @@ from search_methods.LLM_search import LLMSearch
 from search_methods.Random_search import RandomSearch
 # from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
+from search_methods.greedy_ATE_search import GreedyATESearch
 from search_methods.probe_ATE_search import ProbeATESearch
 # from search_methods.probe_ATE_search_heuristic_linear_reg import ProbeATESearchLinearRegHeuristic
 from search_methods.probe_ATE_search_no_hash import ProbeATESearchNoHash
@@ -122,3 +123,35 @@ class RandomExperiment:
         distances = sorted([abs(ate - self.target_ate) - self.epsilon for ate in ates])
         print(f"distances from target:\n{distances}")
         print(f"avg distance from target:\n{sum(distances) / len(distances)}")
+
+class ProbabilitiesExperiment(Experiment):
+    def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
+                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float]):
+        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length)
+        self.op_probs = op_probs
+
+    def run_probe_no_restart(self):
+        return ProbeATESearch(use_restart=False, op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+
+    def run_probe(self):
+        return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+
+    def run_greedy(self):
+        return GreedyATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                             target_ate=self.target_ate,
+                                             epsilon=self.epsilon,
+                                             max_seq_length=self.max_length,
+                                             transformations_dict=self.transformations_dict)
+
+    def run_brute_prob(self):
+        return BruteForceATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                             target_ate=self.target_ate,
+                                             epsilon=self.epsilon,
+                                             max_seq_length=self.max_length,
+                                             transformations_dict=self.transformations_dict)
