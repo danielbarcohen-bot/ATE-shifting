@@ -99,6 +99,8 @@ class Experiment:
                                                               transformations_dict=self.transformations_dict)
 
 
+
+
 class RandomExperiment:
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float,
@@ -138,6 +140,12 @@ class ProbabilitiesExperiment(Experiment):
 
     def run_probe(self):
         return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+
+    def run_probe_brute(self):
+        return ProbeATESearch(op_probs=self.op_probs, use_restart=False, is_brute=True).search(df=self.df, common_causes=self.common_causes,
                                        target_ate=self.target_ate,
                                        epsilon=self.epsilon,
                                        max_seq_length=self.max_length, transformations_dict=self.transformations_dict)

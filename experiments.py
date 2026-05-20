@@ -564,7 +564,7 @@ EXPERIMENTS = {
         "df": df_twins_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": 0.12,
+        "target_ate": 0.18,
         "epsilon": 0.06,
         "max_length": 5,
         # "sequence_length": 3,

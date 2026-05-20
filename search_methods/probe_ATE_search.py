@@ -59,9 +59,10 @@ class ProbManager:
 
 
 class ProbeATESearch(ATESearch):
-    def __init__(self, use_restart=True, op_probs=None):
+    def __init__(self, use_restart=True, op_probs=None, is_brute = False):
         self.use_restart = use_restart
         self.op_probs = op_probs
+        self.is_brute = is_brute
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int=14400):
@@ -129,12 +130,15 @@ class ProbeATESearch(ATESearch):
                         print(f"checked:\n{checked}", flush=True)
 
                         exit()
-                    df_new_signature = df_signature_fast(curr_df, common_causes)
 
-                    if df_new_signature in seen_dfs:
-                        break
+                    if not self.is_brute:
+                        df_new_signature = df_signature_fast(curr_df, common_causes)
+                        if df_new_signature in seen_dfs:
+                            break
+
+                        seen_dfs.add(df_new_signature)
                     bank[cost].append(new_seq)
-                    seen_dfs.add(df_new_signature)
+
                     if self.use_restart and current_error < best_ate_error * 0.9:
                         print(
                             f"PROBE TRIGGERED! Error reduced from {best_ate_error:.3f} to {current_error:.3f} (ATE went to {new_ate}).")

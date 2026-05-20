@@ -7,7 +7,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("exp_name", type=str, help="Experiment name, e.g., EXP1")
     parser.add_argument("mode", type=str,
-                        choices=["brute", "brute_prob", "oe", "parallel", "astar", "probe", "oe_no_bit_mask", "llm_zero_shot",
+                        choices=["brute", "brute_prob", "oe", "parallel", "astar", "probe", "probe_brute", "oe_no_bit_mask", "llm_zero_shot",
                                  "llm_few_shot", "llm_zero_shot_cot", "llm_few_shot_cot", "random", "probe_no_hash",
                                  "oe_no_hash", "probe_probs_no_restart", "probe_probs_with_restart", "greedy"],
                         help="Which mode to run: brute OE or probe")
@@ -25,7 +25,7 @@ if __name__ == "__main__":
             sequence_length=config["sequence_length"]
         )
         experiment.run_random()
-    if args.mode in ["probe_probs_no_restart", "probe_probs_with_restart", "greedy", "brute_prob"]:
+    if args.mode in ["probe_probs_no_restart", "probe_probs_with_restart", "greedy", "brute_prob", "probe_brute"]:
         experiment = ProbabilitiesExperiment(
             df=config["df"],
             transformations_dict=config["transformations_dict"],
@@ -43,6 +43,8 @@ if __name__ == "__main__":
             experiment.run_greedy()
         if args.mode == "brute_prob":
             experiment.run_brute_prob()
+        if args.mode == "probe_brute":
+            experiment.run_probe_brute()
     else:
         experiment = Experiment(
             df=config["df"],
