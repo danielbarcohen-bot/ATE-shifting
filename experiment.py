@@ -1,5 +1,6 @@
 from typing import List, Callable
 
+import numpy as np
 import pandas as pd
 
 from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
@@ -125,6 +126,7 @@ class RandomExperiment:
         distances = sorted([abs(ate - self.target_ate) - self.epsilon for ate in ates])
         print(f"distances from target:\n{distances}")
         print(f"avg distance from target:\n{sum(distances) / len(distances)}")
+        print(f"avg ATE is {np.mean(ates)}")
 
 class ProbabilitiesExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],

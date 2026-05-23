@@ -586,7 +586,7 @@ EXPERIMENTS = {
         "target_ate": 0,#1571,
         "epsilon": 500,#10,
         "max_length": 7,#3,
-        # 'sequence_length': 4,
+        'sequence_length': 2,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -605,7 +605,7 @@ EXPERIMENTS = {
         "target_ate": 3342,
         "epsilon": 500,
         "max_length": 7,
-        # 'sequence_length': 5,
+        'sequence_length': 2,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -624,7 +624,7 @@ EXPERIMENTS = {
         "target_ate": 5774,
         "epsilon": 250,
         "max_length": 5,
-        'sequence_length': 4,
+        'sequence_length': 2,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -643,26 +643,7 @@ EXPERIMENTS = {
         "target_ate": 11774,
         "epsilon": 250,
         "max_length": 5,
-        'sequence_length': 4,
-        "op_probs": prob_dict
-        # prune sequence: | ATE:
-        # probe sequence: | ATE:
-        # random sequence:| ATE:
-        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
-        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
-        # llm zero shot sequence: | ATE:
-        # llm few shot sequence: | ATE:
-        # llm cot sequence: | ATE:
-
-    },
-    "EXP26_low": {
-        "df": df_IHDP_no_missing_values,
-        "transformations_dict": largest_data_transformations,
-        "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 4.22,
-        "epsilon": 0.04,
-        "max_length": 7,
-        # 'sequence_length': 4,
+        'sequence_length': 2,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -678,10 +659,29 @@ EXPERIMENTS = {
         "df": df_IHDP_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 4.22,
+        "epsilon": 0.04,
+        "max_length": 7,
+        'sequence_length': 3,
+        "op_probs": prob_dict
+        # prune sequence: | ATE:
+        # probe sequence: | ATE:
+        # random sequence:| ATE:
+        # auto-sklearn-vanila sequence: norm_log | ATE: 0.057
+        # auto-sklearn-ate sequence: bin_equal_frequency_2 | ATE: 0.011
+        # llm zero shot sequence: | ATE:
+        # llm few shot sequence: | ATE:
+        # llm cot sequence: | ATE:
+
+    },
+    "EXP26_low": {
+        "df": df_IHDP_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 3.62,
         "epsilon": 0.04,
         "max_length": 7,
-        # 'sequence_length': 4,
+        'sequence_length': 3,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:

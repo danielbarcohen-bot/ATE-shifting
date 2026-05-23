@@ -19,7 +19,8 @@ def make_sklearn_transformer(series_func, name="unknown"):
             X = pd.DataFrame(X)
         X_transformed = pd.DataFrame(index=X.index)
         for col in X.columns:
-            X_transformed[col] = series_func(X[col])
+            # X_transformed[col] = series_func(X[col])
+            X_transformed = series_func(X, col)
         return X_transformed.values
 
     return FunctionTransformer(wrapper, validate=False, kw_args={"name": name})
@@ -151,10 +152,23 @@ def run_experiment(df, target_ATE, epsilon, data_transformations):
 
 
 if __name__ == "__main__":
-    data_transformations = large_data_transformations
-    # data_transformations = largest_data_transformations
+    # data_transformations = large_data_transformations
+    data_transformations = largest_data_transformations
 
-    run_experiment(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001, data_transformations)
-    run_experiment(LalondeDataLoader().load_data().dropna(), 1871, 10, data_transformations)
-    run_experiment(ACSDataLoader().load_data().dropna(), 16500, 100, data_transformations)
-    run_experiment(IHDPDataLoader().load_data().dropna(), 4.5, 0.5, data_transformations)
+    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001, data_transformations)
+    # run_experiment(LalondeDataLoader().load_data().dropna(), 1871, 10, data_transformations)
+    # run_experiment(ACSDataLoader().load_data().dropna(), 16500, 100, data_transformations)
+    # run_experiment(IHDPDataLoader().load_data().dropna(), 4.5, 0.5, data_transformations)
+
+    # run_experiment(TwinsDataLoader().load_data().dropna(), -0.06, 0.06, data_transformations)
+    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.18, 0.06, data_transformations)
+    #
+    # run_experiment(LalondeDataLoader().load_data().dropna(), 0, 500, data_transformations)
+    # run_experiment(LalondeDataLoader().load_data().dropna(), 3342, 500, data_transformations)
+    #
+    # run_experiment(ACSDataLoader().load_data().dropna(), 5774, 250, data_transformations)
+    # run_experiment(ACSDataLoader().load_data().dropna(), 11774, 250, data_transformations)
+    #
+    # run_experiment(IHDPDataLoader().load_data().dropna(), 3.62, 0.04, data_transformations)
+    run_experiment(IHDPDataLoader().load_data().dropna(), 4.22, 0.04, data_transformations)
+

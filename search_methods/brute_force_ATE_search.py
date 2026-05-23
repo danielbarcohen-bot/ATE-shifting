@@ -36,6 +36,9 @@ class BruteForceATESearch(ATESearch):
 
         start_time = time.time()
         while len(Q) > 0:
+            if time.time() - start_time > time_out_sec:
+                print("\n\n*** TIMED OUT!! ***\n")
+                break
             i += 1
             seq_arr, mask = Q.popleft()
             curr_df = apply_data_preparations_seq(df_, seq_arr, transformations_dict)
@@ -60,6 +63,8 @@ class BruteForceATESearch(ATESearch):
             if len(seq_arr) < max_seq_length:
                 t = time.time()
                 for func, col, move_bit in fast_moves:
+                    if func == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq_arr):
+                        continue
                     try_count += 1
                     # 1. O(1) Lookup: This is roughly 100x faster than 'any()'
                     if mask & move_bit:
