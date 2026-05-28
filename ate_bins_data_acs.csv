@@ -1,0 +1,79 @@
+bucket_range,min_ate_in_bin,max_ate_in_bin,min_length,best_sequence,count
+"(5509.863, 5670.024]",5670.0238825786655,5670.0238825786655,3,"(('bin_equal_width_2', 'Age'), ('bin_equal_frequency_5', 'education'), ('norm_log', 'insurance through employer'))",1
+"(5670.024, 5830.185]",5670.023882579858,5793.877009220462,2,"(('bin_equal_width_2', 'Age'), ('bin_equal_frequency_5', 'education'))",14
+"(5830.185, 5990.346]",5838.603452653209,5978.990848085911,2,"(('bin_equal_width_2', 'Age'), ('bin_equal_frequency_2', 'education'))",68
+"(5990.346, 6150.507]",6000.880692572309,6097.66536449639,2,"(('bin_equal_width_2', 'Age'), ('bin_equal_width_10', 'education'))",19
+"(6150.507, 6310.668]",6161.149253134481,6304.093772492252,1,"(('bin_equal_width_2', 'Age'),)",96
+"(6310.668, 6470.829]",6318.154007485221,6459.633769343422,2,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_5', 'education'))",35
+"(6470.829, 6630.99]",6488.196090601727,6629.801078752669,2,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_frequency_2', 'education'))",39
+"(6630.99, 6791.15]",6634.518640821967,6788.434037942091,2,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_10', 'education'))",65
+"(6791.15, 6951.311]",6792.006066364088,6941.0619825826025,1,"(('bin_equal_frequency_2', 'Age'),)",92
+"(6951.311, 7111.472]",6976.991445340679,7078.197862657022,2,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_5', 'education'))",19
+"(7111.472, 7271.633]",7111.658601446388,7225.617244702467,2,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_frequency_5', 'education'))",19
+"(7271.633, 7431.794]",7313.466552867677,7424.485164623987,2,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_frequency_2', 'education'))",40
+"(7431.794, 7591.955]",7441.908044376638,7584.168154119901,2,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_width_10', 'education'))",78
+"(7591.955, 7752.116]",7599.549364315901,7749.144507902682,1,"(('bin_equal_frequency_5', 'Age'),)",136
+"(7752.116, 7912.277]",7757.26828937127,7907.797023044748,2,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_width_5', 'education'))",162
+"(7912.277, 8072.438]",7922.174843680533,8060.568778545467,1,"(('bin_equal_frequency_10', 'Age'),)",138
+"(8072.438, 8232.599]",8072.943292131443,8228.706181146003,1,"(('bin_equal_width_5', 'Age'),)",216
+"(8232.599, 8392.76]",8237.10086608192,8390.910244644749,1,"(('bin_equal_frequency_2', 'education'),)",181
+"(8392.76, 8552.921]",8393.093455212,8549.79021150393,1,"(('zscore_clip_3', 'education'),)",212
+"(8552.921, 8713.082]",8554.264178588353,8712.48828896359,1,"(('bin_equal_width_10', 'Age'),)",231
+"(8713.082, 8873.243]",8717.79772446132,8865.491515152007,0,(),259
+"(8873.243, 9033.404]",8877.027766251162,9033.08032865211,1,"(('bin_equal_width_5', 'education'),)",74
+"(9033.404, 9193.565]",9074.607969523682,9189.252401393784,2,"(('bin_equal_frequency_5', 'Age'), ('norm_log', 'education'))",20
+"(9193.565, 9353.725]",9236.652250332465,9349.223092380062,2,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_2', 'education'))",21
+"(9353.725, 9513.886]",9393.686793959841,9492.453234087565,3,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_5', 'education'), ('isolationForest', 'Age'))",3
+"(9513.886, 9674.047]",9530.525595817673,9654.514248198175,2,"(('bin_equal_frequency_10', 'Age'), ('norm_log', 'education'))",27
+"(9674.047, 9834.208]",9680.915188047673,9831.498741777019,3,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_10', 'education'), ('isolationForest', 'Age'))",9
+"(9834.208, 9994.369]",9874.928888779545,9968.664679314334,2,"(('bin_equal_width_5', 'education'), ('norm_log', 'education'))",7
+"(9994.369, 10154.53]",10013.764740155642,10137.6873820211,2,"(('bin_equal_width_10', 'education'), ('norm_log', 'education'))",7
+"(10154.53, 10314.691]",10173.72827314893,10309.687867195553,2,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_width_2', 'education'))",49
+"(10314.691, 10474.852]",10331.323773485894,10453.069022506035,1,"(('norm_log', 'education'),)",42
+"(10474.852, 10635.013]",10494.722118620683,10623.585323215939,2,"(('bin_equal_frequency_10', 'Age'), ('bin_equal_width_2', 'education'))",25
+"(10635.013, 10795.174]",10668.419154649162,10791.685858060022,2,"(('bin_equal_frequency_2', 'Age'), ('isolationForest', 'Age'))",39
+"(10795.174, 10955.335]",10818.359778640963,10945.051846911967,3,"(('bin_equal_frequency_2', 'Age'), ('isolationForest', 'Age'), ('norm_log', 'education'))",4
+"(10955.335, 11115.496]",10962.25727533907,11098.04012394288,2,"(('zscore_clip_3', 'education'), ('bin_equal_width_2', 'education'))",8
+"(11115.496, 11275.657]",11136.9795849193,11248.718985864465,2,"(('bin_equal_width_10', 'Age'), ('bin_equal_width_2', 'education'))",22
+"(11275.657, 11435.818]",11276.127002097654,11415.174158242111,1,"(('bin_equal_width_2', 'education'),)",60
+"(11435.818, 11595.979]",11557.57597106373,11557.57597106373,3,"(('bin_equal_width_10', 'Age'), ('norm_log', 'education'), ('bin_equal_width_2', 'education'))",1
+"(11595.979, 11756.14]",11644.455449885696,11724.481523482425,2,"(('norm_log', 'education'), ('bin_equal_width_2', 'education'))",5
+"(11916.301, 12076.461]",11974.408687741805,11974.408687741805,3,"(('bin_equal_frequency_2', 'Age'), ('isolationForest', 'Age'), ('bin_equal_width_2', 'education'))",1
+"(12236.622, 12396.783]",12304.138240181652,12304.138240181652,3,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_width_10', 'education'), ('isolationForest', 'Age'))",1
+"(12556.944, 12717.105]",12607.737650966466,12694.203945130217,3,"(('bin_equal_width_5', 'Age'), ('norm_log', 'Age'), ('isolationForest', 'Age'))",2
+"(12717.105, 12877.266]",12831.193189146774,12831.193189146774,3,"(('bin_equal_frequency_5', 'Age'), ('isolationForest', 'Age'), ('bin_equal_frequency_5', 'education'))",1
+"(13037.427, 13197.588]",13044.558204763136,13047.401501554574,2,"(('isolationForest', 'Age'), ('bin_equal_width_2', 'Age'))",2
+"(13197.588, 13357.749]",13212.21172924753,13212.21172924753,2,"(('isolationForest', 'Age'), ('bin_equal_frequency_2', 'Age'))",1
+"(13357.749, 13517.91]",13410.754259580252,13513.967808744708,2,"(('bin_equal_frequency_5', 'Age'), ('isolationForest', 'Age'))",24
+"(13517.91, 13678.071]",13538.253496098536,13668.281251433878,2,"(('bin_equal_width_5', 'Age'), ('isolationForest', 'Age'))",24
+"(13678.071, 13838.232]",13722.679905775953,13787.355203899906,3,"(('bin_equal_width_5', 'Age'), ('isolationForest', 'Age'), ('norm_log', 'education'))",2
+"(13838.232, 13998.393]",13840.171148322286,13934.290834559322,3,"(('bin_equal_frequency_2', 'Age'), ('IQR', 'education'), ('isolationForest', 'Age'))",3
+"(13998.393, 14158.554]",14018.715698449034,14125.22163040855,2,"(('isolationForest', 'Age'), ('bin_equal_frequency_5', 'Age'))",5
+"(14158.554, 14318.715]",14158.637013714955,14315.193635314145,1,"(('isolationForest', 'Age'),)",48
+"(14318.715, 14478.876]",14348.612295969302,14425.922164534926,3,"(('bin_equal_width_5', 'Age'), ('bin_equal_frequency_5', 'education'), ('isolationForest', 'Age'))",5
+"(14478.876, 14639.036]",14516.696432707768,14629.340716861965,2,"(('isolationForest', 'Age'), ('norm_log', 'education'))",6
+"(14639.036, 14799.197]",14643.701635295705,14796.60434896614,2,"(('isolationForest', 'Age'), ('bin_equal_frequency_2', 'education'))",6
+"(14799.197, 14959.358]",14822.58941607138,14877.34835485636,3,"(('bin_equal_width_10', 'Age'), ('bin_equal_width_10', 'education'), ('isolationForest', 'Age'))",4
+"(14959.358, 15119.519]",14997.735960395361,15067.87239469116,3,"(('bin_equal_frequency_10', 'Age'), ('isolationForest', 'Age'), ('bin_equal_frequency_2', 'education'))",4
+"(15119.519, 15279.68]",15119.909857134837,15271.832824124835,2,"(('norm_log', 'Age'), ('isolationForest', 'Age'))",30
+"(15279.68, 15439.841]",15280.89510545311,15413.51953886612,3,"(('bin_equal_frequency_5', 'Age'), ('isolationForest', 'Age'), ('bin_equal_width_2', 'education'))",8
+"(15439.841, 15600.002]",15447.047618384993,15575.010634756398,2,"(('bin_equal_frequency_10', 'Age'), ('isolationForest', 'Age'))",49
+"(15600.002, 15760.163]",15623.63460776642,15688.758073029021,3,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_frequency_2', 'education'), ('isolationForest', 'Age'))",5
+"(15760.163, 15920.324]",15778.834370858676,15894.512770577503,2,"(('norm_log', 'education'), ('isolationForest', 'Age'))",13
+"(15920.324, 16080.485]",15920.479655408992,16078.028311673434,2,"(('bin_equal_width_10', 'Age'), ('isolationForest', 'Age'))",23
+"(16080.485, 16240.646]",16101.649116781464,16205.54235445419,2,"(('bin_equal_frequency_2', 'education'), ('isolationForest', 'Age'))",7
+"(16240.646, 16400.807]",16295.911181426623,16341.556766081745,3,"(('bin_equal_frequency_5', 'Age'), ('norm_log', 'education'), ('isolationForest', 'Age'))",3
+"(16400.807, 16560.968]",16401.330081547214,16556.460452322826,3,"(('bin_equal_frequency_10', 'Age'), ('norm_log', 'education'), ('isolationForest', 'Age'))",2
+"(16560.968, 16721.129]",16591.98926303878,16639.44645081915,2,"(('isolationForest', 'Age'), ('bin_equal_width_2', 'education'))",5
+"(17041.451, 17201.612]",17152.94389044563,17200.70318986886,3,"(('bin_equal_width_10', 'Age'), ('bin_equal_frequency_5', 'education'), ('isolationForest', 'Age'))",3
+"(17361.772, 17521.933]",17439.153682825705,17439.153682825705,3,"(('bin_equal_frequency_10', 'Age'), ('bin_equal_width_5', 'education'), ('isolationForest', 'Age'))",1
+"(17682.094, 17842.255]",17801.652237634768,17812.469872868638,3,"(('bin_equal_width_5', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",2
+"(18002.416, 18162.577]",18007.961760922077,18140.831430701637,3,"(('bin_equal_frequency_10', 'Age'), ('isolationForest', 'Age'), ('bin_equal_width_2', 'education'))",3
+"(18803.221, 18963.382]",18935.73291272691,18935.73291272691,3,"(('bin_equal_width_10', 'Age'), ('isolationForest', 'Age'), ('bin_equal_width_2', 'education'))",1
+"(18963.382, 19123.543]",19089.957576375917,19089.957576375917,3,"(('norm_log', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
+"(20885.313, 21045.474]",21011.87864231699,21011.878642318592,2,"(('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",2
+"(21365.796, 21525.957]",21403.060698936843,21403.060698936843,3,"(('bin_equal_frequency_2', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
+"(21525.957, 21686.118]",21526.338406766743,21526.338406766743,3,"(('winsorize', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
+"(23127.566, 23287.727]",23286.474794356363,23286.474794356363,3,"(('bin_equal_frequency_10', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
+"(23447.888, 23608.049]",23606.943222596892,23606.943222596892,3,"(('bin_equal_frequency_5', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
+"(23768.21, 23928.371]",23835.859939612143,23835.859939612143,3,"(('bin_equal_width_10', 'Age'), ('bin_equal_width_2', 'education'), ('isolationForest', 'Age'))",1
