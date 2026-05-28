@@ -417,40 +417,57 @@ def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outc
 
     return ate
 
-
+import statsmodels.api as sm
 def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-    Y = df[outcome].values
-    T = df[treatment].values.reshape(-1, 1)
-    X_confounders = df[common_causes].values
-    X_intercept = np.ones((df.shape[0], 1))
-    X_full = np.hstack([T, X_intercept, X_confounders])
-    X_full = np.asarray(X_full)
-    n, k = X_full.shape
-    beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
-    ate = beta[0]
-    ssr = np.sum((Y - X_full @ beta) ** 2)
-    sigma_sq = ssr / (n - k)
+    X = sm.add_constant(df[[treatment] + common_causes])
+    Y = df[outcome]
 
-    # 4. Calculate Variance-Covariance Matrix: sigma^2 * (X^T X)^-1
-    # This tells us how much each coefficient "wiggles"
-    xtx_inv = np.linalg.inv(X_full.T @ X_full)
-    var_cov_matrix = sigma_sq * xtx_inv
+    # cov_type='HC1' gives you causal-inference-ready robust standard errors
+    model = sm.OLS(Y, X).fit()#cov_type='HC1')
 
-    # 5. Extract Standard Error for ATE (the first diagonal element)
-    ate_se = np.sqrt(var_cov_matrix[0, 0])
-
-    # 6. Calculate 95% Confidence Interval
-    # For 95%, we use a t-distribution critical value (approx 1.96)
-    t_critical = stats.t.ppf(0.975, df=n - k)
-    ci_lower = ate - (t_critical * ate_se)
-    ci_upper = ate + (t_critical * ate_se)
+    ate = model.params[treatment]
+    ate_se = model.bse[treatment]
+    ci = model.conf_int().loc[treatment]
+    p_val = model.pvalues[treatment]
 
     return {
         'ate': ate,
         'se': ate_se,
-        'ci': (ci_lower, ci_upper),
-        'significant': not (ci_lower <= 0 <= ci_upper)
+        'ci': (ci[0], ci[1]),
+        'significant': p_val < 0.05
     }
+    # Y = df[outcome].values
+    # T = df[treatment].values.reshape(-1, 1)
+    # X_confounders = df[common_causes].values
+    # X_intercept = np.ones((df.shape[0], 1))
+    # X_full = np.hstack([T, X_intercept, X_confounders])
+    # X_full = np.asarray(X_full)
+    # n, k = X_full.shape
+    # beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
+    # ate = beta[0]
+    # ssr = np.sum((Y - X_full @ beta) ** 2)
+    # sigma_sq = ssr / (n - k)
+    #
+    # # 4. Calculate Variance-Covariance Matrix: sigma^2 * (X^T X)^-1
+    # # This tells us how much each coefficient "wiggles"
+    # xtx_inv = np.linalg.pinv(X_full.T @ X_full)
+    # var_cov_matrix = sigma_sq * xtx_inv
+    #
+    # # 5. Extract Standard Error for ATE (the first diagonal element)
+    # ate_se = np.sqrt(var_cov_matrix[0, 0])
+    #
+    # # 6. Calculate 95% Confidence Interval
+    # # For 95%, we use a t-distribution critical value (approx 1.96)
+    # t_critical = stats.t.ppf(0.975, df=n - k)
+    # ci_lower = ate - (t_critical * ate_se)
+    # ci_upper = ate + (t_critical * ate_se)
+    #
+    # return {
+    #     'ate': ate,
+    #     'se': ate_se,
+    #     'ci': (ci_lower, ci_upper),
+    #     'significant': not (ci_lower <= 0 <= ci_upper)
+    # }
 
 
 def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):

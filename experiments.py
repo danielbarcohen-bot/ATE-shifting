@@ -545,8 +545,8 @@ EXPERIMENTS = {
         "df": df_twins_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate":  -0.06,
-        "epsilon": 0.06,
+        "target_ate": 0.036,#-0.06,
+        "epsilon": 0.012,#0.06,
         "max_length": 5,
         "sequence_length": 2,
         "op_probs": prob_dict
@@ -564,8 +564,8 @@ EXPERIMENTS = {
         "df": df_twins_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": 0.18,
-        "epsilon": 0.06,
+        "target_ate": 0.084,#0.18,
+        "epsilon": 0.012,#0.06,
         "max_length": 5,
         # "sequence_length": 3,
         "op_probs": prob_dict
@@ -621,8 +621,8 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 5774,
-        "epsilon": 250,
+        "target_ate": 7591,#5774,
+        "epsilon": 286.5,#250,
         "max_length": 5,
         'sequence_length': 2,
         "op_probs": prob_dict
@@ -640,8 +640,8 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 11774,
-        "epsilon": 250,
+        "target_ate": 9957,#11774,
+        "epsilon": 286.5,#250,
         "max_length": 5,
         'sequence_length': 2,
         "op_probs": prob_dict

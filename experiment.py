@@ -38,9 +38,13 @@ class Experiment:
                                             transformations_dict=self.transformations_dict)
 
     def run_prune(self):
-        return OEATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
-                                    epsilon=self.epsilon,
-                                    max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+        # return OEATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
+        #                             epsilon=self.epsilon,
+        #                             max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+        return ProbeATESearch(use_restart=False).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
 
     # def run_AStar(self):
     #     return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
