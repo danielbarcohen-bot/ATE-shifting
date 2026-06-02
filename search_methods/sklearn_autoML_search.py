@@ -170,5 +170,12 @@ if __name__ == "__main__":
     # run_experiment(ACSDataLoader().load_data().dropna(), 11774, 250, data_transformations)
     #
     # run_experiment(IHDPDataLoader().load_data().dropna(), 3.62, 0.04, data_transformations)
-    run_experiment(IHDPDataLoader().load_data().dropna(), 4.22, 0.04, data_transformations)
+    # run_experiment(IHDPDataLoader().load_data().dropna(), 4.22, 0.04, data_transformations)
+
+
+
+    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.036, 0.012, data_transformations)
+    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.084, 0.012, data_transformations)
+    # run_experiment(ACSDataLoader().load_data().dropna(), 2990, 286.5, data_transformations)
+    run_experiment(ACSDataLoader().load_data().dropna(), 14558, 286.5, data_transformations)
 

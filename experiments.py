@@ -548,7 +548,7 @@ EXPERIMENTS = {
         "target_ate": 0.036,#-0.06,
         "epsilon": 0.012,#0.06,
         "max_length": 5,
-        "sequence_length": 2,
+        "sequence_length": 1,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -567,7 +567,7 @@ EXPERIMENTS = {
         "target_ate": 0.084,#0.18,
         "epsilon": 0.012,#0.06,
         "max_length": 5,
-        # "sequence_length": 3,
+        "sequence_length": 2,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -621,10 +621,10 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 7591,#5774,
+        "target_ate": 2990,#5774,
         "epsilon": 286.5,#250,
         "max_length": 5,
-        'sequence_length': 2,
+        'sequence_length': 1,
         "op_probs": prob_dict
         # prune sequence: | ATE:
         # probe sequence: | ATE:
@@ -640,7 +640,7 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 9957,#11774,
+        "target_ate": 14558,#11774,
         "epsilon": 286.5,#250,
         "max_length": 5,
         'sequence_length': 2,
