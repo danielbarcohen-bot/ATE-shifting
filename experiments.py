@@ -693,4 +693,93 @@ EXPERIMENTS = {
         # llm cot sequence: | ATE:
 
     },
+    ##########################################################################################
+    ################################### SCALABILITY EVALUATIONS ##############################
+    ##########################################################################################
+    "EXP27": {
+        "df": df_twins_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5,
+        "sequence_length": 2
+    },
+    "EXP28": {
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10,
+        "sequence_length": 4
+    },
+    **{f"EXP29.{k}": {  # TWINS CHECK - k% of the data
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_twins_no_missing_values.sample(frac=0.1 * k),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+    }
+        for k in range(1, 10)
+    },
+
+    **{f"EXP30.{k}": {  # ACS CHECK - k% of the data
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_acs_no_missing_values.sample(frac=0.1 * k),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+    }
+        for k in range(1, 10)
+    },
+
+    **{f"EXP31.{k}": {  # TWINS CHECK - k random confunder
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "transformations_dict": largest_data_transformations,
+        "common_causes": (cols := random.sample(
+            df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
+        "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+    } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
+    **{f"EXP32.{k}": {  # ACS CHECK - k random confunder
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "transformations_dict": largest_data_transformations,
+        "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+
+    } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
+    **{f"EXP33.{k}": {  # TWINS CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_twins_no_missing_values] * k, ignore_index=True),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5
+
+    } for k in range(1, 6)
+    },
+    **{f"EXP34.{k}": {  # ACS CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 16500,
+        "epsilon": 100,
+        "max_length": 10
+
+    } for k in range(1, 6)
+    },
 }
