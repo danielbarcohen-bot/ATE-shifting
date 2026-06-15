@@ -58,7 +58,7 @@ class Experiment:
                                        max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
 
     def run_probe_no_hash(self):
-        return ProbeATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
+        return ProbeATESearch(use_hash=False).search(df=self.df, common_causes=self.common_causes,
                                              target_ate=self.target_ate,
                                              epsilon=self.epsilon,
                                              max_seq_length=self.max_length,
@@ -144,8 +144,19 @@ class ProbabilitiesExperiment(Experiment):
                                        epsilon=self.epsilon,
                                        max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
 
+    def run_probe_no_restart_no_hash(self):
+        return ProbeATESearch(use_restart=False, op_probs=self.op_probs, use_hash=False).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+
     def run_probe(self):
         return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
+                                       target_ate=self.target_ate,
+                                       epsilon=self.epsilon,
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict)
+    def run_probe_no_hash(self):
+        return ProbeATESearch(op_probs=self.op_probs, use_hash=False).search(df=self.df, common_causes=self.common_causes,
                                        target_ate=self.target_ate,
                                        epsilon=self.epsilon,
                                        max_seq_length=self.max_length, transformations_dict=self.transformations_dict)

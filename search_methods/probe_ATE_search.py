@@ -59,10 +59,11 @@ class ProbManager:
 
 
 class ProbeATESearch(ATESearch):
-    def __init__(self, use_restart=True, op_probs=None, is_brute = False):
+    def __init__(self, use_restart=True, op_probs=None, is_brute = False, use_hash=True):
         self.use_restart = use_restart
         self.op_probs = op_probs
         self.is_brute = is_brute
+        self.use_hash = use_hash
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int=14400):
@@ -70,7 +71,7 @@ class ProbeATESearch(ATESearch):
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
         bank = {0: [()]}  # init with the empty sequence
-        seen_dfs = {df_signature_fast(df.copy(), common_causes)}
+        seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes, self.op_probs)
         cost = 1
         best_ate_error = float('inf')
@@ -82,6 +83,7 @@ class ProbeATESearch(ATESearch):
         while True:
             if time.time() - start_time > time_out_sec:
                 print("\n\n*** TIMED OUT!! ***\n")
+                print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
                 break
             should_restart = False
             bank[cost] = []
@@ -132,11 +134,18 @@ class ProbeATESearch(ATESearch):
                         exit()
 
                     if not self.is_brute:
-                        df_new_signature = df_signature_fast(curr_df, common_causes)
-                        if df_new_signature in seen_dfs:
-                            break
+                        if self.use_hash:
+                            df_new_signature = df_signature_fast(curr_df, common_causes)
+                            if df_new_signature in seen_dfs:
+                                # print(new_seq)
+                                break
 
-                        seen_dfs.add(df_new_signature)
+                            seen_dfs.add(df_new_signature)
+                        else:
+                            if any(curr_df.equals(seen) for seen in seen_dfs):
+                                # print(new_seq)
+                                break
+                            seen_dfs.append(curr_df)
                     bank[cost].append(new_seq)
 
                     if self.use_restart and current_error < best_ate_error * 0.9:
@@ -151,7 +160,7 @@ class ProbeATESearch(ATESearch):
                         bank = {0: [()]}
                         cost = 1
                         should_restart = True
-                        seen_dfs = {df_signature_fast(df.copy(), common_causes)}
+                        seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
 
                     if should_restart:
                         break

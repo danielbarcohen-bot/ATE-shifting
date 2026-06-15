@@ -703,7 +703,8 @@ EXPERIMENTS = {
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
-        "sequence_length": 2
+        "sequence_length": 2,
+        "op_probs": prob_dict
     },
     "EXP28": {
         "df": df_acs_no_missing_values,
@@ -712,7 +713,8 @@ EXPERIMENTS = {
         "target_ate": 16500,
         "epsilon": 100,
         "max_length": 10,
-        "sequence_length": 4
+        "sequence_length": 4,
+        "op_probs": prob_dict
     },
     **{f"EXP29.{k}": {  # TWINS CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
@@ -721,7 +723,8 @@ EXPERIMENTS = {
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
-        "max_length": 5
+        "max_length": 5,
+        "op_probs": prob_dict
     }
         for k in range(1, 10)
     },
@@ -733,7 +736,8 @@ EXPERIMENTS = {
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
         "epsilon": 100,
-        "max_length": 10
+        "max_length": 10,
+        "op_probs": prob_dict
     }
         for k in range(1, 10)
     },
@@ -746,7 +750,8 @@ EXPERIMENTS = {
         "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
         "target_ate": -0.06,
         "epsilon": 0.06,
-        "max_length": 5
+        "max_length": 5,
+        "op_probs": prob_dict
     } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
     **{f"EXP32.{k}": {  # ACS CHECK - k random confunder
@@ -756,7 +761,8 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
         "target_ate": 16500,
         "epsilon": 100,
-        "max_length": 10
+        "max_length": 10,
+        "op_probs": prob_dict
 
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
@@ -767,7 +773,8 @@ EXPERIMENTS = {
         "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
-        "max_length": 5
+        "max_length": 5,
+        "op_probs": prob_dict
 
     } for k in range(1, 6)
     },
@@ -778,7 +785,8 @@ EXPERIMENTS = {
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
         "epsilon": 100,
-        "max_length": 10
+        "max_length": 10,
+        "op_probs": prob_dict
 
     } for k in range(1, 6)
     },
