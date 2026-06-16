@@ -1,0 +1,23 @@
+Starting EXP30.3, type=probe_probs_no_restart, run 3/3
+Job 68225828, task 122
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8833.681218629075
+***
+FINISHED
+ATE before: 8833.681218629075
+ATE now is: 16593.537279840395
+sequence is: (('IQR', 'education'), ('isolationForest', 'Age'))
+***
+Execution time: 124.478 sec
+distances from ATE (with time):
+[(np.float64(7666.318781370925), 0), (np.float64(7666.318781370021), 0.31622982025146484), (np.float64(7666.31878136878), 0.43137574195861816), (np.float64(7610.02461314641), 0.9039525985717773), (np.float64(6099.583177864692), 1.1343350410461426), (np.float64(1462.664777558377), 6.091010332107544), (np.float64(1462.6647775583551), 35.21918773651123), (np.float64(1430.156783786504), 68.47597479820251), (np.float64(93.53727984039506), 124.47697949409485)]
+probability of this sequence is: 7.8307592222249e-05
+uncertainty:
+{'ate': np.float64(16593.53727984293), 'se': np.float64(812.7994334371997), 'ci': (np.float64(15000.46583560114), np.float64(18186.60872408472)), 'significant': np.True_}
+checked:
+522

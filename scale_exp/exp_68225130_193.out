@@ -1,0 +1,23 @@
+Starting EXP31.6, type=probe_probs_no_restart, run 2/3
+Job 68225908, task 193
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101431238353
+***
+FINISHED
+ATE before: -0.024891101431238353
+ATE now is: -0.024891101431238353
+sequence is: (('norm_min_max', 'anemia'),)
+***
+Execution time: 0.004 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856876165), 0)]
+probability of this sequence is: 0.09632034632034632
+uncertainty:
+{'ate': np.float64(-0.024891101431240722), 'se': np.float64(0.007324398350304163), 'ci': (np.float64(-0.03924846218512132), np.float64(-0.010533740677360123)), 'significant': np.True_}
+checked:
+1

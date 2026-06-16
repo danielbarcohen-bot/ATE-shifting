@@ -1,0 +1,23 @@
+Starting EXP32.3, type=probe_probs_no_restart, run 3/3
+Job 68226390, task 329
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 7163.273249288306
+***
+FINISHED
+ATE before: 7163.273249288306
+ATE now is: 16436.698343525197
+sequence is: (('IQR', 'education'), ('norm_min_max', 'Public health coverage'), ('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('norm_min_max', 'insurance through employer'), ('isolationForest', 'Public health coverage'))
+***
+Execution time: 1427.939 sec
+distances from ATE (with time):
+[(np.float64(9336.726750711694), 0), (np.float64(9336.72675069383), 0.6924471855163574), (np.float64(8156.34281525161), 1.0586583614349365), (np.float64(8156.342815233278), 23.476035833358765), (np.float64(7316.971918747422), 92.80564594268799), (np.float64(7316.9719187287865), 269.6228115558624), (np.float64(4445.0662591054315), 441.7209904193878), (np.float64(63.30165647480317), 1427.9387648105621)]
+probability of this sequence is: 6.48600987115177e-09
+uncertainty:
+{'ate': np.float64(16306.121526580628), 'se': np.float64(966.1755111225543), 'ci': (np.float64(14412.439627309852), np.float64(18199.8034258514)), 'significant': np.True_}
+checked:
+955

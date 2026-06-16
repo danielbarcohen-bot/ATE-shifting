@@ -1,0 +1,19 @@
+Starting EXP31.33, type=probe_probs_with_restart, run 2/3
+Job 68226123, task 277
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 0.06433173995431923
+PROBE TRIGGERED! Error reduced from inf to 0.124 (ATE went to 0.06433174001511086).
+PROBE TRIGGERED! Error reduced from 0.124 to 0.111 (ATE went to 0.05054694086569604).
+PROBE TRIGGERED! Error reduced from 0.111 to 0.097 (ATE went to 0.037165646867296814).
+PROBE TRIGGERED! Error reduced from 0.097 to 0.087 (ATE went to 0.026793544790925782).
+PROBE TRIGGERED! Error reduced from 0.087 to 0.070 (ATE went to 0.010107173697294776).
+PROBE TRIGGERED! Error reduced from 0.070 to 0.063 (ATE went to 0.0026031010570427486).
+
+
+*** TIMED OUT!! ***
+

@@ -1,0 +1,23 @@
+Starting EXP31.21, type=probe_probs_no_restart, run 1/3
+Job 68225952, task 237
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02489110143124431
+***
+FINISHED
+ATE before: -0.02489110143124431
+ATE now is: -0.02489110143124431
+sequence is: (('norm_min_max', 'incervix'),)
+***
+Execution time: 0.006 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856875569), 0)]
+probability of this sequence is: 0.027520098948670378
+uncertainty:
+{'ate': np.float64(-0.02489110143119433), 'se': np.float64(0.007337716869046006), 'ci': (np.float64(-0.039274572100387435), np.float64(-0.010507630762001223)), 'significant': np.True_}
+checked:
+1

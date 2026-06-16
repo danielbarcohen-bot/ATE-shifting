@@ -1,0 +1,24 @@
+Starting EXP31.12, type=probe_probs_with_restart, run 1/3
+Job 68225928, task 213
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02466388532082654
+***
+FINISHED
+ATE before: -0.02466388532082654
+ATE now is: -0.024663884719775576
+sequence is: (('norm_min_max', 'stoccfipb'),)
+***
+Execution time: 0.003 sec
+distances from ATE (with time):
+[(np.float64(0.035336114679173455), 0)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.04816017316017316
+probability of this sequence is: 0.04816017316017316
+uncertainty:
+{'ate': np.float64(-0.02466388603133271), 'se': np.float64(0.006771118987805785), 'ci': (np.float64(-0.0379367039445724), np.float64(-0.01139106811809302)), 'significant': np.True_}
+checked:
+1

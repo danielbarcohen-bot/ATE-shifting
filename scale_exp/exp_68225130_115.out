@@ -1,0 +1,28 @@
+Starting EXP30.2, type=probe_probs_with_restart, run 2/3
+Job 68225819, task 115
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8752.56011661493
+PROBE TRIGGERED! Error reduced from inf to 7747.440 (ATE went to 8752.560116614017).
+PROBE TRIGGERED! Error reduced from 7747.440 to 6153.755 (ATE went to 10346.244985567955).
+PROBE TRIGGERED! Error reduced from 6153.755 to 389.724 (ATE went to 16110.275746713685).
+PROBE TRIGGERED! Error reduced from 389.724 to 123.068 (ATE went to 16376.932234661359).
+***
+FINISHED
+ATE before: 8752.56011661493
+ATE now is: 16400.276064974252
+sequence is: (('isolationForest', 'Age'), ('norm_log', 'education'))
+***
+Execution time: 18.552 sec
+distances from ATE (with time):
+[(np.float64(7747.43988338507), 0), (np.float64(7747.43988338507), 0.09420967102050781), (np.float64(7699.778628231637), 1.526078462600708), (np.float64(6153.755014432045), 1.6696600914001465), (np.float64(7747.43988338507), 1.6930773258209229), (np.float64(6153.755014432045), 1.840954303741455), (np.float64(6153.755014431155), 4.214717149734497), (np.float64(389.7242532863147), 7.81857442855835), (np.float64(7747.43988338507), 7.827230215072632), (np.float64(6153.755014432045), 7.948680877685547), (np.float64(389.7242532863147), 9.563190460205078), (np.float64(389.72425328604186), 11.579717874526978), (np.float64(389.7242532859), 13.635613679885864), (np.float64(123.06776533864104), 15.219711542129517), (np.float64(7747.43988338507), 15.228261709213257), (np.float64(6153.755014432045), 15.28933572769165), (np.float64(389.7242532863147), 16.89798593521118), (np.float64(99.72393502574778), 18.550958156585693)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.00019576898055562248
+probability of this sequence is: 0.12371045794279935
+uncertainty:
+{'ate': np.float64(16400.276064974976), 'se': np.float64(951.5846583919163), 'ci': (np.float64(14535.181518975038), np.float64(18265.370610974915)), 'significant': np.True_}
+checked:
+114

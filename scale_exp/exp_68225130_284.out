@@ -1,0 +1,23 @@
+Starting EXP31.36, type=probe_probs_no_restart, run 3/3
+Job 68226144, task 284
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02489110168233051
+***
+FINISHED
+ATE before: -0.02489110168233051
+ATE now is: -0.02489110168233051
+sequence is: (('norm_min_max', 'uterine'),)
+***
+Execution time: 0.008 sec
+distances from ATE (with time):
+[(np.float64(0.03510889831766949), 0)]
+probability of this sequence is: 0.016053391053391056
+uncertainty:
+{'ate': np.float64(-0.02489110171513334), 'se': np.float64(0.00673314025970098), 'ci': (np.float64(-0.03808947747705621), np.float64(-0.01169272595321047)), 'significant': np.True_}
+checked:
+1

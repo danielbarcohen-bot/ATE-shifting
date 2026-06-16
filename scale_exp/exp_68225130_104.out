@@ -1,0 +1,23 @@
+Starting EXP30.1, type=probe_probs_no_restart, run 3/3
+Job 68225806, task 104
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8710.57156962039
+***
+FINISHED
+ATE before: 8710.57156962039
+ATE now is: 16489.53113678533
+sequence is: (('norm_log', 'Age'), ('isolationForest', 'Age'))
+***
+Execution time: 24.905 sec
+distances from ATE (with time):
+[(np.float64(7789.42843037961), 0), (np.float64(7789.428430379421), 0.1536402702331543), (np.float64(7789.428430379376), 0.19469976425170898), (np.float64(7789.428430378835), 0.2347714900970459), (np.float64(7741.06676210052), 0.31499528884887695), (np.float64(6208.449863046599), 0.39553308486938477), (np.float64(580.5219713131664), 2.296257495880127), (np.float64(10.468863214671728), 24.90447497367859)]
+probability of this sequence is: 0.00019576898055562248
+uncertainty:
+{'ate': np.float64(16489.531136786733), 'se': np.float64(1435.2016605878277), 'ci': (np.float64(13676.513807988178), np.float64(19302.548465585285)), 'significant': np.True_}
+checked:
+322

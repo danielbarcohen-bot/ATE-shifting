@@ -1,0 +1,27 @@
+Starting EXP30.7, type=probe, run 2/3
+Job 68225869, task 154
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8787.735262608181
+PROBE TRIGGERED! Error reduced from inf to 9642.285 (ATE went to 6857.714719945744).
+PROBE TRIGGERED! Error reduced from 9642.285 to 8167.573 (ATE went to 8332.426853617086).
+PROBE TRIGGERED! Error reduced from 8167.573 to 5134.137 (ATE went to 11365.862503131055).
+PROBE TRIGGERED! Error reduced from 5134.137 to 874.813 (ATE went to 15625.187146693675).
+PROBE TRIGGERED! Error reduced from 874.813 to 146.264 (ATE went to 16646.264206954475).
+***
+FINISHED
+ATE before: 8787.735262608181
+ATE now is: 16507.97154062245
+sequence is: (('bin_equal_frequency_5', 'education'), ('isolationForest', 'Age'))
+***
+Execution time: 332.177 sec
+distances from ATE (with time):
+[(np.float64(7712.264737391819), 0), (np.float64(7712.264737391819), 0.4172244071960449), (np.float64(7712.264737391819), 1.6800460815429688), (np.float64(5134.137496868945), 10.314181089401245), (np.float64(7712.264737391819), 10.42257285118103), (np.float64(5134.137496868945), 11.36589241027832), (np.float64(874.8128533063245), 43.15168333053589), (np.float64(7712.264737391819), 43.179667949676514), (np.float64(5134.137496868945), 43.81550478935242), (np.float64(874.8128533063245), 49.10214376449585), (np.float64(146.2642069544745), 65.36476731300354), (np.float64(7712.264737391819), 65.38662433624268), (np.float64(874.8128533063245), 70.97131037712097), (np.float64(146.2642069544745), 82.29990530014038), (np.float64(7.971540622449538), 332.1768181324005)]
+uncertainty:
+{'ate': np.float64(16507.971540624363), 'se': np.float64(583.7968616629271), 'ci': (np.float64(15363.744810603761), np.float64(17652.198270644967)), 'significant': np.True_}
+checked:
+339

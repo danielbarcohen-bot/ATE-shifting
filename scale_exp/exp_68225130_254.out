@@ -1,0 +1,22 @@
+Starting EXP31.27, type=probe, run 3/3
+Job 68225988, task 254
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02489110143120764
+***
+FINISHED
+ATE before: -0.02489110143120764
+ATE now is: -0.02489110143120764
+sequence is: (('bin_equal_frequency_2', 'cardiac'),)
+***
+Execution time: 0.008 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856879236), 0)]
+uncertainty:
+{'ate': np.float64(-0.024891101431233673), 'se': np.float64(0.0072754509057047535), 'ci': (np.float64(-0.03915251881686345), np.float64(-0.010629684045603894)), 'significant': np.True_}
+checked:
+1

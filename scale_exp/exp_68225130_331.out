@@ -1,0 +1,24 @@
+Starting EXP32.3, type=probe_probs_with_restart, run 2/3
+Job 68226397, task 331
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 16592.873595915065
+***
+FINISHED
+ATE before: 16592.873595915065
+ATE now is: 16592.87359590416
+sequence is: (('norm_min_max', 'private health coverage'),)
+***
+Execution time: 0.148 sec
+distances from ATE (with time):
+[(np.float64(92.87359591506538), 0), (np.float64(92.87359590415872), 0.14807343482971191)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.19264069264069264
+probability of this sequence is: 0.19264069264069264
+uncertainty:
+{'ate': np.float64(16592.873595915346), 'se': np.float64(141.2900160300982), 'ci': (np.float64(16315.949971056358), np.float64(16869.797220774333)), 'significant': np.True_}
+checked:
+1

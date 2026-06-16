@@ -1,0 +1,23 @@
+Starting EXP32.6, type=probe_probs_no_restart, run 3/3
+Job 68226560, task 338
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 9708.109356961733
+***
+FINISHED
+ATE before: 9708.109356961733
+ATE now is: 16588.758270987262
+sequence is: (('norm_log', 'Age'), ('norm_log', 'medicare for people 65 and older'), ('isolationForest', 'medicare for people 65 and older'), ('norm_log', 'education'))
+***
+Execution time: 2195.316 sec
+distances from ATE (with time):
+[(np.float64(6791.890643038267), 0), (np.float64(6791.89064303791), 0.3018229007720947), (np.float64(6791.890643037455), 1.4594502449035645), (np.float64(6791.890643031502), 2.5890049934387207), (np.float64(6785.713478466596), 3.7079484462738037), (np.float64(5139.491442264134), 4.453603267669678), (np.float64(448.26703556357825), 20.633131504058838), (np.float64(448.26703555900895), 170.05186820030212), (np.float64(448.2670355588889), 357.19284296035767), (np.float64(448.2670355554037), 375.7468032836914), (np.float64(448.2670355539085), 703.3350629806519), (np.float64(165.17329568876994), 716.6639366149902), (np.float64(129.51676453824257), 983.9065155982971), (np.float64(129.51676453178152), 1023.6870183944702), (np.float64(88.75827098726222), 2195.315268754959)]
+probability of this sequence is: 3.823222776703869e-07
+uncertainty:
+{'ate': np.float64(16588.758270899154), 'se': np.float64(373.48396149512894), 'ci': (np.float64(15856.741427210743), np.float64(17320.775114587566)), 'significant': np.True_}
+checked:
+1823

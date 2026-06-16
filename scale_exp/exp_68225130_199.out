@@ -1,0 +1,15 @@
+Starting EXP31.9, type=probe, run 2/3
+Job 68225914, task 199
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 0.06364664126093526
+PROBE TRIGGERED! Error reduced from inf to 0.124 (ATE went to 0.06360686328205575).
+PROBE TRIGGERED! Error reduced from 0.124 to 0.081 (ATE went to 0.02080198342874876).
+
+
+*** TIMED OUT!! ***
+
