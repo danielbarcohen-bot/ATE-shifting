@@ -7,7 +7,6 @@ from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, b
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, \
     winsorize_aux, \
     zscore_filter_3, IQR, isolationForest
-
 df_twins = TwinsDataLoader().load_data()
 df_lalonde = LalondeDataLoader().load_data()
 df_acs = ACSDataLoader().load_data()
@@ -17,6 +16,7 @@ df_twins_no_missing_values = df_twins.dropna()
 df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()
+df_walmart = pd.read_csv('house_price_vs_walmart_distances.csv')
 
 prob_dict = {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.016233766233766232,
              'bin_equal_frequency_10': 0.012987012987012988, 'bin_equal_width_2': 1e-10,
@@ -710,8 +710,18 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 16500,
-        "epsilon": 100,
+        "target_ate": 18774,#16500,
+        "epsilon": 1000,#100,
+        "max_length": 10,
+        "sequence_length": 4,
+        "op_probs": prob_dict
+    },
+    "EXP35": {
+        "df": df_walmart,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
         "max_length": 10,
         "sequence_length": 4,
         "op_probs": prob_dict
@@ -734,14 +744,26 @@ EXPERIMENTS = {
         "df": df_acs_no_missing_values.sample(frac=0.1 * k),
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 16500,
-        "epsilon": 100,
+        "target_ate": 18774,#16500,
+        "epsilon": 1000,#100,
         "max_length": 10,
         "op_probs": prob_dict
     }
         for k in range(1, 10)
     },
 
+    **{f"EXP36.{k}": {  # walmart CHECK - k% of the data
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_walmart.sample(frac=0.1 * k),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
+        "max_length": 10,
+        "op_probs": prob_dict
+    }
+        for k in range(1, 10)
+    },
     **{f"EXP31.{k}": {  # TWINS CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": largest_data_transformations,
@@ -759,8 +781,20 @@ EXPERIMENTS = {
         "transformations_dict": largest_data_transformations,
         "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
         "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
-        "target_ate": 16500,
-        "epsilon": 100,
+        "target_ate": 18774,#16500,
+        "epsilon": 1000,#100,
+        "max_length": 10,
+        "op_probs": prob_dict
+
+    } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"]).tolist()), 3)
+    },
+    **{f"EXP37.{k}": {  # walmart CHECK - k random confunder
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "transformations_dict": largest_data_transformations,
+        "common_causes": (cols := random.sample(df_walmart.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "df": df_walmart[cols + ["treatment", "outcome"]],
+        "target_ate": 10133.08,
+        "epsilon": 2533,
         "max_length": 10,
         "op_probs": prob_dict
 
@@ -783,8 +817,20 @@ EXPERIMENTS = {
         "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 16500,
-        "epsilon": 100,
+        "target_ate": 18774,#16500,
+        "epsilon": 1000,#100,
+        "max_length": 10,
+        "op_probs": prob_dict
+
+    } for k in range(1, 6)
+    },
+    **{f"EXP38.{k}": {  # walmart CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_walmart] * k, ignore_index=True),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
         "max_length": 10,
         "op_probs": prob_dict
 
