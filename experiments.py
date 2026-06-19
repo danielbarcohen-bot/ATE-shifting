@@ -2,7 +2,7 @@ import random
 
 import pandas as pd
 
-from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader
+from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
 from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, \
     winsorize_aux, \
@@ -11,12 +11,12 @@ df_twins = TwinsDataLoader().load_data()
 df_lalonde = LalondeDataLoader().load_data()
 df_acs = ACSDataLoader().load_data()
 df_IHDP = IHDPDataLoader().load_data()
+df_walmart = WalmartDataLoader().load_data()
 
 df_twins_no_missing_values = df_twins.dropna()
 df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()
-df_walmart = pd.read_csv('house_price_vs_walmart_distances.csv')
 
 prob_dict = {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.016233766233766232,
              'bin_equal_frequency_10': 0.012987012987012988, 'bin_equal_width_2': 1e-10,

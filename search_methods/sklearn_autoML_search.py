@@ -8,7 +8,7 @@ from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
-from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader
+from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
 from experiments import large_data_transformations, largest_data_transformations
 from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq
 
@@ -177,5 +177,6 @@ if __name__ == "__main__":
     # run_experiment(TwinsDataLoader().load_data().dropna(), 0.036, 0.012, data_transformations)
     # run_experiment(TwinsDataLoader().load_data().dropna(), 0.084, 0.012, data_transformations)
     # run_experiment(ACSDataLoader().load_data().dropna(), 2990, 286.5, data_transformations)
-    run_experiment(ACSDataLoader().load_data().dropna(), 14558, 286.5, data_transformations)
+    # run_experiment(ACSDataLoader().load_data().dropna(), 14558, 286.5, data_transformations)
+    run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations)
 

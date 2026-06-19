@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pandas as pd
 
@@ -145,3 +146,10 @@ class IHDPDataLoader:
         df = df[["x" + str(i) for i in range(1, 26)] + ["treatment", "outcome"]]
         df.to_pickle(self.CACHE_FILE)
         return df
+
+
+class WalmartDataLoader:
+    def load_data(self) -> pd.DataFrame:
+        BASE_DIR = Path(__file__).resolve().parent
+        FILE_PATH = BASE_DIR / "house_price_vs_walmart_distances.csv"
+        return pd.read_csv(FILE_PATH)
