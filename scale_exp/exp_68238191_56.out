@@ -1,0 +1,24 @@
+Starting EXP29.5, type=probe, run 3/3
+Job 68238535, task 56
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 0.059917021690953094
+PROBE TRIGGERED! Error reduced from inf to 0.120 (ATE went to 0.05993226719750592).
+PROBE TRIGGERED! Error reduced from 0.120 to 0.064 (ATE went to 0.003916937752504548).
+***
+FINISHED
+ATE before: 0.059917021690953094
+ATE now is: -0.0027269864094855516
+sequence is: (('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10'))
+***
+Execution time: 25.306 sec
+distances from ATE (with time):
+[(np.float64(0.11991702169095309), 0), (np.float64(0.11991702169095309), 0.04710721969604492), (np.float64(0.11971147952405943), 0.12270855903625488), (np.float64(0.06391693775250455), 0.7826533317565918), (np.float64(0.11991702169095309), 0.7878448963165283), (np.float64(0.06391693775250455), 0.8182590007781982), (np.float64(0.06370463646410744), 18.98789405822754), (np.float64(0.05727301359051445), 25.304940223693848)]
+uncertainty:
+{'ate': np.float64(-0.0027269880588062017), 'se': np.float64(0.009243926529503026), 'ci': (np.float64(-0.020849351504451136), np.float64(0.01539537538683873)), 'significant': np.False_}
+checked:
+1317

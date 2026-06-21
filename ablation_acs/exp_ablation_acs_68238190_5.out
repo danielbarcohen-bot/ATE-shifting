@@ -1,0 +1,23 @@
+Starting EXP28, type=probe_probs_no_restart_no_hash, run 3/3
+SLURM job id: 68238197, array task id: 5
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.43320476426
+***
+FINISHED
+ATE before: 8774.43320476426
+ATE now is: 18995.31175346304
+sequence is: (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'Age'))
+***
+Execution time: 7602.327 sec
+distances from ATE (with time):
+[(np.float64(9999.56679523574), 0), (np.float64(9999.56679523468), 0.39623141288757324), (np.float64(9935.720210881365), 3.4806833267211914), (np.float64(8436.798039486679), 4.517263412475586), (np.float64(4505.760637435067), 25.22576880455017), (np.float64(4475.107084748888), 317.694952249527), (np.float64(3534.2798475694), 350.75007224082947), (np.float64(2979.500465961437), 366.0145916938782), (np.float64(2672.3508832120024), 653.5574135780334), (np.float64(2134.553549179891), 1240.7473607063293), (np.float64(1942.6264134932098), 2845.3156385421753), (np.float64(1513.1178079435304), 6387.349334955215), (np.float64(221.31175346304008), 7602.326073884964)]
+probability of this sequence is: 4.540096951661003e-07
+uncertainty:
+{'ate': np.float64(18995.311753467904), 'se': np.float64(608.9804147544937), 'ci': (np.float64(17801.72724299996), np.float64(20188.896263935847)), 'significant': np.True_}
+checked:
+1819

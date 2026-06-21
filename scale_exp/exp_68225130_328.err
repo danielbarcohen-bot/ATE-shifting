@@ -1,1 +1,0 @@
-/var/spool/slurmd/job68226384/slurm_script: line 46: 1085818 Killed                  stdbuf -oL -eL python /home/danielbarcoh/ATE-shifting/main.py "$EXP" "$TYPE"

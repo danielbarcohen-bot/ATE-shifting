@@ -1,0 +1,24 @@
+Starting EXP31.39, type=probe_probs_with_restart, run 3/3
+Job 68241700, task 296
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891097959403308
+***
+FINISHED
+ATE before: -0.024891097959403308
+ATE now is: -0.024891097959403308
+sequence is: (('norm_min_max', 'lung'),)
+***
+Execution time: 0.012 sec
+distances from ATE (with time):
+[(np.float64(0.03510890204059669), 0)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.01481851481851482
+probability of this sequence is: 0.01481851481851482
+uncertainty:
+{'ate': np.float64(-0.02489109834471656), 'se': np.float64(0.006681300166600151), 'ci': (np.float64(-0.03798785710047291), np.float64(-0.011794339588960217)), 'significant': np.True_}
+checked:
+1

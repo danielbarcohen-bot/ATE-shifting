@@ -1,0 +1,24 @@
+Starting EXP31.9, type=probe_probs_with_restart, run 2/3
+Job 68239889, task 205
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101722609048
+***
+FINISHED
+ATE before: -0.024891101722609048
+ATE now is: -0.024891101722609048
+sequence is: (('norm_min_max', 'herpes'),)
+***
+Execution time: 0.005 sec
+distances from ATE (with time):
+[(np.float64(0.03510889827739095), 0)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.06421356421356422
+probability of this sequence is: 0.06421356421356422
+uncertainty:
+{'ate': np.float64(-0.0248911017260397), 'se': np.float64(0.007389573680745572), 'ci': (np.float64(-0.03937622039792443), np.float64(-0.010405983054154962)), 'significant': np.True_}
+checked:
+1

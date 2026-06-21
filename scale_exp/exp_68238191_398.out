@@ -1,0 +1,27 @@
+Starting EXP34.2, type=probe, run 3/3
+Job 68241930, task 398
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.433204825878
+PROBE TRIGGERED! Error reduced from inf to 11932.920 (ATE went to 6841.079964090902).
+PROBE TRIGGERED! Error reduced from 11932.920 to 10435.054 (ATE went to 8338.946179044138).
+PROBE TRIGGERED! Error reduced from 10435.054 to 7375.414 (ATE went to 11398.58636190461).
+PROBE TRIGGERED! Error reduced from 7375.414 to 3590.153 (ATE went to 15183.84705703298).
+PROBE TRIGGERED! Error reduced from 3590.153 to 1114.851 (ATE went to 17659.148883990005).
+***
+FINISHED
+ATE before: 8774.433204825878
+ATE now is: 18007.96176092017
+sequence is: (('bin_equal_width_2', 'education'), ('bin_equal_width_2', 'Age'), ('isolationForest', 'Age'))
+***
+Execution time: 2165.187 sec
+distances from ATE (with time):
+[(np.float64(9999.566795174122), 0), (np.float64(9999.566795174122), 1.2320168018341064), (np.float64(9999.566795174122), 5.0496299266815186), (np.float64(7375.41363809539), 33.69950985908508), (np.float64(9999.566795174122), 34.07791042327881), (np.float64(7375.41363809539), 37.67639422416687), (np.float64(3590.152942967021), 154.19390678405762), (np.float64(9999.566795174122), 154.36543726921082), (np.float64(7375.41363809539), 157.0869424343109), (np.float64(3590.152942967021), 174.10898447036743), (np.float64(1114.8511160099952), 209.10908722877502), (np.float64(9999.566795174122), 209.2563030719757), (np.float64(7375.41363809539), 210.46906113624573), (np.float64(3590.152942967021), 227.69460129737854), (np.float64(1114.8511160099952), 246.6881399154663), (np.float64(1114.8511160080816), 1600.0752115249634), (np.float64(1081.411594906811), 1854.2430860996246), (np.float64(766.0382390798295), 2165.186290025711)]
+uncertainty:
+{'ate': np.float64(18007.961760910835), 'se': np.float64(406.9778432533317), 'ci': (np.float64(17210.298663206147), np.float64(18805.624858615523)), 'significant': np.True_}
+checked:
+498

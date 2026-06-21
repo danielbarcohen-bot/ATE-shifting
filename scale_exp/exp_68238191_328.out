@@ -1,0 +1,23 @@
+Starting EXP32.3, type=probe_probs_no_restart, run 2/3
+Job 68241805, task 328
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 14942.09638970595
+***
+FINISHED
+ATE before: 14942.09638970595
+ATE now is: 19025.40521364222
+sequence is: (('norm_log', 'education'), ('norm_log', 'Age'))
+***
+Execution time: 29.812 sec
+distances from ATE (with time):
+[(np.float64(3831.90361029405), 0), (np.float64(3831.90361029401), 0.175400972366333), (np.float64(1798.8073344218647), 0.887852668762207), (np.float64(251.4052136422215), 29.811870574951172)]
+probability of this sequence is: 0.005739210284664831
+uncertainty:
+{'ate': np.float64(19025.405213632235), 'se': np.float64(147.81080866774613), 'ci': (np.float64(18735.701057034992), np.float64(19315.10937022948)), 'significant': np.True_}
+checked:
+39

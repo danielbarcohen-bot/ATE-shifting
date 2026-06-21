@@ -1,0 +1,23 @@
+Starting EXP37.3, type=probe_probs_no_restart, run 2/3
+Job 68243097, task 526
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 55387.24611155965
+***
+FINISHED
+ATE before: 55387.24611155965
+ATE now is: 9702.833549205643
+sequence is: (('norm_log', 'bedrooms'), ('norm_log', 'bathrooms'), ('bin_equal_width_5', 'bathrooms'))
+***
+Execution time: 8.882 sec
+distances from ATE (with time):
+[(np.float64(45254.16611155965), 0), (np.float64(45254.16611155794), 0.004061460494995117), (np.float64(33289.88687485687), 0.008833169937133789), (np.float64(33289.886874853255), 0.04220438003540039), (np.float64(21663.110109557223), 0.06114315986633301), (np.float64(21663.110109552166), 0.8723180294036865), (np.float64(19645.9969309347), 1.8078734874725342), (np.float64(19075.8629896689), 1.8210680484771729), (np.float64(2916.3190642081427), 2.8122165203094482), (np.float64(430.24645079435686), 8.881614446640015)]
+probability of this sequence is: 1.242253308369011e-05
+uncertainty:
+{'ate': np.float64(9702.833549209328), 'se': np.float64(36497.022171382894), 'ci': (np.float64(-61840.11727587615), np.float64(81245.78437429482)), 'significant': np.False_}
+checked:
+470

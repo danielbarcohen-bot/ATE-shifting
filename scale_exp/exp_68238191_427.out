@@ -1,0 +1,15 @@
+Starting EXP34.5, type=probe_probs_no_restart, run 2/3
+Job 68242849, task 427
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.433204996913
+
+
+*** TIMED OUT!! ***
+
+distances from ATE (with time):
+[(np.float64(9999.566795003087), 0), (np.float64(9999.566794607132), 27.3374924659729), (np.float64(9935.7202104038), 44.655866861343384), (np.float64(8436.798039323488), 56.8349347114563), (np.float64(3769.8370761861206), 290.20740842819214), (np.float64(3769.837076144371), 1722.7716507911682), (np.float64(3769.837076111364), 1982.0430715084076), (np.float64(3765.6665525679546), 3275.9022879600525), (np.float64(3657.78977165801), 3617.447412252426), (np.float64(2378.320271786175), 5879.135377645493)]

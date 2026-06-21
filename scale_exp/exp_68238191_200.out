@@ -1,0 +1,22 @@
+Starting EXP31.9, type=probe, run 3/3
+Job 68239884, task 200
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101431237857
+***
+FINISHED
+ATE before: -0.024891101431237857
+ATE now is: -0.024891101431237857
+sequence is: (('bin_equal_frequency_2', 'ormoth'),)
+***
+Execution time: 0.007 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856876214), 0)]
+uncertainty:
+{'ate': np.float64(-0.02489110143124061), 'se': np.float64(0.007252041643284246), 'ci': (np.float64(-0.039106628382427816), np.float64(-0.010675574480053407)), 'significant': np.True_}
+checked:
+1

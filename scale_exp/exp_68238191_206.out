@@ -1,0 +1,24 @@
+Starting EXP31.9, type=probe_probs_with_restart, run 3/3
+Job 68239890, task 206
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101686585853
+***
+FINISHED
+ATE before: -0.024891101686585853
+ATE now is: -0.024891101700715002
+sequence is: (('norm_min_max', 'feduc6'),)
+***
+Execution time: 0.004 sec
+distances from ATE (with time):
+[(np.float64(0.03510889831341414), 0), (np.float64(0.035108898299285), 0.0036568641662597656)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.06421356421356422
+probability of this sequence is: 0.06421356421356422
+uncertainty:
+{'ate': np.float64(-0.024891101694931708), 'se': np.float64(0.007344397007557604), 'ci': (np.float64(-0.03928766458530583), np.float64(-0.010494538804557583)), 'significant': np.True_}
+checked:
+1

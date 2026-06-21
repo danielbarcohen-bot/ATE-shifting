@@ -1,0 +1,22 @@
+Starting EXP31.6, type=probe, run 3/3
+Job 68239875, task 191
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101431213238
+***
+FINISHED
+ATE before: -0.024891101431213238
+ATE now is: -0.024891101431213238
+sequence is: (('bin_equal_frequency_2', 'alcohol'),)
+***
+Execution time: 0.002 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856878676), 0)]
+uncertainty:
+{'ate': np.float64(-0.024891101431240806), 'se': np.float64(0.007397311665880924), 'ci': (np.float64(-0.0393913876140003), np.float64(-0.010390815248481308)), 'significant': np.True_}
+checked:
+1

@@ -1,0 +1,22 @@
+Starting EXP31.12, type=probe, run 2/3
+Job 68239892, task 208
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101431240056
+***
+FINISHED
+ATE before: -0.024891101431240056
+ATE now is: -0.024891101431237985
+sequence is: (('bin_equal_frequency_2', 'nprevistq'),)
+***
+Execution time: 0.007 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856875994), 0)]
+uncertainty:
+{'ate': np.float64(-0.0248911014312405), 'se': np.float64(0.007285178978294275), 'ci': (np.float64(-0.03917158508813691), np.float64(-0.01061061777434409)), 'significant': np.True_}
+checked:
+1

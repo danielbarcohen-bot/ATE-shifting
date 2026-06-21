@@ -1,0 +1,26 @@
+Starting EXP36.1, type=probe_probs_with_restart, run 1/3
+Job 68242905, task 447
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 20835.74136136925
+PROBE TRIGGERED! Error reduced from inf to 10702.661 (ATE went to 20835.741335382434).
+PROBE TRIGGERED! Error reduced from 10702.661 to 8751.782 (ATE went to 18884.86195202565).
+***
+FINISHED
+ATE before: 20835.74136136925
+ATE now is: 12590.47669178478
+sequence is: (('norm_log', 'sqft_basement'),)
+***
+Execution time: 0.104 sec
+distances from ATE (with time):
+[(np.float64(10702.661361369252), 0), (np.float64(10702.661335382434), 0.0014252662658691406), (np.float64(10702.661361369252), 0.002765655517578125), (np.float64(10702.661335382434), 0.005125522613525391), (np.float64(10702.66133218002), 0.027688980102539062), (np.float64(9660.186664093793), 0.04564523696899414), (np.float64(8751.78195202565), 0.047884464263916016), (np.float64(10702.661361369252), 0.04920172691345215), (np.float64(10702.661335382434), 0.05143857002258301), (np.float64(8751.78195202565), 0.0536799430847168), (np.float64(8751.781942538413), 0.05646061897277832), (np.float64(2457.3966917847793), 0.10315680503845215)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.01515151515151515
+probability of this sequence is: 0.009696969696969697
+uncertainty:
+{'ate': np.float64(12590.476686097725), 'se': np.float64(88734.57074354458), 'ci': (np.float64(-161576.74084481772), np.float64(186757.6942170132)), 'significant': np.False_}
+checked:
+45

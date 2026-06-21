@@ -1,0 +1,27 @@
+Starting EXP34.4, type=probe, run 1/3
+Job 68242793, task 414
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.433205474146
+PROBE TRIGGERED! Error reduced from inf to 11932.920 (ATE went to 6841.079964619623).
+PROBE TRIGGERED! Error reduced from 11932.920 to 10435.054 (ATE went to 8338.946179220042).
+PROBE TRIGGERED! Error reduced from 10435.054 to 7375.414 (ATE went to 11398.586362168517).
+PROBE TRIGGERED! Error reduced from 7375.414 to 4268.453 (ATE went to 14505.54654753185).
+PROBE TRIGGERED! Error reduced from 4268.453 to 1878.423 (ATE went to 16895.577086117428).
+***
+FINISHED
+ATE before: 8774.433205474146
+ATE now is: 18007.961760619728
+sequence is: (('bin_equal_width_2', 'education'), ('bin_equal_width_2', 'Age'), ('isolationForest', 'Age'))
+***
+Execution time: 4954.593 sec
+distances from ATE (with time):
+[(np.float64(9999.566794525854), 0), (np.float64(9999.566794525854), 2.555640935897827), (np.float64(9999.566794525854), 11.115382671356201), (np.float64(7375.413637831483), 73.90341424942017), (np.float64(9999.566794525854), 74.7513358592987), (np.float64(7375.413637831483), 82.26355385780334), (np.float64(4268.453452468149), 320.1144633293152), (np.float64(9999.566794525854), 320.3716490268707), (np.float64(7375.413637831483), 325.823525428772), (np.float64(4268.453452468149), 366.3276970386505), (np.float64(1878.4229138825722), 448.5219533443451), (np.float64(9999.566794525854), 448.76555824279785), (np.float64(7375.413637831483), 451.51995968818665), (np.float64(4268.453452468149), 492.054927110672), (np.float64(1878.4229138825722), 537.30157995224), (np.float64(1878.4229138069713), 3609.1260948181152), (np.float64(1838.3367060201635), 4218.637815713882), (np.float64(766.038239380272), 4954.592188119888)]
+uncertainty:
+{'ate': np.float64(18007.961760733553), 'se': np.float64(287.7765284254631), 'ci': (np.float64(17443.9297113757), np.float64(18571.993810091408)), 'significant': np.True_}
+checked:
+498

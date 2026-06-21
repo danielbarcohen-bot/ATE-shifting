@@ -1,0 +1,24 @@
+Starting EXP31.18, type=probe_probs_with_restart, run 2/3
+Job 68239920, task 232
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02466386483686886
+***
+FINISHED
+ATE before: -0.02466386483686886
+ATE now is: -0.024663864836921585
+sequence is: (('norm_min_max', 'mplbir'),)
+***
+Execution time: 0.005 sec
+distances from ATE (with time):
+[(np.float64(0.03533613516313114), 0), (np.float64(0.035336135163078417), 0.005101680755615234)]
+(REAL, NOT adjusted by restarts)probability of this sequence is: 0.03210678210678211
+probability of this sequence is: 0.03210678210678211
+uncertainty:
+{'ate': np.float64(-0.02466386483692387), 'se': np.float64(0.007145885112743911), 'ci': (np.float64(-0.03867130430699763), np.float64(-0.010656425366850112)), 'significant': np.True_}
+checked:
+1

@@ -1,0 +1,23 @@
+Starting EXP31.3, type=probe_probs_no_restart, run 3/3
+Job 68239869, task 185
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.02489110143123738
+***
+FINISHED
+ATE before: -0.02489110143123738
+ATE now is: -0.02489110143123738
+sequence is: (('norm_min_max', 'hydra'),)
+***
+Execution time: 0.003 sec
+distances from ATE (with time):
+[(np.float64(0.03510889856876262), 0)]
+probability of this sequence is: 0.19264069264069264
+uncertainty:
+{'ate': np.float64(-0.024891101431240736), 'se': np.float64(0.007324205279507567), 'ci': (np.float64(-0.03924808316419477), np.float64(-0.010534119698286699)), 'significant': np.True_}
+checked:
+1

@@ -1,0 +1,23 @@
+Starting EXP34.1, type=probe_probs_no_restart, run 1/3
+Job 68241914, task 390
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.43320476426
+***
+FINISHED
+ATE before: 8774.43320476426
+ATE now is: 18995.31175346304
+sequence is: (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'Age'))
+***
+Execution time: 3836.299 sec
+distances from ATE (with time):
+[(np.float64(9999.56679523574), 0), (np.float64(9999.56679523468), 0.4019463062286377), (np.float64(9935.720210881365), 4.608107089996338), (np.float64(8436.798039486679), 5.7828075885772705), (np.float64(4505.760637435067), 27.23190402984619), (np.float64(4475.107084748888), 291.4794178009033), (np.float64(3534.2798475694), 319.91789293289185), (np.float64(2979.500465961437), 335.79279828071594), (np.float64(2672.3508832120024), 533.6027674674988), (np.float64(2134.553549179891), 1037.1605932712555), (np.float64(1942.6264134932098), 2220.7977714538574), (np.float64(1513.1178079435304), 3205.3721861839294), (np.float64(221.31175346304008), 3836.2988913059235)]
+probability of this sequence is: 4.540096951661003e-07
+uncertainty:
+{'ate': np.float64(18995.311753467904), 'se': np.float64(608.9804147544937), 'ci': (np.float64(17801.72724299996), np.float64(20188.896263935847)), 'significant': np.True_}
+checked:
+1819

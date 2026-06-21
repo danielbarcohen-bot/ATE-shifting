@@ -1,0 +1,23 @@
+Starting EXP36.2, type=probe_probs_no_restart, run 3/3
+Job 68242940, task 455
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 26612.237571908216
+***
+FINISHED
+ATE before: 26612.237571908216
+ATE now is: 12126.532002470158
+sequence is: (('IQR', 'sqft_above'),)
+***
+Execution time: 0.101 sec
+distances from ATE (with time):
+[(np.float64(16479.157571908218), 0), (np.float64(16479.15755593356), 0.024718523025512695), (np.float64(15821.28825366324), 0.05100274085998535), (np.float64(5498.226814192456), 0.05631685256958008), (np.float64(2743.0747854769425), 0.0835256576538086), (np.float64(1993.4520024701578), 0.10029721260070801)]
+probability of this sequence is: 0.006060606060606061
+uncertainty:
+{'ate': np.float64(12126.53200366412), 'se': np.float64(45840.6301523108), 'ci': (np.float64(-77785.36661095619), np.float64(102038.43061828443)), 'significant': np.False_}
+checked:
+36

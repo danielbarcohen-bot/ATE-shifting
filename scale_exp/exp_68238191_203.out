@@ -1,0 +1,23 @@
+Starting EXP31.9, type=probe_probs_no_restart, run 3/3
+Job 68239887, task 203
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -0.024891101431240407
+***
+FINISHED
+ATE before: -0.024891101431240407
+ATE now is: -0.024891101431205924
+sequence is: (('norm_min_max', 'orfath'),)
+***
+Execution time: 0.004 sec
+distances from ATE (with time):
+[(np.float64(0.035108898568759594), 0)]
+probability of this sequence is: 0.06421356421356422
+uncertainty:
+{'ate': np.float64(-0.024891101431240903), 'se': np.float64(0.007367041533140766), 'ci': (np.float64(-0.03933205235460742), np.float64(-0.010450150507874387)), 'significant': np.True_}
+checked:
+1

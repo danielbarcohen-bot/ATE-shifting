@@ -1,0 +1,23 @@
+Starting EXP36.4, type=probe_probs_no_restart, run 2/3
+Job 68242995, task 472
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 48245.33765167645
+***
+FINISHED
+ATE before: 48245.33765167645
+ATE now is: 11942.70686338632
+sequence is: (('bin_equal_frequency_5', 'sqft_living'), ('IQR', 'sqft_lot'))
+***
+Execution time: 31.971 sec
+distances from ATE (with time):
+[(np.float64(38112.257651676446), 0), (np.float64(38112.25764815528), 0.002039670944213867), (np.float64(38112.257619235534), 0.015321969985961914), (np.float64(37066.59975162951), 0.05283212661743164), (np.float64(31371.294823642093), 0.06551694869995117), (np.float64(21253.318192504514), 0.0719752311706543), (np.float64(19974.62544970173), 0.13623476028442383), (np.float64(17405.093687104694), 2.2659199237823486), (np.float64(12712.005708561852), 2.5280990600585938), (np.float64(7279.090904718812), 9.974119424819946), (np.float64(6520.802682837542), 26.543364763259888), (np.float64(3682.0283365502946), 28.779815912246704), (np.float64(1809.62686338632), 31.970343589782715)]
+probability of this sequence is: 6.559097468188377e-06
+uncertainty:
+{'ate': np.float64(11942.70687754314), 'se': np.float64(34546.84304435262), 'ci': (np.float64(-55794.7420759356), np.float64(79680.15583102188)), 'significant': np.False_}
+checked:
+3249
