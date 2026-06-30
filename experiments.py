@@ -723,6 +723,16 @@ EXPERIMENTS = {
         "target_ate": 10133.08,
         "epsilon": 2533,
         "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict
+    },
+    "EXP35_high": {
+        "df": df_walmart,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 113001,
+        "epsilon": 2533,
+        "max_length": 10,
         "sequence_length": 4,
         "op_probs": prob_dict
     },

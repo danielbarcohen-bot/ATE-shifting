@@ -178,5 +178,5 @@ if __name__ == "__main__":
     # run_experiment(TwinsDataLoader().load_data().dropna(), 0.084, 0.012, data_transformations)
     # run_experiment(ACSDataLoader().load_data().dropna(), 2990, 286.5, data_transformations)
     # run_experiment(ACSDataLoader().load_data().dropna(), 14558, 286.5, data_transformations)
-    run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations)
-
+    # run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations)
+    run_experiment(WalmartDataLoader().load_data(), 113001, 2533, data_transformations)
