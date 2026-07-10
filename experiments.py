@@ -713,7 +713,7 @@ EXPERIMENTS = {
         "target_ate": 18774,#16500,
         "epsilon": 1000,#100,
         "max_length": 10,
-        "sequence_length": 4,
+        "sequence_length": 3,
         "op_probs": prob_dict
     },
     "EXP35": {
