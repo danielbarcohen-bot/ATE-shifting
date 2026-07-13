@@ -10,23 +10,42 @@ from utils import apply_data_preparations_seq, calculate_ate_linear_regression_l
 
 
 class ProbManager:
-    def __init__(self, operations, columns, op_probs=None):
+    def __init__(self, operations, columns, op_probs=None, F_elements=None):
         self.probs = {}
         self.costs = {}
-        self._initialize_weights(operations, columns, op_probs)
+        self._initialize_weights(operations, columns, op_probs, F_elements)
 
-
-
-    def _initialize_weights(self, operations, columns, op_probs):
-        for op in operations:
-            for col in columns:
-                rule_name = f"{op}#{col}"
+    def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
+        if F_elements is not None:
+            # Use provided F elements directly
+            num_F_elements = len(F_elements)
+            for f_elem in F_elements:
                 if op_probs is None:
-                    prob = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                    prob = 1.0 / num_F_elements  # Uniform initial weight
                 else:
-                    prob = op_probs[op] / len(columns)
-                self.probs[rule_name] = prob
-                self.costs[rule_name] = self._get_cost(rule_name)
+                    # Extract operation name from f_elem
+                    if "#" in f_elem:
+                        op = f_elem.split("#")[0]
+                    else:
+                        op = f_elem
+                    # Distribute op_probs uniformly across its F elements
+                    # (This is a heuristic; adjust if needed)
+                    num_cols_for_op = sum(1 for fe in F_elements if fe.startswith(op + "#")) + (
+                        1 if op in F_elements else 0)
+                    prob = op_probs.get(op, 1.0) / max(num_cols_for_op, 1)
+
+                self.probs[f_elem] = prob
+                self.costs[f_elem] = self._get_cost(f_elem)
+        else:
+            for op in operations:
+                for col in columns:
+                    rule_name = f"{op}#{col}"
+                    if op_probs is None:
+                        prob = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                    else:
+                        prob = op_probs[op] / len(columns)
+                    self.probs[rule_name] = prob
+                    self.costs[rule_name] = self._get_cost(rule_name)
 
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
@@ -37,6 +56,7 @@ class ProbManager:
             rule_name = f"{func_name}#{col}"
             probability *= self.probs[rule_name]
         return probability
+
     def update_weights(self, probe_sequence, alpha=0.2):
 
         """
@@ -59,20 +79,22 @@ class ProbManager:
 
 
 class ProbeATESearch(ATESearch):
-    def __init__(self, use_restart=True, op_probs=None, is_brute = False, use_hash=True):
+    def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True):
         self.use_restart = use_restart
         self.op_probs = op_probs
         self.is_brute = is_brute
         self.use_hash = use_hash
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int=14400):
+               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
+               F_elements: List[str] = None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
         bank = {0: [()]}  # init with the empty sequence
         seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
-        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes, self.op_probs)
+        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
+                                   self.op_probs, F_elements)
         cost = 1
         best_ate_error = float('inf')
 
@@ -120,10 +142,13 @@ class ProbeATESearch(ATESearch):
                         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
                         if self.op_probs is not None:
                             if self.use_restart:
-                                temp_prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()],
-                                            common_causes, self.op_probs)
-                                print(f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
-                            print(f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
+                                temp_prob_manager = ProbManager(
+                                    [func_name for func_name, func in transformations_dict.items()],
+                                    common_causes, self.op_probs, F_elements)
+                                print(
+                                    f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                            print(
+                                f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
                         try:
                             print(
                                 f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
@@ -131,7 +156,7 @@ class ProbeATESearch(ATESearch):
                             print(f"Failed to calculate uncertainty:\n{e}")
                         print(f"checked:\n{checked}", flush=True)
 
-                        exit()
+                        return solution_seq#exit()
 
                     if not self.is_brute:
                         if self.use_hash:
