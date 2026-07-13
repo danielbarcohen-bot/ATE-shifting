@@ -85,6 +85,7 @@ class ProbeATESearch(ATESearch):
         self.is_brute = is_brute
         self.use_hash = use_hash
 
+
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
                F_elements: List[str] = None):
@@ -116,7 +117,7 @@ class ProbeATESearch(ATESearch):
                     if '#' in move:
                         func_name, col = move.split("#")
                     else:
-                        func_name, col = move, "dummy"
+                        func_name, col = move, common_causes[0]#"dummy"
                     new_seq = seq + ((func_name, col),)
 
                     if len(new_seq) > max_seq_length:
