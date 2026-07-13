@@ -1,6 +1,6 @@
 import argparse
 
-from experiment import Experiment, RandomExperiment, ProbabilitiesExperiment
+from experiment import Experiment, RandomExperiment, ProbabilitiesExperiment, FExperiment
 from experiments import EXPERIMENTS
 
 if __name__ == "__main__":
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     parser.add_argument("mode", type=str,
                         choices=["brute", "brute_prob", "oe", "parallel", "astar", "probe", "probe_brute", "oe_no_bit_mask", "llm_zero_shot",
                                  "llm_few_shot", "llm_zero_shot_cot", "llm_few_shot_cot", "random", "probe_no_hash", "probe_probs_no_restart_no_hash", "probe_probs_with_restart_no_hash",
-                                 "oe_no_hash", "probe_probs_no_restart", "probe_probs_with_restart", "greedy"],
+                                 "oe_no_hash", "probe_probs_no_restart", "probe_probs_with_restart", "greedy", "fprobe","fprobe_probs_no_restart", "fprobe_probs_with_restart"],
                         help="Which mode to run: brute OE or probe")
     args = parser.parse_args()
     config = EXPERIMENTS.get(args.exp_name)
@@ -49,6 +49,24 @@ if __name__ == "__main__":
             experiment.run_brute_prob()
         if args.mode == "probe_brute":
             experiment.run_probe_brute()
+    if args.mode in ["fprobe","fprobe_probs_no_restart", "fprobe_probs_with_restart"]:
+        experiment = FExperiment(
+            df=config["df"],
+            transformations_dict=config["transformations_dict"],
+            common_causes=config["common_causes"],
+            target_ate=config["target_ate"],
+            epsilon=config["epsilon"],
+            max_sequence_length=config["max_length"],
+            op_probs=config["op_probs"],
+            i=config["i"],
+            solution_sequence=config["solution_sequence"]
+        )
+        if args.mode == "fprobe":
+            experiment.run_probe_uniform()
+        if args.mode == "fprobe_probs_with_restart":
+            experiment.run_probe_probs_with_restart()
+        if args.mode == "fprobe_probs_no_restart":
+            experiment.run_probe_probs_with_no_restart()
     else:
         experiment = Experiment(
             df=config["df"],

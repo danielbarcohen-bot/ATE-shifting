@@ -846,4 +846,104 @@ EXPERIMENTS = {
 
     } for k in range(1, 6)
     },
+    **{f"EXP39.{k}": {  # F size - twins uniform
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_twins_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5,
+        "sequence_length": 2,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP40.{k}": {  # F size - twins probs with restart
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": df_twins_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.06,
+        "epsilon": 0.06,
+        "max_length": 5,
+        "sequence_length": 2,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('IQR', 'gestat10'), ('bin_equal_frequency_2', 'wt'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP41.{k}": {  # F size - acs uniform
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 18774,#16500,
+        "epsilon": 1000,#100,
+        "max_length": 10,
+        "sequence_length": 3,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('bin_equal_width_2', 'education'), ('isolationForest', 'Age'), ('bin_equal_frequency_2', 'Age'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP42.{k}": {  # F size - acs probs with restart
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 18774,  # 16500,
+        "epsilon": 1000,  # 100,
+        "max_length": 10,
+        "sequence_length": 3,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('norm_log', 'education'), ('bin_equal_width_5', 'education'), ('isolationForest', 'Age'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP43.{k}": {  # F size - acs probs with NO restart
+        "df": df_acs_no_missing_values,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 18774,  # 16500,
+        "epsilon": 1000,  # 100,
+        "max_length": 10,
+        "sequence_length": 3,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'Age'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP44.{k}": {  # F size - walmart uniform
+        "df": df_walmart,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_lot15'))
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP44.{k}": {  # F size - walmart probs with restart
+        "df": df_walmart,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence": (('norm_log', 'grade'), ('IQR', 'sqft_basement'), ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_5', 'sqft_lot15'))
+
+    } for k in range(1, 16)
+    },
 }

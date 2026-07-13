@@ -3,6 +3,7 @@ from typing import List, Callable
 import numpy as np
 import pandas as pd
 
+from F_size_experiments import run_F_experiment
 from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
     FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK
 from search_methods.LLM_search import LLMSearch
@@ -180,3 +181,59 @@ class ProbabilitiesExperiment(Experiment):
                                              epsilon=self.epsilon,
                                              max_seq_length=self.max_length,
                                              transformations_dict=self.transformations_dict)
+
+
+class FExperiment(Experiment):
+    def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
+                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i:int, solution_sequence):
+        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length)
+        self.op_probs = op_probs
+        self.i = i
+        self.solution_sequence = solution_sequence
+
+    def run_probe_uniform(self):
+        search_alg = ProbeATESearch()
+        return run_F_experiment(
+        search_algorithm=search_alg,
+        df=self.df,
+        common_causes=self.common_causes,
+        target_ate=self.target_ate,
+        epsilon=self.epsilon,
+        max_seq_length=self.max_length,
+        transformations_dict=self.transformations_dict,
+        solution_sequence=self.solution_sequence,
+        i=self.i,
+        whole_df_ops=['isolationForest'],
+        seed=42  # For reproducibility
+    )
+
+    def run_probe_probs_with_restart(self):
+        search_alg = ProbeATESearch(op_probs=self.op_probs)
+        return run_F_experiment(
+            search_algorithm=search_alg,
+            df=self.df,
+            common_causes=self.common_causes,
+            target_ate=self.target_ate,
+            epsilon=self.epsilon,
+            max_seq_length=self.max_length,
+            transformations_dict=self.transformations_dict,
+            solution_sequence=self.solution_sequence,
+            i=self.i,
+            whole_df_ops=['isolationForest'],
+            seed=42  # For reproducibility
+        )
+    def run_probe_probs_with_no_restart(self):
+        search_alg = ProbeATESearch(use_restart=False, op_probs=self.op_probs)
+        return run_F_experiment(
+            search_algorithm=search_alg,
+            df=self.df,
+            common_causes=self.common_causes,
+            target_ate=self.target_ate,
+            epsilon=self.epsilon,
+            max_seq_length=self.max_length,
+            transformations_dict=self.transformations_dict,
+            solution_sequence=self.solution_sequence,
+            i=self.i,
+            whole_df_ops=['isolationForest'],
+            seed=42  # For reproducibility
+        )

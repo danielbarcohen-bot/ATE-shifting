@@ -113,7 +113,10 @@ class ProbeATESearch(ATESearch):
                 if should_restart:
                     break
                 for seq in bank[cost - prob_manager.costs[move]]:
-                    func_name, col = move.split("#")
+                    if '#' in move:
+                        func_name, col = move.split("#")
+                    else:
+                        func_name, col = move, "dummy"
                     new_seq = seq + ((func_name, col),)
 
                     if len(new_seq) > max_seq_length:
