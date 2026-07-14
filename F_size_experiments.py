@@ -585,7 +585,8 @@ class OperationSpaceExperiment:
             max_seq_length=self.max_seq_length,
             transformations_dict=subset_transformations,
             time_out_sec=self.time_out_sec,
-            F_elements=F_subset  # NEW: pass exact F elements to search
+            F_elements=F_subset,
+            whole_df_ops=self.whole_df_ops
         )
         # If search completes without exception, it found the solution
         result['found_solution'] = True

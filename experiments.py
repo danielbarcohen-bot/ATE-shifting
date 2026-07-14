@@ -932,7 +932,7 @@ EXPERIMENTS = {
 
     } for k in range(1, 16)
     },
-    **{f"EXP44.{k}": {  # F size - walmart probs with restart
+    **{f"EXP45.{k}": {  # F size - walmart probs with restart
         "df": df_walmart,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),

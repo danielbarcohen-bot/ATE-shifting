@@ -10,28 +10,35 @@ from utils import apply_data_preparations_seq, calculate_ate_linear_regression_l
 
 
 class ProbManager:
-    def __init__(self, operations, columns, op_probs=None, F_elements=None):
+    def __init__(self, operations, columns, op_probs=None, F_elements=None, whole_df_ops=None):
         self.probs = {}
         self.costs = {}
+        self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
+        print("op_probs")
+        print(op_probs)
+        print("self.probs")
+        print(self.probs)
 
     def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
         if F_elements is not None:
-            # Use provided F elements directly
+            exploded_F_elements = []
+            for f_elem in F_elements:
+                if f_elem in self.whole_df_ops:
+                    # Explode: add this op with every column
+                    for col in columns:
+                        exploded_F_elements.append(f"{f_elem}#{col}")
+                else:
+                    exploded_F_elements.append(f_elem)
+            F_elements = exploded_F_elements
+
             num_F_elements = len(F_elements)
             for f_elem in F_elements:
                 if op_probs is None:
-                    prob = 1.0 / num_F_elements  # Uniform initial weight
+                    prob = 1.0 / num_F_elements
                 else:
-                    # Extract operation name from f_elem
-                    if "#" in f_elem:
-                        op = f_elem.split("#")[0]
-                    else:
-                        op = f_elem
-                    # Distribute op_probs uniformly across its F elements
-                    # (This is a heuristic; adjust if needed)
-                    num_cols_for_op = sum(1 for fe in F_elements if fe.startswith(op + "#")) + (
-                        1 if op in F_elements else 0)
+                    op = f_elem.split("#")[0]
+                    num_cols_for_op = sum(1 for fe in F_elements if fe.startswith(op + "#"))
                     prob = op_probs.get(op, 1.0) / max(num_cols_for_op, 1)
 
                 self.probs[f_elem] = prob
@@ -88,14 +95,14 @@ class ProbeATESearch(ATESearch):
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
-               F_elements: List[str] = None):
+               F_elements: List[str] = None, whole_df_ops: List[str]=None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
         bank = {0: [()]}  # init with the empty sequence
         seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
-                                   self.op_probs, F_elements)
+                                   self.op_probs, F_elements, whole_df_ops)
         cost = 1
         best_ate_error = float('inf')
 
@@ -148,7 +155,7 @@ class ProbeATESearch(ATESearch):
                             if self.use_restart:
                                 temp_prob_manager = ProbManager(
                                     [func_name for func_name, func in transformations_dict.items()],
-                                    common_causes, self.op_probs, F_elements)
+                                    common_causes, self.op_probs, F_elements, whole_df_ops)
                                 print(
                                     f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
                             print(
