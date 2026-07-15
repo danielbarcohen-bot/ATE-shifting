@@ -946,4 +946,18 @@ EXPERIMENTS = {
 
     } for k in range(1, 16)
     },
+    **{f"EXP46.{k}": {  # F size - walmart probs with\out restart | more probable solution sequence
+        "df": df_walmart,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 10133.08,
+        "epsilon": 2533,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        "solution_sequence":(('norm_log', 'sqft_lot'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'), ('zscore_filter_3', 'sqft_lot15'))
+
+    } for k in range(1, 16)
+    },
 }
