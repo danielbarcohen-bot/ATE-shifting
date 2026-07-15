@@ -15,45 +15,31 @@ class ProbManager:
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
-        print("op_probs")
-        print(op_probs)
-        print("self.probs")
-        print(self.probs)
 
     def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
         if F_elements is not None:
-            exploded_F_elements = []
-            for f_elem in F_elements:
-                if f_elem in self.whole_df_ops:
-                    # Explode: add this op with every column
-                    for col in columns:
-                        exploded_F_elements.append(f"{f_elem}#{col}")
-                else:
-                    exploded_F_elements.append(f_elem)
-            F_elements = exploded_F_elements
-
-            num_F_elements = len(F_elements)
-            for f_elem in F_elements:
-                if op_probs is None:
-                    prob = 1.0 / num_F_elements
-                else:
-                    op = f_elem.split("#")[0]
-                    num_cols_for_op = sum(1 for fe in F_elements if fe.startswith(op + "#"))
-                    prob = op_probs.get(op, 1.0) / max(num_cols_for_op, 1)
-
-                self.probs[f_elem] = prob
-                self.costs[f_elem] = self._get_cost(f_elem)
+            # Iterate operations in SAME ORDER as else branch
+            for op in operations:
+                for col in columns:
+                    f_elem = f"{op}#{col}"
+                    # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
+                    if f_elem in F_elements or op in F_elements:
+                        if op_probs is None:
+                            prob = 1.0 / len(F_elements)  # Will fix this below
+                        else:
+                            prob = op_probs[op] / len(columns)
+                        self.probs[f_elem] = prob
+                        self.costs[f_elem] = self._get_cost(f_elem)
         else:
             for op in operations:
                 for col in columns:
-                    rule_name = f"{op}#{col}"
+                    f_elem = f"{op}#{col}"
                     if op_probs is None:
-                        prob = 1.0 / (len(operations) * len(columns))  # Uniform initial weight
+                        prob = 1.0 / (len(operations) * len(columns))
                     else:
                         prob = op_probs[op] / len(columns)
-                    self.probs[rule_name] = prob
-                    self.costs[rule_name] = self._get_cost(rule_name)
-
+                    self.probs[f_elem] = prob
+                    self.costs[f_elem] = self._get_cost(f_elem)
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
 
