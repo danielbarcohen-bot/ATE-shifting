@@ -660,3 +660,595 @@ sequence is: (('bin_equal_width_5', 'sqft_living15'), ('bin_equal_frequency_2', 
 #FOUND A PIPELINE OUT OF CI
 new ate is: 640.4955611943652
 sequence is: (('bin_equal_width_5', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_basement'))
+
+
+new ate is: 22190.088211288876
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+PROBE TRIGGERED! Error reduced from 26167.972 to 22190.088 (ATE went to 22190.088211288876).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22190.088211288876
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23868.409728889223
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+PROBE TRIGGERED! Error reduced from 22190.088 to 19512.079 (ATE went to 19512.078544332497).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23868.409728889223
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22272.72347025514
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22272.72347025514
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24497.268659029327
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24497.268659029327
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25379.51699354603
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25276.09397168957
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21008.74446153384
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23311.59169626342
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25379.51699354603
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24554.52674332727
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22196.572826554308
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23472.206088965577
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('zscore_clip_3', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25293.01608297198
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23043.748338232625
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21641.437926714258
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25541.98781832914
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23308.88308002601
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25730.81770372661
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_10', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25013.957316570202
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19521.9983465186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25730.851528269624
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17216.332211561654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'yr_built'))
+PROBE TRIGGERED! Error reduced from 19512.079 to 17216.332 (ATE went to 17216.332211561654).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25379.51699354603
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23868.409728889223
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21948.440686826165
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22272.72347025514
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22272.72347025514
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23564.731601395895
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24452.046323154384
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_width_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25494.849100786818
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24497.268659029327
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20869.154451633432
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21719.17573696726
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25276.09397168957
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21008.74446153384
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20869.154451633432
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23311.59169626342
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25379.51699354603
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24554.52674332727
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22196.572826554308
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23472.206088965577
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('zscore_clip_3', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25293.01608297198
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23043.748338232625
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24606.92155643053
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25507.103696590024
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25601.019128295273
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24366.57114915942
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24691.598463087706
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_width_5', 'sqft_living15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23287.182988568882
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19521.9983465186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21390.51303136139
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17038.171098869214
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 15941.639333409783
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20730.821395248327
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 18131.337088966677
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20005.361248152112
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24074.83788169891
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19943.48704929246
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'floors'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 15892.705963770812
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17449.488877842385
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21404.995527829986
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19231.971259334186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'view'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19555.1753215237
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'yr_renovated'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20969.96714537897
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23998.16623294584
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_above'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 13180.751299953075
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'yr_built'))
+PROBE TRIGGERED! Error reduced from 17216.332 to 13180.751 (ATE went to 13180.751299953075).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25379.51699354603
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17216.332211561654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22272.72347025514
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20869.154451633432
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20869.154451633432
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20869.154451633432
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21309.844940247494
+sequence is: (('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24606.92155643053
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_above'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25276.09397168957
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21008.74446153384
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23311.59169626342
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22021.558310252687
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_5', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22196.572826554308
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_width_5', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25293.01608297198
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23043.748338232625
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23022.143483020645
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078542583582
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078542936666
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078547973408
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'view'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'waterfront'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.07854085501
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'yr_renovated'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20024.956327157182
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.07854755958
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19519.881795055288
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'condition'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19386.543019167802
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'floors'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17817.317906698092
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23106.50539083255
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_above'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21562.55266960127
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 18191.76439542891
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17719.350400022053
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_living15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17474.732337601985
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078538117898
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19345.589875802405
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'view'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.07854432823
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'waterfront'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544957898
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19549.458700400923
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'yr_renovated'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 21735.3256558761
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19637.3382333814
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'condition'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19501.120661652934
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'floors'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 16171.108591558319
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19489.664828635254
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17908.89966928023
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'view'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544316053
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'waterfront'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19555.175326565786
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_clip_3', 'yr_renovated'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23399.48110180682
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20073.126589592914
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'condition'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19352.83505477361
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'floors'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23144.31703421352
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'sqft_above'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20655.13311606492
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17905.392925109783
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 18972.160635886397
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'view'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 24410.24003810325
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20151.87481691694
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19477.37647919418
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'condition'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19517.023381098406
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'floors'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19471.27108322829
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'sqft_above'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19091.28013237418
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'sqft_basement'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 18241.95132960245
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 16393.230163248692
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'waterfront'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19507.374542401983
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('winsorize', 'yr_renovated'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('IQR', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17448.60572466997
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('IQR', 'sqft_lot'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 25396.242959580144
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('isolationForest', 'bathrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22449.6200160751
+sequence is: (('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 14579.62529575799
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 20057.66742051944
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 22449.6200160751
+sequence is: (('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 23944.82918174254
+sequence is: (('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+
+PROBE TRIGGERED! Error reduced from 26167.972 to 22190.088 (ATE went to 22190.088211288876).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+PROBE TRIGGERED! Error reduced from 22190.088 to 19512.079 (ATE went to 19512.078544332497).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19521.9983465186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17216.332211561654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'yr_built'))
+PROBE TRIGGERED! Error reduced from 19512.079 to 17216.332 (ATE went to 17216.332211561654).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17639.837479241654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'grade'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19683.499768445105
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19521.9983465186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17038.171098869214
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 15941.639333409783
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 18131.337088966677
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19943.48704929246
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'floors'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 15892.705963770812
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17449.488877842385
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_living15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19231.971259334186
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'view'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19555.1753215237
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'yr_renovated'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 13180.751299953075
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_2', 'yr_built'))
+PROBE TRIGGERED! Error reduced from 17216.332 to 13180.751 (ATE went to 13180.751299953075).
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 19512.078544332497
+sequence is: (('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))
+#FOUND A PIPELINE OUT OF CI
+new ate is: 17216.332211561654
+sequence is: (('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'grade'))
