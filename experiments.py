@@ -25,6 +25,8 @@ prob_dict = {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.01623376
              'zscore_filter_3': 0.025974025974025976, 'winsorize': 1e-10, 'IQR': 0.09090909090909091,
              'isolationForest': 0.04220779220779221}
 
+whole_df_ops = ['isolationForest']
+
 small_data_transformations_no_fill = {
     "zscore_clip_3": zscore_clip_3,
     "bin_2": bin_equal_frequency_2
@@ -704,7 +706,8 @@ EXPERIMENTS = {
         "epsilon": 0.06,
         "max_length": 5,
         "sequence_length": 2,
-        "op_probs": prob_dict
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops
     },
     "EXP28": {
         "df": df_acs_no_missing_values,
@@ -714,7 +717,8 @@ EXPERIMENTS = {
         "epsilon": 1000,#100,
         "max_length": 10,
         "sequence_length": 3,
-        "op_probs": prob_dict
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops
     },
     "EXP35": {
         "df": df_walmart,

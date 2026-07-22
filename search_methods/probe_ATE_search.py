@@ -15,6 +15,7 @@ class ProbManager:
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
+        print(self.probs)
 
     def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
         if F_elements is not None:
@@ -32,14 +33,27 @@ class ProbManager:
                         self.costs[f_elem] = self._get_cost(f_elem)
         else:
             for op in operations:
-                for col in columns:
-                    f_elem = f"{op}#{col}"
+                if op in self.whole_df_ops:
+                    print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
+                    f_elem = f"{op}"
                     if op_probs is None:
                         prob = 1.0 / (len(operations) * len(columns))
                     else:
-                        prob = op_probs[op] / len(columns)
+                        prob = op_probs[op]
                     self.probs[f_elem] = prob
                     self.costs[f_elem] = self._get_cost(f_elem)
+
+                else:
+                    for col in columns:
+                        f_elem = f"{op}#{col}"
+                        if op_probs is None:
+                            prob = 1.0 / (len(operations) * len(columns))
+                        else:
+                            prob = op_probs[op] / len(columns)
+                        self.probs[f_elem] = prob
+                        self.costs[f_elem] = self._get_cost(f_elem)
+
+
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
 
@@ -78,10 +92,9 @@ class ProbeATESearch(ATESearch):
         self.is_brute = is_brute
         self.use_hash = use_hash
 
-
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
-               F_elements: List[str] = None, whole_df_ops: List[str]=None):
+               F_elements: List[str] = None, whole_df_ops: List[str] = None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
@@ -110,7 +123,7 @@ class ProbeATESearch(ATESearch):
                     if '#' in move:
                         func_name, col = move.split("#")
                     else:
-                        func_name, col = move, common_causes[0]#"dummy"
+                        func_name, col = move, "TABLE"  # "dummy" TODO: fix here
                     new_seq = seq + ((func_name, col),)
 
                     if len(new_seq) > max_seq_length:
@@ -153,7 +166,7 @@ class ProbeATESearch(ATESearch):
                             print(f"Failed to calculate uncertainty:\n{e}")
                         print(f"checked:\n{checked}", flush=True)
 
-                        return solution_seq#exit()
+                        return solution_seq  # exit()
 
                     if not self.is_brute:
                         if self.use_hash:

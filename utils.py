@@ -221,7 +221,6 @@ def df_signature_fast_rounds(df: pd.DataFrame, cols: List[str], decimals=10) -> 
 def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict):
     df_ = df.copy()
     for func_name, col in seq_arr:
-        # df_[col] = transformations_dict[func_name](df_[col])
         df_ = transformations_dict[func_name](df_, col)
     return df_
 
