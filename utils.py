@@ -171,7 +171,7 @@ def isolationForest(df, col) -> pd.DataFrame:
     if df.empty:
         return df
     df_ = df.copy()
-    common_causes = df.columns.difference(["treatment", "outcome"]).tolist()
+    common_causes = df.columns.difference(["treatment", "outcome"], sort=False).tolist()
     iso = IsolationForest(random_state=42)
     df_['outlier_label'] = iso.fit_predict(df_[common_causes])
     df_clean = df_[df_['outlier_label'] == 1].drop(columns=['outlier_label'])

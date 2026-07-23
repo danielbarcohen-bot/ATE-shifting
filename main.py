@@ -60,7 +60,8 @@ if __name__ == "__main__":
             max_sequence_length=config["max_length"],
             op_probs=config["op_probs"],
             i=config["i"],
-            solution_sequence=config["solution_sequence"]
+            solution_sequence=config["solution_sequence"],
+            whole_df_ops=config.get("whole_df_ops", None)
         )
         if args.mode == "fprobe":
             experiment.run_probe_uniform()

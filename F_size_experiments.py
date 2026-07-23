@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
     probe_search_alg = ProbeATESearch()
 
-    common_causes_twins = df_twins_no_missing_values.columns.difference(["treatment", "outcome"]).tolist()
+    common_causes_twins = df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist()
 
     results = run_F_experiment(
         search_algorithm=probe_search_alg,

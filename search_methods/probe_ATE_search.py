@@ -15,29 +15,40 @@ class ProbManager:
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
-        print(self.probs)
-
     def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
         if F_elements is not None:
             # Iterate operations in SAME ORDER as else branch
             for op in operations:
-                for col in columns:
-                    f_elem = f"{op}#{col}"
+                if op in self.whole_df_ops:
+                    f_elem = f"{op}"
                     # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
                     if f_elem in F_elements or op in F_elements:
                         if op_probs is None:
                             prob = 1.0 / len(F_elements)  # Will fix this below
                         else:
-                            prob = op_probs[op] / len(columns)
+                            prob = op_probs[op] / sum(
+                                1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
                         self.probs[f_elem] = prob
                         self.costs[f_elem] = self._get_cost(f_elem)
+                else:
+                    for col in columns:
+                        f_elem = f"{op}#{col}"
+                        # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
+                        if f_elem in F_elements or op in F_elements:
+                            if op_probs is None:
+                                prob = 1.0 / len(F_elements)  # Will fix this below
+                            else:
+                                prob = op_probs[op] / sum(1 for item in F_elements if item.startswith(f"{op}#"))#len(columns)
+                            self.probs[f_elem] = prob
+                            self.costs[f_elem] = self._get_cost(f_elem)
         else:
+            F_size = ((len(operations) - len(self.whole_df_ops)) * len(columns)) + len(self.whole_df_ops)
             for op in operations:
                 if op in self.whole_df_ops:
                     print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
                     f_elem = f"{op}"
                     if op_probs is None:
-                        prob = 1.0 / (len(operations) * len(columns))
+                        prob = 1.0 / F_size#(len(operations) * len(columns))
                     else:
                         prob = op_probs[op]
                     self.probs[f_elem] = prob
@@ -47,7 +58,7 @@ class ProbManager:
                     for col in columns:
                         f_elem = f"{op}#{col}"
                         if op_probs is None:
-                            prob = 1.0 / (len(operations) * len(columns))
+                            prob = 1.0 / (F_size)
                         else:
                             prob = op_probs[op] / len(columns)
                         self.probs[f_elem] = prob
@@ -60,7 +71,10 @@ class ProbManager:
     def get_sequence_probability(self, sequence):
         probability = 1
         for func_name, col in sequence:
-            rule_name = f"{func_name}#{col}"
+            if col == "TABLE":
+                rule_name = f"{func_name}"
+            else:
+                rule_name = f"{func_name}#{col}"
             probability *= self.probs[rule_name]
         return probability
 
@@ -150,15 +164,16 @@ class ProbeATESearch(ATESearch):
                         solution_seq = new_seq
                         print(f"Execution time: {time.time() - start_time:.3f} sec")
                         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
-                        if self.op_probs is not None:
-                            if self.use_restart:
-                                temp_prob_manager = ProbManager(
-                                    [func_name for func_name, func in transformations_dict.items()],
-                                    common_causes, self.op_probs, F_elements, whole_df_ops)
-                                print(
-                                    f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                        # if self.op_probs is not None:
+                        if self.use_restart:
+                            temp_prob_manager = ProbManager(
+                                [func_name for func_name, func in transformations_dict.items()],
+                                common_causes, self.op_probs, F_elements, whole_df_ops)
                             print(
-                                f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
+                                f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                        else:
+                            print(
+                            f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
                         try:
                             print(
                                 f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")

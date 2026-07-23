@@ -7,16 +7,14 @@ from F_size_experiments import run_F_experiment
 from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
     FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK
 from search_methods.LLM_search import LLMSearch
+# from search_methods.probe_ATE_search_heuristic_linear_reg import ProbeATESearchLinearRegHeuristic
+from search_methods.OE_ATE_search_no_bit_mask import OEATESearchNoBitMask
+from search_methods.OE_ATE_search_no_hash import OEATESearchNoHash
 from search_methods.Random_search import RandomSearch
 # from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
 from search_methods.greedy_ATE_search import GreedyATESearch
 from search_methods.probe_ATE_search import ProbeATESearch
-# from search_methods.probe_ATE_search_heuristic_linear_reg import ProbeATESearchLinearRegHeuristic
-from search_methods.probe_ATE_search_no_hash import ProbeATESearchNoHash
-from search_methods.OE_ATE_search import OEATESearch
-from search_methods.OE_ATE_search_no_bit_mask import OEATESearchNoBitMask
-from search_methods.OE_ATE_search_no_hash import OEATESearchNoHash
 from utils import calculate_ate_linear_regression_lstsq
 
 
@@ -37,13 +35,16 @@ class Experiment:
         return BruteForceATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
                                             epsilon=self.epsilon,
                                             max_seq_length=self.max_length,
-                                            transformations_dict=self.transformations_dict)
+                                            transformations_dict=self.transformations_dict,
+                                            whole_df_ops=self.whole_df_ops)
 
     def run_prune(self):
         return ProbeATESearch(use_restart=False).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+                                                        target_ate=self.target_ate,
+                                                        epsilon=self.epsilon,
+                                                        max_seq_length=self.max_length,
+                                                        transformations_dict=self.transformations_dict,
+                                                        whole_df_ops=self.whole_df_ops)
 
     # def run_AStar(self):
     #     return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
@@ -54,14 +55,16 @@ class Experiment:
         return ProbeATESearch().search(df=self.df, common_causes=self.common_causes,
                                        target_ate=self.target_ate,
                                        epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict,
+                                       whole_df_ops=self.whole_df_ops)
 
     def run_probe_no_hash(self):
         return ProbeATESearch(use_hash=False).search(df=self.df, common_causes=self.common_causes,
-                                             target_ate=self.target_ate,
-                                             epsilon=self.epsilon,
-                                             max_seq_length=self.max_length,
-                                             transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+                                                     target_ate=self.target_ate,
+                                                     epsilon=self.epsilon,
+                                                     max_seq_length=self.max_length,
+                                                     transformations_dict=self.transformations_dict,
+                                                     whole_df_ops=self.whole_df_ops)
 
     def run_prune_no_hash(self):
         return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
@@ -103,8 +106,6 @@ class Experiment:
                                                               transformations_dict=self.transformations_dict)
 
 
-
-
 class RandomExperiment:
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float,
@@ -131,60 +132,80 @@ class RandomExperiment:
         print(f"avg distance from target:\n{sum(distances) / len(distances)}")
         print(f"avg ATE is {np.mean(ates)}")
 
+
 class ProbabilitiesExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
-                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], whole_df_ops: list[str] = None):
-        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,whole_df_ops)
+                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float],
+                 whole_df_ops: list[str] = None):
+        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
+                         whole_df_ops)
         self.op_probs = op_probs
 
     def run_probe_no_restart(self):
-        return ProbeATESearch(use_restart=False, op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+        return ProbeATESearch(use_restart=False, op_probs=self.op_probs).search(df=self.df,
+                                                                                common_causes=self.common_causes,
+                                                                                target_ate=self.target_ate,
+                                                                                epsilon=self.epsilon,
+                                                                                max_seq_length=self.max_length,
+                                                                                transformations_dict=self.transformations_dict,
+                                                                                whole_df_ops=self.whole_df_ops)
 
     def run_probe_no_restart_no_hash(self):
-        return ProbeATESearch(use_restart=False, op_probs=self.op_probs, use_hash=False).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+        return ProbeATESearch(use_restart=False, op_probs=self.op_probs, use_hash=False).search(df=self.df,
+                                                                                                common_causes=self.common_causes,
+                                                                                                target_ate=self.target_ate,
+                                                                                                epsilon=self.epsilon,
+                                                                                                max_seq_length=self.max_length,
+                                                                                                transformations_dict=self.transformations_dict,
+                                                                                                whole_df_ops=self.whole_df_ops)
 
     def run_probe(self):
         return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+                                                             target_ate=self.target_ate,
+                                                             epsilon=self.epsilon,
+                                                             max_seq_length=self.max_length,
+                                                             transformations_dict=self.transformations_dict,
+                                                             whole_df_ops=self.whole_df_ops)
+
     def run_probe_no_hash(self):
-        return ProbeATESearch(op_probs=self.op_probs, use_hash=False).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+        return ProbeATESearch(op_probs=self.op_probs, use_hash=False).search(df=self.df,
+                                                                             common_causes=self.common_causes,
+                                                                             target_ate=self.target_ate,
+                                                                             epsilon=self.epsilon,
+                                                                             max_seq_length=self.max_length,
+                                                                             transformations_dict=self.transformations_dict,
+                                                                             whole_df_ops=self.whole_df_ops)
 
     def run_probe_brute(self):
-        return ProbeATESearch(op_probs=self.op_probs, use_restart=False, is_brute=True).search(df=self.df, common_causes=self.common_causes,
-                                       target_ate=self.target_ate,
-                                       epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict, whole_df_ops=self.whole_df_ops)
+        return ProbeATESearch(op_probs=self.op_probs, use_restart=False, is_brute=True).search(df=self.df,
+                                                                                               common_causes=self.common_causes,
+                                                                                               target_ate=self.target_ate,
+                                                                                               epsilon=self.epsilon,
+                                                                                               max_seq_length=self.max_length,
+                                                                                               transformations_dict=self.transformations_dict,
+                                                                                               whole_df_ops=self.whole_df_ops)
 
     def run_greedy(self):
         return GreedyATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
-                                             target_ate=self.target_ate,
-                                             epsilon=self.epsilon,
-                                             max_seq_length=self.max_length,
-                                             transformations_dict=self.transformations_dict)
+                                                     target_ate=self.target_ate,
+                                                     epsilon=self.epsilon,
+                                                     max_seq_length=self.max_length,
+                                                     transformations_dict=self.transformations_dict,
+                                                     whole_df_ops=self.whole_df_ops)
 
     def run_brute_prob(self):
         return BruteForceATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
-                                             target_ate=self.target_ate,
-                                             epsilon=self.epsilon,
-                                             max_seq_length=self.max_length,
-                                             transformations_dict=self.transformations_dict)
+                                                         target_ate=self.target_ate,
+                                                         epsilon=self.epsilon,
+                                                         max_seq_length=self.max_length,
+                                                         transformations_dict=self.transformations_dict)
 
 
 class FExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
-                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i:int, solution_sequence):
-        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length)
+                 target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i: int,
+                 solution_sequence, whole_df_ops: list[str] = None):
+        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length, whole_df_ops=whole_df_ops)
         self.op_probs = op_probs
         self.i = i
         self.solution_sequence = solution_sequence
@@ -192,18 +213,18 @@ class FExperiment(Experiment):
     def run_probe_uniform(self):
         search_alg = ProbeATESearch()
         return run_F_experiment(
-        search_algorithm=search_alg,
-        df=self.df,
-        common_causes=self.common_causes,
-        target_ate=self.target_ate,
-        epsilon=self.epsilon,
-        max_seq_length=self.max_length,
-        transformations_dict=self.transformations_dict,
-        solution_sequence=self.solution_sequence,
-        i=self.i,
-        whole_df_ops=['isolationForest'],
-        seed=42  # For reproducibility
-    )
+            search_algorithm=search_alg,
+            df=self.df,
+            common_causes=self.common_causes,
+            target_ate=self.target_ate,
+            epsilon=self.epsilon,
+            max_seq_length=self.max_length,
+            transformations_dict=self.transformations_dict,
+            solution_sequence=self.solution_sequence,
+            i=self.i,
+            whole_df_ops=self.whole_df_ops,
+            seed=42  # For reproducibility
+        )
 
     def run_probe_probs_with_restart(self):
         search_alg = ProbeATESearch(op_probs=self.op_probs)
@@ -217,9 +238,10 @@ class FExperiment(Experiment):
             transformations_dict=self.transformations_dict,
             solution_sequence=self.solution_sequence,
             i=self.i,
-            whole_df_ops=['isolationForest'],
+            whole_df_ops=self.whole_df_ops,
             seed=42  # For reproducibility
         )
+
     def run_probe_probs_with_no_restart(self):
         search_alg = ProbeATESearch(use_restart=False, op_probs=self.op_probs)
         return run_F_experiment(
@@ -232,6 +254,6 @@ class FExperiment(Experiment):
             transformations_dict=self.transformations_dict,
             solution_sequence=self.solution_sequence,
             i=self.i,
-            whole_df_ops=['isolationForest'],
+            whole_df_ops=self.whole_df_ops,
             seed=42  # For reproducibility
         )

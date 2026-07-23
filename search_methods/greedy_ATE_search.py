@@ -14,11 +14,11 @@ class GreedyATESearch(ATESearch):
         self.op_probs = op_probs
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400):
+               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
-                                   self.op_probs)
+                                   self.op_probs, whole_df_ops=whole_df_ops)
 
         start_time = time.time()
         sequence = (())
@@ -53,13 +53,16 @@ class GreedyATESearch(ATESearch):
             selected_col = None
             for col in common_causes:
                 for func_name in transformations_dict.keys():
+                    rule_name = f"{func_name}#{col}"
+                    if not whole_df_ops is None and func_name in whole_df_ops:
+                        rule_name = f"{func_name}"
                     if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in sequence):
                         continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in sequence if c == col):
                         continue
-                    curr_prob = prob_manager.probs[f"{func_name}#{col}"]
+                    curr_prob = prob_manager.probs[rule_name]
                     if curr_prob > highest_prob:
                         highest_prob = curr_prob
                         selected_func = func_name
-                        selected_col = col
+                        selected_col = col if "#" in rule_name else "TABLE"
             sequence = sequence + ((selected_func, selected_col),)
