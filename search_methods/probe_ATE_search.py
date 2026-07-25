@@ -20,7 +20,7 @@ class ProbManager:
             # Iterate operations in SAME ORDER as else branch
             for op in operations:
                 if op in self.whole_df_ops:
-                    f_elem = f"{op}"
+                    f_elem = f"{op}#TABLE"
                     # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
                     if f_elem in F_elements or op in F_elements:
                         if op_probs is None:
@@ -46,7 +46,7 @@ class ProbManager:
             for op in operations:
                 if op in self.whole_df_ops:
                     print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
-                    f_elem = f"{op}"
+                    f_elem = f"{op}#TABLE"
                     if op_probs is None:
                         prob = 1.0 / F_size#(len(operations) * len(columns))
                     else:
@@ -71,10 +71,7 @@ class ProbManager:
     def get_sequence_probability(self, sequence):
         probability = 1
         for func_name, col in sequence:
-            if col == "TABLE":
-                rule_name = f"{func_name}"
-            else:
-                rule_name = f"{func_name}#{col}"
+            rule_name = f"{func_name}#{col}"
             probability *= self.probs[rule_name]
         return probability
 
@@ -137,7 +134,7 @@ class ProbeATESearch(ATESearch):
                     if '#' in move:
                         func_name, col = move.split("#")
                     else:
-                        func_name, col = move, "TABLE"  # "dummy" TODO: fix here
+                        func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
                     new_seq = seq + ((func_name, col),)
 
                     if len(new_seq) > max_seq_length:
