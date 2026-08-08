@@ -4,11 +4,15 @@ from typing import List
 import numpy as np
 import pandas as pd
 from dowhy import CausalModel
+from econml.dml import LinearDML, NonParamDML
+from econml.dr import DRLearner
 from scipy import stats
 from scipy.stats._mstats_basic import winsorize
-from sklearn.ensemble import IsolationForest
+from sklearn.ensemble import IsolationForest, RandomForestRegressor, RandomForestClassifier
 from sklearn.linear_model import LinearRegression, LassoCV, LogisticRegression
 from sklearn.model_selection import KFold
+
+from linear_ate_calculator import LinearATEModel
 
 
 def calculate_ate(model: CausalModel):
@@ -180,6 +184,11 @@ def isolationForest(df, col) -> pd.DataFrame:
         return df
 
     return df_clean
+
+
+def dropDuplicates(df, col) -> pd.DataFrame:
+    df_ = df.copy()
+    return df_.drop_duplicates()
 
 
 def df_signature(df: pd.DataFrame):
@@ -384,45 +393,50 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 
     return interesting
 
-
 def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-    # Extract outcome variable
-    Y = df[outcome].values
+    return LinearATEModel(df[common_causes], df[treatment], df[outcome]).ate
 
-    # Extract treatment and confounders
-    T = df[treatment].values.reshape(-1, 1)
-    X_confounders = df[common_causes].values
+# def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
+#     # Extract outcome variable
+#     Y = df[outcome].values
+#
+#     # Extract treatment and confounders
+#     T = df[treatment].values.reshape(-1, 1)
+#     X_confounders = df[common_causes].values
+#
+#     # 1. Create the full design matrix (X_full)
+#     # The columns must be in the order: [Treatment, Intercept, Confounder1, Confounder2, ...]
+#
+#     # Add intercept column (a column of ones)
+#     X_intercept = np.ones((df.shape[0], 1))
+#
+#     # Combine T, Intercept, and Confounders
+#     # This forms the X_full matrix for the regression: Y = beta0*T + beta1*Intercept + beta2*C1 + ...
+#     X_full = np.hstack([T, X_intercept, X_confounders])
+#
+#     # NOTE: The intercept should be the *second* column if you want the treatment effect
+#     # to remain the *first* coefficient (beta[0, 0]).
+#
+#     # 2. Use numpy.linalg.lstsq for the least-squares solution
+#     # beta will be the vector of coefficients: [ATE, Intercept_Coeff, Confounder1_Coeff, ...]
+#     # The [0] index extracts the coefficients array
+#     beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
+#
+#     # First coefficient is the Average Treatment Effect (ATE)
+#     ate = beta[0]
+#
+#     return ate
 
-    # 1. Create the full design matrix (X_full)
-    # The columns must be in the order: [Treatment, Intercept, Confounder1, Confounder2, ...]
-
-    # Add intercept column (a column of ones)
-    X_intercept = np.ones((df.shape[0], 1))
-
-    # Combine T, Intercept, and Confounders
-    # This forms the X_full matrix for the regression: Y = beta0*T + beta1*Intercept + beta2*C1 + ...
-    X_full = np.hstack([T, X_intercept, X_confounders])
-
-    # NOTE: The intercept should be the *second* column if you want the treatment effect
-    # to remain the *first* coefficient (beta[0, 0]).
-
-    # 2. Use numpy.linalg.lstsq for the least-squares solution
-    # beta will be the vector of coefficients: [ATE, Intercept_Coeff, Confounder1_Coeff, ...]
-    # The [0] index extracts the coefficients array
-    beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
-
-    # First coefficient is the Average Treatment Effect (ATE)
-    ate = beta[0]
-
-    return ate
 
 import statsmodels.api as sm
+
+
 def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
     X = sm.add_constant(df[[treatment] + common_causes])
     Y = df[outcome]
 
     # cov_type='HC1' gives you causal-inference-ready robust standard errors
-    model = sm.OLS(Y, X).fit()#cov_type='HC1')
+    model = sm.OLS(Y, X).fit()  # cov_type='HC1')
 
     ate = model.params[treatment]
     ate_se = model.bse[treatment]
@@ -469,53 +483,100 @@ def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: st
     # }
 
 
-def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):
-    X = df.drop(columns=[outcome_col, treatment_col])
+def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):
+    # 1. Separate outcome, treatment, and control features (W)
     y = df[outcome_col].values
     T = df[treatment_col].values
+    W = df.drop(columns=[outcome_col, treatment_col]).values
 
-    y_res = np.zeros_like(y, dtype=float)
-    T_res = np.zeros_like(T, dtype=float)
+    # 2. Create a 2D dummy array of ones so X is never None
+    X_dummy = np.ones((df.shape[0], 1))
 
-    # Use 2-fold cross-fitting for maximum speed
-    # random_state=42 makes it deterministic
-    kf = KFold(n_splits=2, shuffle=True, random_state=42)
+    # 3. Standard, raw scikit-learn models (No boundary capping/clipping)
+    model_y = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
+    model_t = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
 
-    for train_idx, test_idx in kf.split(X):
-        # LassoCV is extremely fast compared to Random Forest
-        model_y = LassoCV(cv=3).fit(X.iloc[train_idx], y[train_idx])
-        model_t = LassoCV(cv=3).fit(X.iloc[train_idx], T[train_idx])
+    # 4. Initialize LinearDML
+    # LinearRegression is safe here because X_dummy is just a constant baseline
+    dml_model = LinearDML(
+        model_y=model_y,
+        model_t=model_t,
+        discrete_treatment=True,
+        cv=5
+    )
 
-        y_res[test_idx] = y[test_idx] - model_y.predict(X.iloc[test_idx])
-        T_res[test_idx] = T[test_idx] - model_t.predict(X.iloc[test_idx])
+    # 5. Fit the model using your features as controls (W)
+    dml_model.fit(y, T, X=X_dummy, W=W)
 
-    # Final step: Simple Linear Regression on residuals
-    final_model = LinearRegression(fit_intercept=False).fit(T_res.reshape(-1, 1), y_res)
-    return final_model.coef_[0]
-
-
-def manual_dr_ate(df, outcome_col='outcome', treatment_col='treatment'):
-    X = df.drop(columns=[outcome_col, treatment_col])
-    y = df[outcome_col].values
-    T = df[treatment_col].values
-    n = len(y)
-
-    # 1. Propensity Score (Probability of Treatment) -> Fast & Deterministic
-    clf = LogisticRegression(max_iter=1000).fit(X, T)
-    e = np.clip(clf.predict_proba(X)[:, 1], 0.01, 0.99)  # Clip to avoid division by zero
-
-    # 2. Outcome Models -> Fast & Deterministic
-    model_0 = LassoCV(cv=3).fit(X[T == 0], y[T == 0])
-    model_1 = LassoCV(cv=3).fit(X[T == 1], y[T == 1])
-
-    mu_0 = model_0.predict(X)
-    mu_1 = model_1.predict(X)
-
-    # 3. Individual AIPW Scores (The "Double Robust" Magic)
-    # We calculate the treatment effect for every single row
-    scores = (mu_1 + (T * (y - mu_1) / e)) - (mu_0 + ((1 - T) * (y - mu_0) / (1 - e)))
-
-    # 4. Average Treatment Effect (ATE)
-    ate = np.mean(scores)
-
+    # 6. Extract the single population ATE
+    ate = dml_model.ate(X=X_dummy)
     return ate
+
+
+def calculate_ate_dr(df, outcome_col='outcome', treatment_col='treatment'):
+    y = df[outcome_col].values
+    T = df[treatment_col].values
+    X = df.drop(columns=[outcome_col, treatment_col]).values
+
+    model_y = RandomForestRegressor(n_estimators=100, max_depth=3, random_state=42)
+    model_t = RandomForestClassifier(n_estimators=100, max_depth=3, random_state=42)
+
+    dr_model = DRLearner(
+        model_regression=model_y,
+        model_propensity=model_t,
+        model_final=LinearRegression(),
+        cv=5,
+        min_propensity=0.01
+    )
+    dr_model.fit(y, T, X=X)
+    return dr_model.ate(X)
+# def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):
+#     X = df.drop(columns=[outcome_col, treatment_col])
+#     y = df[outcome_col].values
+#     T = df[treatment_col].values
+#
+#     y_res = np.zeros_like(y, dtype=float)
+#     T_res = np.zeros_like(T, dtype=float)
+#
+#     # Use 2-fold cross-fitting for maximum speed
+#     # random_state=42 makes it deterministic
+#     kf = KFold(n_splits=2, shuffle=True, random_state=42)
+#
+#     for train_idx, test_idx in kf.split(X):
+#         # LassoCV is extremely fast compared to Random Forest
+#         model_y = LassoCV(cv=3).fit(X.iloc[train_idx], y[train_idx])
+#         model_t = LassoCV(cv=3).fit(X.iloc[train_idx], T[train_idx])
+#
+#         y_res[test_idx] = y[test_idx] - model_y.predict(X.iloc[test_idx])
+#         T_res[test_idx] = T[test_idx] - model_t.predict(X.iloc[test_idx])
+#
+#     # Final step: Simple Linear Regression on residuals
+#     final_model = LinearRegression(fit_intercept=False).fit(T_res.reshape(-1, 1), y_res)
+#     return final_model.coef_[0]
+#
+#
+# def manual_dr_ate(df, outcome_col='outcome', treatment_col='treatment'):
+#     X = df.drop(columns=[outcome_col, treatment_col])
+#     y = df[outcome_col].values
+#     T = df[treatment_col].values
+#     n = len(y)
+#
+#     # 1. Propensity Score (Probability of Treatment) -> Fast & Deterministic
+#     clf = LogisticRegression(max_iter=1000).fit(X, T)
+#     e = np.clip(clf.predict_proba(X)[:, 1], 0.01, 0.99)  # Clip to avoid division by zero
+#
+#     # 2. Outcome Models -> Fast & Deterministic
+#     model_0 = LassoCV(cv=3).fit(X[T == 0], y[T == 0])
+#     model_1 = LassoCV(cv=3).fit(X[T == 1], y[T == 1])
+#
+#     mu_0 = model_0.predict(X)
+#     mu_1 = model_1.predict(X)
+#
+#     # 3. Individual AIPW Scores (The "Double Robust" Magic)
+#     # We calculate the treatment effect for every single row
+#     scores = (mu_1 + (T * (y - mu_1) / e)) - (mu_0 + ((1 - T) * (y - mu_0) / (1 - e)))
+#
+#     # 4. Average Treatment Effect (ATE)
+#     ate = np.mean(scores)
+#
+#     return ate

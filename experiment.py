@@ -34,7 +34,6 @@ class Experiment:
     def run_brute(self):
         return BruteForceATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
                                             epsilon=self.epsilon,
-                                            max_seq_length=self.max_length,
                                             transformations_dict=self.transformations_dict,
                                             whole_df_ops=self.whole_df_ops)
 
@@ -42,7 +41,6 @@ class Experiment:
         return ProbeATESearch(use_restart=False).search(df=self.df, common_causes=self.common_causes,
                                                         target_ate=self.target_ate,
                                                         epsilon=self.epsilon,
-                                                        max_seq_length=self.max_length,
                                                         transformations_dict=self.transformations_dict,
                                                         whole_df_ops=self.whole_df_ops)
 
@@ -55,14 +53,13 @@ class Experiment:
         return ProbeATESearch().search(df=self.df, common_causes=self.common_causes,
                                        target_ate=self.target_ate,
                                        epsilon=self.epsilon,
-                                       max_seq_length=self.max_length, transformations_dict=self.transformations_dict,
+                                       transformations_dict=self.transformations_dict,
                                        whole_df_ops=self.whole_df_ops)
 
     def run_probe_no_hash(self):
         return ProbeATESearch(use_hash=False).search(df=self.df, common_causes=self.common_causes,
                                                      target_ate=self.target_ate,
                                                      epsilon=self.epsilon,
-                                                     max_seq_length=self.max_length,
                                                      transformations_dict=self.transformations_dict,
                                                      whole_df_ops=self.whole_df_ops)
 
@@ -146,7 +143,6 @@ class ProbabilitiesExperiment(Experiment):
                                                                                 common_causes=self.common_causes,
                                                                                 target_ate=self.target_ate,
                                                                                 epsilon=self.epsilon,
-                                                                                max_seq_length=self.max_length,
                                                                                 transformations_dict=self.transformations_dict,
                                                                                 whole_df_ops=self.whole_df_ops)
 
@@ -155,7 +151,6 @@ class ProbabilitiesExperiment(Experiment):
                                                                                                 common_causes=self.common_causes,
                                                                                                 target_ate=self.target_ate,
                                                                                                 epsilon=self.epsilon,
-                                                                                                max_seq_length=self.max_length,
                                                                                                 transformations_dict=self.transformations_dict,
                                                                                                 whole_df_ops=self.whole_df_ops)
 
@@ -163,7 +158,6 @@ class ProbabilitiesExperiment(Experiment):
         return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
                                                              target_ate=self.target_ate,
                                                              epsilon=self.epsilon,
-                                                             max_seq_length=self.max_length,
                                                              transformations_dict=self.transformations_dict,
                                                              whole_df_ops=self.whole_df_ops)
 
@@ -172,7 +166,6 @@ class ProbabilitiesExperiment(Experiment):
                                                                              common_causes=self.common_causes,
                                                                              target_ate=self.target_ate,
                                                                              epsilon=self.epsilon,
-                                                                             max_seq_length=self.max_length,
                                                                              transformations_dict=self.transformations_dict,
                                                                              whole_df_ops=self.whole_df_ops)
 
@@ -181,15 +174,13 @@ class ProbabilitiesExperiment(Experiment):
                                                                                                common_causes=self.common_causes,
                                                                                                target_ate=self.target_ate,
                                                                                                epsilon=self.epsilon,
-                                                                                               max_seq_length=self.max_length,
                                                                                                transformations_dict=self.transformations_dict,
                                                                                                whole_df_ops=self.whole_df_ops)
 
     def run_greedy(self):
-        return GreedyATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
+        return GreedyATESearch(self.op_probs, self.max_length).search(df=self.df, common_causes=self.common_causes,
                                                      target_ate=self.target_ate,
                                                      epsilon=self.epsilon,
-                                                     max_seq_length=self.max_length,
                                                      transformations_dict=self.transformations_dict,
                                                      whole_df_ops=self.whole_df_ops)
 
@@ -197,7 +188,6 @@ class ProbabilitiesExperiment(Experiment):
         return BruteForceATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
                                                          target_ate=self.target_ate,
                                                          epsilon=self.epsilon,
-                                                         max_seq_length=self.max_length,
                                                          transformations_dict=self.transformations_dict)
 
 
@@ -205,7 +195,8 @@ class FExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i: int,
                  solution_sequence, whole_df_ops: list[str] = None):
-        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length, whole_df_ops=whole_df_ops)
+        super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
+                         whole_df_ops=whole_df_ops)
         self.op_probs = op_probs
         self.i = i
         self.solution_sequence = solution_sequence

@@ -18,22 +18,22 @@ class BruteForceATESearch(ATESearch):
         self.op_probs = op_probs
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
         df_ = df.copy()
 
         base_line_ate = get_base_line(common_causes, df_)
         print(f"base_line_ate: {base_line_ate}")
-        Q = deque([()])#deque([((), 0)])
+        Q = deque([()])
         try_count = 0
         solution_seq = None
         seq_ates = []
-        run_times = []
-        reached_goal_sequences = [] # for prob mode
-        prob_manager = None if self.op_probs is None else ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes, self.op_probs, whole_df_ops=whole_df_ops)
+        reached_goal_sequences = []  # for prob mode
+        prob_manager = None if self.op_probs is None else ProbManager(
+            [func_name for func_name, func in transformations_dict.items()], common_causes, self.op_probs,
+            whole_df_ops=whole_df_ops)
         whole_df_ops = whole_df_ops or []
         i = 0
         transformations_dict_keys = transformations_dict.keys()
-        # fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys())
 
         start_time = time.time()
         while len(Q) > 0:
@@ -48,7 +48,6 @@ class BruteForceATESearch(ATESearch):
                                                             common_causes)
             seq_ates.append((seq_arr, new_ate))
 
-
             if abs(new_ate - target_ate) < epsilon:
                 if self.op_probs is not None:
                     reached_goal_sequences.append(seq_arr)
@@ -59,35 +58,30 @@ class BruteForceATESearch(ATESearch):
                         flush=True)
                     break
 
-            if len(seq_arr) < max_seq_length:
-                t = time.time()
-                # for func, col, move_bit in fast_moves:
-                for func in transformations_dict_keys:
-                    if func in whole_df_ops:
-                        if any(f_n == func for f_n, c in seq_arr):
+            # for func, col, move_bit in fast_moves:
+            for func in transformations_dict_keys:
+                if func in whole_df_ops:
+                    if any(f_n == func for f_n, c in seq_arr):
+                        continue
+                    try_count += 1
+                    new_path = seq_arr + ((func, "TABLE"),)
+                    Q.append(new_path)
+                else:
+                    for col in common_causes:
+                        if any(f_n.split("_")[0] == func.split("_")[0] for f_n, c in seq_arr if c == col):
                             continue
                         try_count += 1
-                        new_path = seq_arr + ((func, "TABLE"),)
+
+                        new_path = seq_arr + ((func, col),)
                         Q.append(new_path)
-                    else:
-                        for col in common_causes:
-                            if any(f_n.split("_")[0] == func.split("_")[0] for f_n, c in seq_arr if c == col):
-                                continue
-                            try_count += 1
 
-                            # 2. Create new state
-                            # new_mask = mask | move_bit
-                            new_path = seq_arr + ((func, col),)
-
-                            Q.append(new_path)#((new_path, new_mask))
-
-                run_times.append(time.time() - t)
         end_time = time.time()
         execution_time = end_time - start_time
 
         if self.op_probs is not None:
             if len(reached_goal_sequences) > 0:
-                most_probable_sequence = reached_goal_sequences[np.argmax([prob_manager.get_sequence_probability(sequence) for sequence in reached_goal_sequences])]
+                most_probable_sequence = reached_goal_sequences[
+                    np.argmax([prob_manager.get_sequence_probability(sequence) for sequence in reached_goal_sequences])]
                 transformed_df = apply_data_preparations_seq(df_, most_probable_sequence, transformations_dict)
                 new_ate = calculate_ate_linear_regression_lstsq(transformed_df, 'treatment', 'outcome', common_causes)
                 print(

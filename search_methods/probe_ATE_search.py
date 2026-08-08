@@ -15,6 +15,7 @@ class ProbManager:
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
+
     def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
         if F_elements is not None:
             # Iterate operations in SAME ORDER as else branch
@@ -38,7 +39,8 @@ class ProbManager:
                             if op_probs is None:
                                 prob = 1.0 / len(F_elements)  # Will fix this below
                             else:
-                                prob = op_probs[op] / sum(1 for item in F_elements if item.startswith(f"{op}#"))#len(columns)
+                                prob = op_probs[op] / sum(
+                                    1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
                             self.probs[f_elem] = prob
                             self.costs[f_elem] = self._get_cost(f_elem)
         else:
@@ -48,7 +50,7 @@ class ProbManager:
                     print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
                     f_elem = f"{op}#TABLE"
                     if op_probs is None:
-                        prob = 1.0 / F_size#(len(operations) * len(columns))
+                        prob = 1.0 / F_size  # (len(operations) * len(columns))
                     else:
                         prob = op_probs[op]
                     self.probs[f_elem] = prob
@@ -63,7 +65,6 @@ class ProbManager:
                             prob = op_probs[op] / len(columns)
                         self.probs[f_elem] = prob
                         self.costs[f_elem] = self._get_cost(f_elem)
-
 
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
@@ -104,7 +105,7 @@ class ProbeATESearch(ATESearch):
         self.use_hash = use_hash
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
                F_elements: List[str] = None, whole_df_ops: List[str] = None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
@@ -137,11 +138,9 @@ class ProbeATESearch(ATESearch):
                         func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
                     new_seq = seq + ((func_name, col),)
 
-                    if len(new_seq) > max_seq_length:
-                        continue
-
-                    if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq):
-                        continue
+                    if func_name in whole_df_ops:
+                        if any(f_n == func_name for f_n, c in seq):
+                            continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
                         continue
                     checked = checked + 1
@@ -170,7 +169,7 @@ class ProbeATESearch(ATESearch):
                                 f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
                         else:
                             print(
-                            f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
+                                f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
                         try:
                             print(
                                 f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
