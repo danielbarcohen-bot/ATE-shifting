@@ -54,8 +54,6 @@ class GreedyATESearch(ATESearch):
             selected_col = None
             for col in common_causes:
                 for func_name in transformations_dict.keys():
-                    if func_name=='drop_duplicates':
-                        print("here")
                     rule_name = f"{func_name}#{col}"
                     if not whole_df_ops is None and func_name in whole_df_ops:
                         rule_name = f"{func_name}#TABLE"
