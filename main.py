@@ -33,7 +33,8 @@ if __name__ == "__main__":
             target_ate=config["target_ate"],
             epsilon=config["epsilon"],
             max_sequence_length=config["max_length"],
-            op_probs=config["op_probs"]
+            op_probs=config["op_probs"],
+            whole_df_ops=config.get("whole_df_ops", None)
         )
         if args.mode == "probe_probs_no_restart":
             experiment.run_probe_no_restart()
@@ -59,7 +60,8 @@ if __name__ == "__main__":
             max_sequence_length=config["max_length"],
             op_probs=config["op_probs"],
             i=config["i"],
-            solution_sequence=config["solution_sequence"]
+            solution_sequence=config["solution_sequence"],
+            whole_df_ops=config.get("whole_df_ops", None)
         )
         if args.mode == "fprobe":
             experiment.run_probe_uniform()
@@ -74,7 +76,8 @@ if __name__ == "__main__":
             common_causes=config["common_causes"],
             target_ate=config["target_ate"],
             epsilon=config["epsilon"],
-            max_length=config["max_length"]
+            max_length=config["max_length"],
+            whole_df_ops=config.get("whole_df_ops", None)
         )
         # Call the correct run method
         if args.mode == "brute":

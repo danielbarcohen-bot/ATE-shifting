@@ -20,26 +20,52 @@ class ProbManager:
         if F_elements is not None:
             # Iterate operations in SAME ORDER as else branch
             for op in operations:
-                for col in columns:
-                    f_elem = f"{op}#{col}"
+                if op in self.whole_df_ops:
+                    f_elem = f"{op}#TABLE"
                     # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
                     if f_elem in F_elements or op in F_elements:
                         if op_probs is None:
                             prob = 1.0 / len(F_elements)  # Will fix this below
                         else:
+                            prob = op_probs[op] / sum(
+                                1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
+                        self.probs[f_elem] = prob
+                        self.costs[f_elem] = self._get_cost(f_elem)
+                else:
+                    for col in columns:
+                        f_elem = f"{op}#{col}"
+                        # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
+                        if f_elem in F_elements or op in F_elements:
+                            if op_probs is None:
+                                prob = 1.0 / len(F_elements)  # Will fix this below
+                            else:
+                                prob = op_probs[op] / sum(
+                                    1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
+                            self.probs[f_elem] = prob
+                            self.costs[f_elem] = self._get_cost(f_elem)
+        else:
+            F_size = ((len(operations) - len(self.whole_df_ops)) * len(columns)) + len(self.whole_df_ops)
+            for op in operations:
+                if op in self.whole_df_ops:
+                    print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
+                    f_elem = f"{op}#TABLE"
+                    if op_probs is None:
+                        prob = 1.0 / F_size  # (len(operations) * len(columns))
+                    else:
+                        prob = op_probs[op]
+                    self.probs[f_elem] = prob
+                    self.costs[f_elem] = self._get_cost(f_elem)
+
+                else:
+                    for col in columns:
+                        f_elem = f"{op}#{col}"
+                        if op_probs is None:
+                            prob = 1.0 / (F_size)
+                        else:
                             prob = op_probs[op] / len(columns)
                         self.probs[f_elem] = prob
                         self.costs[f_elem] = self._get_cost(f_elem)
-        else:
-            for op in operations:
-                for col in columns:
-                    f_elem = f"{op}#{col}"
-                    if op_probs is None:
-                        prob = 1.0 / (len(operations) * len(columns))
-                    else:
-                        prob = op_probs[op] / len(columns)
-                    self.probs[f_elem] = prob
-                    self.costs[f_elem] = self._get_cost(f_elem)
+
     def _get_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
 
@@ -78,10 +104,9 @@ class ProbeATESearch(ATESearch):
         self.is_brute = is_brute
         self.use_hash = use_hash
 
-
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
-               F_elements: List[str] = None, whole_df_ops: List[str]=None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
+               F_elements: List[str] = None, whole_df_ops: List[str] = None):
         df_ = df.copy()
         base_line_ate = get_base_line(common_causes, df_)
         print(f"START ATE IS: {base_line_ate}")
@@ -110,14 +135,12 @@ class ProbeATESearch(ATESearch):
                     if '#' in move:
                         func_name, col = move.split("#")
                     else:
-                        func_name, col = move, common_causes[0]#"dummy"
+                        func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
                     new_seq = seq + ((func_name, col),)
 
-                    if len(new_seq) > max_seq_length:
-                        continue
-
-                    if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq):
-                        continue
+                    if func_name in whole_df_ops:
+                        if any(f_n == func_name for f_n, c in seq):
+                            continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
                         continue
                     checked = checked + 1
@@ -137,13 +160,14 @@ class ProbeATESearch(ATESearch):
                         solution_seq = new_seq
                         print(f"Execution time: {time.time() - start_time:.3f} sec")
                         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
-                        if self.op_probs is not None:
-                            if self.use_restart:
-                                temp_prob_manager = ProbManager(
-                                    [func_name for func_name, func in transformations_dict.items()],
-                                    common_causes, self.op_probs, F_elements, whole_df_ops)
-                                print(
-                                    f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                        # if self.op_probs is not None:
+                        if self.use_restart:
+                            temp_prob_manager = ProbManager(
+                                [func_name for func_name, func in transformations_dict.items()],
+                                common_causes, self.op_probs, F_elements, whole_df_ops)
+                            print(
+                                f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+                        else:
                             print(
                                 f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
                         try:
@@ -153,7 +177,7 @@ class ProbeATESearch(ATESearch):
                             print(f"Failed to calculate uncertainty:\n{e}")
                         print(f"checked:\n{checked}", flush=True)
 
-                        return solution_seq#exit()
+                        return solution_seq  # exit()
 
                     if not self.is_brute:
                         if self.use_hash:

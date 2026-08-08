@@ -83,7 +83,7 @@ class TwinsDataLoader:
                 'brstate_reg', 'stoccfipb_reg', 'mplbir_reg', 'wt', 'treatment', 'outcome']
 
         df = pd.DataFrame(columns=cols, data=data)
-
+        df = df.drop(columns=['wt', 'infant_id', 'bord', 'dlivord_min', 'dtotord_min'])
         df.to_pickle(self.CACHE_FILE)
         return df
 
