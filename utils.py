@@ -493,16 +493,16 @@ def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):
     X_dummy = np.ones((df.shape[0], 1))
 
     # 3. Standard, raw scikit-learn models (No boundary capping/clipping)
-    model_y = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
-    model_t = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
+    # model_y = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
+    # model_t = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
 
     # 4. Initialize LinearDML
     # LinearRegression is safe here because X_dummy is just a constant baseline
     dml_model = LinearDML(
-        model_y=model_y,
-        model_t=model_t,
-        discrete_treatment=True,
-        cv=5
+        # model_y=model_y,
+        # model_t=model_t,
+        # discrete_treatment=True,
+        # cv=5
     )
 
     # 5. Fit the model using your features as controls (W)
@@ -518,15 +518,15 @@ def calculate_ate_dr(df, outcome_col='outcome', treatment_col='treatment'):
     T = df[treatment_col].values
     X = df.drop(columns=[outcome_col, treatment_col]).values
 
-    model_y = RandomForestRegressor(n_estimators=100, max_depth=3, random_state=42)
-    model_t = RandomForestClassifier(n_estimators=100, max_depth=3, random_state=42)
+    # model_y = RandomForestRegressor(n_estimators=100, max_depth=3, random_state=42)
+    # model_t = RandomForestClassifier(n_estimators=100, max_depth=3, random_state=42)
 
     dr_model = DRLearner(
-        model_regression=model_y,
-        model_propensity=model_t,
-        model_final=LinearRegression(),
-        cv=5,
-        min_propensity=0.01
+        # model_regression=model_y,
+        # model_propensity=model_t,
+        # model_final=LinearRegression(),
+        # cv=5,
+        # min_propensity=0.01
     )
     dr_model.fit(y, T, X=X)
     return dr_model.ate(X)
