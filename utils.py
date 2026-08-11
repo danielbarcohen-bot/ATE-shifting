@@ -148,13 +148,24 @@ def zscore_filter_3(df, col) -> pd.DataFrame:
     return df_[mask]
 
 
+# def winsorize_aux(df, col) -> pd.DataFrame:
+#     df_ = df.copy()
+#
+#     # lower = s.quantile(lower_quantile)
+#     # upper = s.quantile(upper_quantile)
+#     # df_[col] = s.clip(lower, upper)
+#     df_[col] = winsorize(df_[col], limits=[0.01, 0.01])
+#     return df_
 def winsorize_aux(df, col) -> pd.DataFrame:
     df_ = df.copy()
 
-    # lower = s.quantile(lower_quantile)
-    # upper = s.quantile(upper_quantile)
-    # df_[col] = s.clip(lower, upper)
-    df_[col] = winsorize(df_[col], limits=[0.01, 0.01])
+    w = winsorize(df_[col].to_numpy(), limits=[0.01, 0.01])
+    df_[col] = pd.Series(
+        np.asarray(w),
+        index=df_.index,
+        name=col
+    )
+
     return df_
 
 
@@ -228,7 +239,7 @@ def df_signature_fast_rounds(df: pd.DataFrame, cols: List[str], decimals=10) -> 
 
 
 def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict):
-    df_ = df.copy()
+    df_ = df.copy() #TODO: MAY BE REMOVED - VALIDATE
     for func_name, col in seq_arr:
         df_ = transformations_dict[func_name](df_, col)
     return df_

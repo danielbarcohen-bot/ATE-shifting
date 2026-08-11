@@ -76,24 +76,47 @@ class ProbManager:
             probability *= self.probs[rule_name]
         return probability
 
+    # def update_weights(self, probe_sequence, alpha=0.2):
+    #
+    #     """
+    #     Updates weights using the interpolation method based on a successful probe.
+    #     """
+    #     # Calculate the empirical distribution D_probe from the sequence
+    #     rule_counts = {}
+    #     for op, col in probe_sequence:
+    #         rule_name = f"{op}#{col}"
+    #         rule_counts[rule_name] = rule_counts.get(rule_name, 0) + 1
+    #
+    #     # 1. Update Operation Selection Rules ('O')
+    #     for rule_name in self.probs.keys():
+    #         # D_probe is 1 if the rule was used, 0 otherwise (in this simplified view)
+    #         is_used = 1.0 if rule_name in rule_counts else 0.0
+    #
+    #         # Interpolation: W_new = (1-a)*W_current + a*W_probe
+    #         self.probs[rule_name] = (1.0 - alpha) * self.probs[rule_name] + alpha * is_used
+    #         self.costs[rule_name] = self._get_cost(rule_name)
     def update_weights(self, probe_sequence, alpha=0.2):
-
-        """
-        Updates weights using the interpolation method based on a successful probe.
-        """
-        # Calculate the empirical distribution D_probe from the sequence
         rule_counts = {}
         for op, col in probe_sequence:
             rule_name = f"{op}#{col}"
             rule_counts[rule_name] = rule_counts.get(rule_name, 0) + 1
 
-        # 1. Update Operation Selection Rules ('O')
-        for rule_name in self.probs.keys():
-            # D_probe is 1 if the rule was used, 0 otherwise (in this simplified view)
-            is_used = 1.0 if rule_name in rule_counts else 0.0
+        # Create empirical distribution
+        empirical = {r: 0.0 for r in self.probs.keys()}
+        total = sum(rule_counts.values())
+        for rule_name, count in rule_counts.items():
+            empirical[rule_name] = count / total
 
-            # Interpolation: W_new = (1-a)*W_current + a*W_probe
-            self.probs[rule_name] = (1.0 - alpha) * self.probs[rule_name] + alpha * is_used
+        # Interpolate and renormalize
+        new_probs = {}
+        for rule_name in self.probs.keys():
+            new_probs[rule_name] = (1.0 - alpha) * self.probs[rule_name] + alpha * empirical.get(rule_name, 0.0)
+
+        # Renormalize to ensure sum = 1
+        total = sum(new_probs.values())
+        self.probs = {k: v / total for k, v in new_probs.items()}
+
+        for rule_name in self.probs.keys():
             self.costs[rule_name] = self._get_cost(rule_name)
 
 
@@ -132,10 +155,11 @@ class ProbeATESearch(ATESearch):
                 if should_restart:
                     break
                 for seq in bank[cost - prob_manager.costs[move]]:
-                    if '#' in move:
-                        func_name, col = move.split("#")
-                    else:
-                        func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
+                    func_name, col = move.split("#")
+                    # if '#' in move:
+                    #     func_name, col = move.split("#")
+                    # else:
+                    #     func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
                     new_seq = seq + ((func_name, col),)
 
                     if func_name in whole_df_ops:
