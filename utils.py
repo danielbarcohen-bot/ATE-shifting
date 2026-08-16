@@ -4,13 +4,10 @@ from typing import List
 import numpy as np
 import pandas as pd
 from dowhy import CausalModel
-from econml.dml import LinearDML, NonParamDML
+from econml.dml import LinearDML
 from econml.dr import DRLearner
-from scipy import stats
 from scipy.stats._mstats_basic import winsorize
-from sklearn.ensemble import IsolationForest, RandomForestRegressor, RandomForestClassifier
-from sklearn.linear_model import LinearRegression, LassoCV, LogisticRegression
-from sklearn.model_selection import KFold
+from sklearn.ensemble import IsolationForest
 
 from linear_ate_calculator import LinearATEModel
 
@@ -27,16 +24,6 @@ def calculate_ate(model: CausalModel):
 def get_base_line(common_causes, df):
     df_ = df.copy()
     df_ = df_.dropna()
-    # df_.fillna(value=df_.mean(), inplace=True)  # filling the missing values
-    # df_.fillna(value=df_.mode().loc[0], inplace=True)
-    # model = CausalModel(
-    #     data=df_,
-    #     treatment='treatment',
-    #     outcome='outcome',
-    #     common_causes=common_causes
-    # )
-    #
-    # return calculate_ate(model)
     return calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
 
 
@@ -147,15 +134,6 @@ def zscore_filter_3(df, col) -> pd.DataFrame:
 
     return df_[mask]
 
-
-# def winsorize_aux(df, col) -> pd.DataFrame:
-#     df_ = df.copy()
-#
-#     # lower = s.quantile(lower_quantile)
-#     # upper = s.quantile(upper_quantile)
-#     # df_[col] = s.clip(lower, upper)
-#     df_[col] = winsorize(df_[col], limits=[0.01, 0.01])
-#     return df_
 def winsorize_aux(df, col) -> pd.DataFrame:
     df_ = df.copy()
 
@@ -186,7 +164,7 @@ def isolationForest(df, col) -> pd.DataFrame:
     if df.empty:
         return df
     df_ = df.copy()
-    common_causes = df.columns.difference(["treatment", "outcome"], sort=False).tolist()
+    common_causes = df.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist()
     iso = IsolationForest(random_state=42)
     df_['outlier_label'] = iso.fit_predict(df_[common_causes])
     df_clean = df_[df_['outlier_label'] == 1].drop(columns=['outlier_label'])
@@ -439,59 +417,29 @@ def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outc
 #     return ate
 
 
-import statsmodels.api as sm
-
-
 def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-    X = sm.add_constant(df[[treatment] + common_causes])
-    Y = df[outcome]
-
-    # cov_type='HC1' gives you causal-inference-ready robust standard errors
-    model = sm.OLS(Y, X).fit()  # cov_type='HC1')
-
-    ate = model.params[treatment]
-    ate_se = model.bse[treatment]
-    ci = model.conf_int().loc[treatment]
-    p_val = model.pvalues[treatment]
-
-    return {
-        'ate': ate,
-        'se': ate_se,
-        'ci': (ci[0], ci[1]),
-        'significant': p_val < 0.05
-    }
-    # Y = df[outcome].values
-    # T = df[treatment].values.reshape(-1, 1)
-    # X_confounders = df[common_causes].values
-    # X_intercept = np.ones((df.shape[0], 1))
-    # X_full = np.hstack([T, X_intercept, X_confounders])
-    # X_full = np.asarray(X_full)
-    # n, k = X_full.shape
-    # beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
-    # ate = beta[0]
-    # ssr = np.sum((Y - X_full @ beta) ** 2)
-    # sigma_sq = ssr / (n - k)
+    model = LinearATEModel(df[common_causes], df[treatment], df[outcome])
+    ate = model.ate
+    ci = model.ci()
+    return {'ate': ate, 'ci': ci}
+    # X = sm.add_constant(df[[treatment] + common_causes])
+    # Y = df[outcome]
     #
-    # # 4. Calculate Variance-Covariance Matrix: sigma^2 * (X^T X)^-1
-    # # This tells us how much each coefficient "wiggles"
-    # xtx_inv = np.linalg.pinv(X_full.T @ X_full)
-    # var_cov_matrix = sigma_sq * xtx_inv
+    # # cov_type='HC1' gives you causal-inference-ready robust standard errors
+    # model = sm.OLS(Y, X).fit()  # cov_type='HC1')
     #
-    # # 5. Extract Standard Error for ATE (the first diagonal element)
-    # ate_se = np.sqrt(var_cov_matrix[0, 0])
-    #
-    # # 6. Calculate 95% Confidence Interval
-    # # For 95%, we use a t-distribution critical value (approx 1.96)
-    # t_critical = stats.t.ppf(0.975, df=n - k)
-    # ci_lower = ate - (t_critical * ate_se)
-    # ci_upper = ate + (t_critical * ate_se)
+    # ate = model.params[treatment]
+    # ate_se = model.bse[treatment]
+    # ci = model.conf_int().loc[treatment]
+    # p_val = model.pvalues[treatment]
     #
     # return {
     #     'ate': ate,
     #     'se': ate_se,
-    #     'ci': (ci_lower, ci_upper),
-    #     'significant': not (ci_lower <= 0 <= ci_upper)
+    #     'ci': (ci[0], ci[1]),
+    #     'significant': p_val < 0.05
     # }
+
 
 
 def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):

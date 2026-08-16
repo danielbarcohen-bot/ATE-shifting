@@ -33,7 +33,6 @@ class OEATESearch(ATESearch):
         print(calculate_ate_with_uncertainty(df.copy(), 'treatment', 'outcome', common_causes))
         Q = deque([((), 0)])
         seen_dfs = set()
-        # seen_seq = set()  # ONLY TRUE WHEN OPERATIONS AFFECT 1 COL AT A TIME
         prune_count = 0
         num_prog_seen = 0
         solution_seq = None
@@ -62,82 +61,58 @@ class OEATESearch(ATESearch):
             Q_poped_num += 1
             seq_arr, mask = Q.popleft()
             curr_df = apply_data_preparations_seq(df_, seq_arr, transformations_dict)
-            # curr_df_filled = curr_df  # .dropna()
-            # new_ate = calculate_ate_linear_regression_lstsq(curr_df_filled, 'treatment', 'outcome',
-            #                                                 common_causes)
-            # seq_ates.append((seq_arr, new_ate))
-            #
-            # new_distance = abs(new_ate - target_ate)
-            # if new_distance < smallest_distance_from_target:
-            #     smallest_distance_from_target = new_distance
-            #     distances_at_time_from_target.append((new_distance, time.time() - start_time))
 
-            # if abs(new_ate - target_ate) < epsilon:
-            #     print(
-            #         f"""***\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {seq_arr}\n***""",
-            #         flush=True)
-            #     solution_seq = seq_arr
-            #     break
+            for func_name, col, move_bit in fast_moves:
+                if time.time() - start_time > time_out_sec:
+                    print("\n\n*** TIMED OUT!! ***\n")
+                    break
+                if found_solution:
+                    break
 
-            if len(seq_arr) < max_seq_length: #TODO: remove length
-                for func_name, col, move_bit in fast_moves:
-                    if found_solution:
-                        break
+                if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq_arr):
+                    continue
+                if func_name == "drop_duplicates" and any(f_n == "drop_duplicates" for f_n, c in seq_arr):
+                    continue
+                if mask & move_bit:
+                    continue
+                time_col_func_start = time.time()
+                num_prog_seen += 1
+                new_df = transformations_dict[func_name](curr_df.copy(), col)
+                df_new_signature = df_signature_fast(new_df, common_causes)
 
-                    if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq_arr):#TODO: add dedup
-                        # prune_count += 1
-                        continue
-                    if mask & move_bit:# or (func_name.startswith("fill_") and curr_df[col].isna().sum() == 0):
-                        # prune_count += 1
-                        continue
-                    time_col_func_start = time.time()
-                    num_prog_seen += 1
-                    # new_col = transformations_dict[func_name](curr_df[col].copy())
+                if df_new_signature in seen_dfs:
+                    prune_count += 1
 
-                    # canonical_sequence = canonical(seq_arr + ((func_name, col),))
-                    # if canonical_sequence in seen_seq or new_col.equals(
-                    #         curr_df[col]):  # col hasn't changed - so same df!
-                    #     prune_count += 1
-                    #     continue
-                    #
-                    # seen_seq.add(canonical_sequence)
-                    new_df = transformations_dict[func_name](curr_df.copy(), col)
-                    # new_df[col] = new_col
-                    df_new_signature = df_signature_fast(new_df, common_causes)
+                # if df hasnt been explored:
+                else:
+                    new_ate = calculate_ate_linear_regression_lstsq(new_df.copy(), 'treatment', 'outcome',
+                                                                    common_causes)
+                    new_path = seq_arr + ((func_name, col),)
+                    seq_ates.append((new_path, new_ate))
 
-                    if df_new_signature in seen_dfs:
-                        prune_count += 1
-
-                    # if df hasnt been explored:
-                    else:
-                        new_ate = calculate_ate_linear_regression_lstsq(new_df.copy(), 'treatment', 'outcome',
-                                                                        common_causes)
-                        new_path = seq_arr + ((func_name, col),)
-                        seq_ates.append((new_path, new_ate))
-
-                        new_distance = abs(new_ate - target_ate)
-                        if new_distance < smallest_distance_from_target:
-                            smallest_distance_from_target = new_distance
-                            distances_at_time_from_target.append((new_distance, time.time() - start_time))
-                        if abs(new_ate - target_ate) < epsilon:
-                            solution_seq = new_path
+                    new_distance = abs(new_ate - target_ate)
+                    if new_distance < smallest_distance_from_target:
+                        smallest_distance_from_target = new_distance
+                        distances_at_time_from_target.append((new_distance, time.time() - start_time))
+                    if abs(new_ate - target_ate) < epsilon:
+                        solution_seq = new_path
+                        print(
+                            f"""***\n\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {solution_seq}\n***""",
+                            flush=True)
+                        try:
                             print(
-                                f"""***\n\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {solution_seq}\n***""",
-                                flush=True)
-                            try:
-                                print(
-                                    f"uncertainty:\n{calculate_ate_with_uncertainty(new_df.copy(), 'treatment', 'outcome', common_causes)}")
-                            except Exception as e:
-                                print(f"Failed to calculate uncertainty:\n{e}")
-                            found_solution = True
-                            break
-                        seen_dfs.add(df_new_signature)
-                        new_mask = mask | move_bit
+                                f"uncertainty:\n{calculate_ate_with_uncertainty(new_df.copy(), 'treatment', 'outcome', common_causes)}")
+                        except Exception as e:
+                            print(f"Failed to calculate uncertainty:\n{e}")
+                        found_solution = True
+                        break
+                    seen_dfs.add(df_new_signature)
+                    new_mask = mask | move_bit
 
-                        Q.append((new_path, new_mask))
+                    Q.append((new_path, new_mask))
 
-                    time_col_func_end = time.time()
-                    run_times.append(time_col_func_end - time_col_func_start)
+                time_col_func_end = time.time()
+                run_times.append(time_col_func_end - time_col_func_start)
 
             end_pop_Q_time = time.time()
             run_times_pop.append(end_pop_Q_time - start_pop_Q_time)
@@ -152,4 +127,5 @@ class OEATESearch(ATESearch):
         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
         # return solution_seq
         return {"solution_seq": solution_seq,
-                "ates_distrb": analyze_ate_search_space(seq_ates)}
+                # "ates_distrb": analyze_ate_search_space(seq_ates)
+                "seq_ates": seq_ates}

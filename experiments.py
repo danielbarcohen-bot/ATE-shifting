@@ -19,13 +19,13 @@ df_lalonde_no_missing_values = df_lalonde.dropna()
 df_acs_no_missing_values = df_acs.dropna()
 df_IHDP_no_missing_values = df_IHDP.dropna()
 
-prob_dict = {'bin_equal_frequency_2': 0.0014943960149439602, 'bin_equal_frequency_5': 0.0136986301369863,
-             'bin_equal_frequency_10': 0.007721046077210461, 'bin_equal_width_2': 0.00049813200498132,
-             'bin_equal_width_5': 0.012453300124533, 'bin_equal_width_10': 0.005479452054794521,
-             'norm_min_max': 0.27995018679950184, 'norm_log': 0.17608966376089663,
-             'zscore_clip_3': 0.021419676214196763, 'zscore_filter_3': 0.021419676214196763,
-             'winsorize': 0.0029887920298879204, 'IQR': 0.08891656288916563, 'isolationForest': 0.014943960149439602,
-             'drop_duplicates': 0.374346201743462}
+prob_dict = {'bin_equal_frequency_2': 0.0020222446916076846, 'bin_equal_frequency_5': 0.011796427367711493,
+             'bin_equal_frequency_10': 0.00741489720256151, 'bin_equal_width_2': 0.0006740815638692282,
+             'bin_equal_width_5': 0.011796427367711493, 'bin_equal_width_10': 0.005729693292888439,
+             'norm_min_max': 0.26120660599932594, 'norm_log': 0.18267610380856084, 'zscore_clip_3': 0.0239298955173576,
+             'zscore_filter_3': 0.0239298955173576, 'winsorize': 0.0047185709470845974, 'IQR': 0.08998988877654196,
+             'isolationForest': 0.015166835187057633, 'drop_duplicates': 0.3828783282777216}
+
 # {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.016233766233766232,
 # 'bin_equal_frequency_10': 0.012987012987012988, 'bin_equal_width_2': 1e-10,
 # 'bin_equal_width_5': 0.006493506493506494, 'bin_equal_width_10': 1e-10, 'norm_min_max': 0.577922077922078,
@@ -845,9 +845,10 @@ EXPERIMENTS = {
     },
     **{f"EXP33.{k}": {  # TWINS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_twins_no_missing_values] * k, ignore_index=True),
+        "df": pd.concat([df_twins_no_missing_values.assign(replica_id=i)
+                         for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
@@ -858,9 +859,10 @@ EXPERIMENTS = {
     },
     **{f"EXP34.{k}": {  # ACS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
+        "df": pd.concat([df_acs_no_missing_values.assign(replica_id=i)
+                         for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_acs.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
         "epsilon": 1000,  # 100,
         "max_length": 10,
@@ -871,9 +873,10 @@ EXPERIMENTS = {
     },
     **{f"EXP38.{k}": {  # walmart CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_walmart] * k, ignore_index=True),
+        "df": pd.concat([df_walmart.assign(replica_id=i)
+                         for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_walmart.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_walmart.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
         "target_ate": 10133.08,
         "epsilon": 2533,
         "max_length": 10,

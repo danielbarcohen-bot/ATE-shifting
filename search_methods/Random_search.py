@@ -17,6 +17,10 @@ class RandomSearch:
             found_action = False
             while not found_action:
                 col, transformation = random.choice(actions)
+                if transformation == "isolationForest" and any(f_n == "isolationForest" for f_n, c in sequence):
+                    continue
+                if transformation == "drop_duplicates" and any(f_n == "drop_duplicates" for f_n, c in sequence):
+                    continue
                 trans_class = transformation.split("_")[0]
                 if trans_class not in seen_transformation_classes_per_col[col]:
                     seen_transformation_classes_per_col[col].append(trans_class)
