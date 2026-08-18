@@ -21,7 +21,7 @@ def calculate_ate(model: CausalModel):
     return estimate.value
 
 
-def get_base_line(common_causes, df):
+def get_baseline_ate(common_causes, df):
     df_ = df.copy()
     df_ = df_.dropna()
     return calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)

@@ -1,12 +1,13 @@
 import math
 import time
-from typing import List, Callable
+from abc import ABC, abstractmethod
+from typing import List, Callable, Set, Tuple
 
 import pandas as pd
 
 from search_methods.ATE_search import ATESearch
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
-    get_base_line, df_signature_fast, calculate_ate_with_uncertainty
+    get_baseline_ate, df_signature_fast, calculate_ate_with_uncertainty
 
 
 class ProbManager:
@@ -120,117 +121,177 @@ class ProbManager:
             self.costs[rule_name] = self._get_cost(rule_name)
 
 
+class DuplicateDetector(ABC):
+    """Strategy for detecting duplicate dataframes during search."""
+
+    @abstractmethod
+    def add_if_new(self, df: pd.DataFrame, common_causes: List[str]) -> bool:
+        """
+        Check if df was seen. If NOT seen, register it and return True.
+        If already seen, return False.
+        """
+        pass
+
+    @abstractmethod
+    def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
+        """Clear seen states and reinitialize."""
+        pass
+
+
+class NullDuplicateDetector(DuplicateDetector):
+    """Brute-force: always considers states as new (never stores them)."""
+
+    def add_if_new(self, df: pd.DataFrame, common_causes: List[str]) -> bool:
+        return True
+
+    def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
+        pass
+
+
+class HashDuplicateDetector(DuplicateDetector):
+    """Use fast hash signatures to detect duplicates."""
+
+    def __init__(self):
+        self.seen_dfs: Set[str] = set()
+
+    def add_if_new(self, df: pd.DataFrame, common_causes: List[str]) -> bool:
+        # Signature is calculated ONLY ONCE per dataframe
+        signature = df_signature_fast(df, common_causes)
+        if signature in self.seen_dfs:
+            return False
+
+        self.seen_dfs.add(signature)
+        return True
+
+    def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
+        self.seen_dfs = {df_signature_fast(df, common_causes)}
+
+
+class EqualityDuplicateDetector(DuplicateDetector):
+    """Use dataframe equality checks to detect duplicates."""
+
+    def __init__(self):
+        self.seen_dfs: List[pd.DataFrame] = []
+
+    def add_if_new(self, df: pd.DataFrame, common_causes: List[str]) -> bool:
+        if any(df.equals(seen) for seen in self.seen_dfs):
+            return False
+
+        self.seen_dfs.append(df.copy())
+        return True
+
+    def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
+        self.seen_dfs = [df.copy()]
+
+
 class ProbeATESearch(ATESearch):
     def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True):
         self.use_restart = use_restart
         self.op_probs = op_probs
         self.is_brute = is_brute
-        self.use_hash = use_hash
+        self._duplicate_detector = self._create_duplicate_detector(is_brute, use_hash)
+        self.transformations_dict = None  # Will be set during search
+        self.F_elements = None
+        self.whole_df_ops = None
+
+    def _create_duplicate_detector(self, is_brute: bool, use_hash: bool) -> DuplicateDetector:
+        """Factory method to create the appropriate duplicate detector."""
+        if is_brute:
+            return NullDuplicateDetector()
+        elif use_hash:
+            return HashDuplicateDetector()
+        else:
+            return EqualityDuplicateDetector()
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
                F_elements: List[str] = None, whole_df_ops: List[str] = None):
+        # Store for access in helper methods
+        self.transformations_dict = transformations_dict
+        self.F_elements = F_elements
+        self.whole_df_ops = whole_df_ops
+
         df_ = df.copy()
-        base_line_ate = get_base_line(common_causes, df_)
-        print(f"START ATE IS: {base_line_ate}")
+        baseline_ate = get_baseline_ate(common_causes, df_)
+        print(f"START ATE IS: {baseline_ate}")
+
         bank = {0: [()]}  # init with the empty sequence
-        seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
-        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
-                                   self.op_probs, F_elements, whole_df_ops)
+        self._duplicate_detector.reset(df_, common_causes)
+
+        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()],
+                                   common_causes, self.op_probs, F_elements, whole_df_ops)
         cost = 1
         best_ate_error = float('inf')
 
-        smallest_distance_from_target = abs(base_line_ate - target_ate)
+        smallest_distance_from_target = abs(baseline_ate - target_ate)
         distances_at_time_from_target = [(smallest_distance_from_target, 0)]
         checked = 0
         start_time = time.time()
+
         while True:
             if time.time() - start_time > time_out_sec:
                 print("\n\n*** TIMED OUT!! ***\n")
                 print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
                 break
+
             should_restart = False
             bank[cost] = []
+
             for move in self.moves_under_cost(cost, prob_manager):
                 if should_restart:
                     break
+
                 for seq in bank[cost - prob_manager.costs[move]]:
                     func_name, col = move.split("#")
-                    # if '#' in move:
-                    #     func_name, col = move.split("#")
-                    # else:
-                    #     func_name, col = move, "TABLE"  # "dummy" TODO: CAN DELETE THIS - MAKE SURE
                     new_seq = seq + ((func_name, col),)
 
-                    if func_name in whole_df_ops:
+                    # Enforce operation repetition rules
+                    if whole_df_ops and func_name in whole_df_ops:
                         if any(f_n == func_name for f_n, c in seq):
                             continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
                         continue
-                    checked = checked + 1
+
+                    checked += 1
                     curr_df = apply_data_preparations_seq(df_, new_seq, transformations_dict)
-                    new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome',
-                                                                    common_causes)
+                    new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
                     current_error = abs(new_ate - target_ate)
 
+                    # Track progress
                     if current_error < smallest_distance_from_target:
                         smallest_distance_from_target = current_error
                         distances_at_time_from_target.append((current_error, time.time() - start_time))
 
+                    # Found solution within tolerance
                     if current_error < epsilon:
-                        print(
-                            f"""***\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {new_seq}\n***""",
-                            flush=True)
-                        solution_seq = new_seq
-                        print(f"Execution time: {time.time() - start_time:.3f} sec")
-                        print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
-                        # if self.op_probs is not None:
-                        if self.use_restart:
-                            temp_prob_manager = ProbManager(
-                                [func_name for func_name, func in transformations_dict.items()],
-                                common_causes, self.op_probs, F_elements, whole_df_ops)
-                            print(
-                                f"(REAL, NOT adjusted by restarts)probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
-                        else:
-                            print(
-                                f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
-                        try:
-                            print(
-                                f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
-                        except Exception as e:
-                            print(f"Failed to calculate uncertainty:\n{e}")
-                        print(f"checked:\n{checked}", flush=True)
+                        self._print_solution(new_seq, baseline_ate, new_ate, prob_manager,
+                                             curr_df, common_causes, checked, start_time,
+                                             distances_at_time_from_target)
+                        return new_seq
 
-                        return solution_seq  # exit()
+                    # Skip if we've seen this state before
+                    if not self._duplicate_detector.add_if_new(curr_df, common_causes):
+                        continue
 
-                    if not self.is_brute:
-                        if self.use_hash:
-                            df_new_signature = df_signature_fast(curr_df, common_causes)
-                            if df_new_signature in seen_dfs:
-                                # print(new_seq)
-                                break
-
-                            seen_dfs.add(df_new_signature)
-                        else:
-                            if any(curr_df.equals(seen) for seen in seen_dfs):
-                                # print(new_seq)
-                                break
-                            seen_dfs.append(curr_df)
                     bank[cost].append(new_seq)
 
+                    # Probe trigger: found significant improvement
                     if self.use_restart and current_error < best_ate_error * 0.9:
                         print(
                             f"PROBE TRIGGERED! Error reduced from {best_ate_error:.3f} to {current_error:.3f} (ATE went to {new_ate}).")
                         prob_manager.update_weights(new_seq)
 
-                        smallest_distance_from_target = abs(base_line_ate - target_ate)
+                        # Reset for restart
+                        smallest_distance_from_target = abs(baseline_ate - target_ate)
                         distances_at_time_from_target.append((smallest_distance_from_target, time.time() - start_time))
 
-                        best_ate_error = current_error  # Update the best error seen
-                        bank = {0: [()]}
+                        bank.clear()
+                        bank[0] = [()]
+                        self._duplicate_detector.reset(df_, common_causes)
+
                         cost = 1
                         should_restart = True
-                        seen_dfs = {df_signature_fast(df.copy(), common_causes)} if self.use_hash else [df.copy()]
+                        best_ate_error = current_error
 
                     if should_restart:
                         break
@@ -238,9 +299,37 @@ class ProbeATESearch(ATESearch):
             if not should_restart:
                 cost += 1
 
-    def moves_under_cost(self, cost: int, prob_manager: ProbManager):
-        moves = []
-        for move in prob_manager.probs.keys():
-            if prob_manager.costs[move] <= cost:
-                moves.append(move)
-        return moves
+    def _print_solution(self, solution_seq: Tuple, baseline_ate: float, new_ate: float,
+                        prob_manager: 'ProbManager', curr_df: pd.DataFrame, common_causes: List[str],
+                        checked: int, start_time: float, distances_at_time_from_target: List) -> None:
+        """Print the solution details."""
+        print(f"""***
+FINISHED
+ATE before: {baseline_ate}
+ATE now is: {new_ate}
+sequence is: {solution_seq}
+***""", flush=True)
+
+        print(f"Execution time: {time.time() - start_time:.3f} sec")
+        print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
+
+        if self.use_restart:
+            temp_prob_manager = ProbManager(
+                [func_name for func_name, func in self.transformations_dict.items()],
+                common_causes, self.op_probs, self.F_elements, self.whole_df_ops)
+            print(
+                f"(REAL, NOT adjusted by restarts) probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
+        else:
+            print(f"probability of this sequence is: {prob_manager.get_sequence_probability(solution_seq)}")
+
+        try:
+            print(
+                f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
+        except Exception as e:
+            print(f"Failed to calculate uncertainty:\n{e}")
+
+        print(f"checked:\n{checked}", flush=True)
+
+    def moves_under_cost(self, cost: int, prob_manager: 'ProbManager') -> List[str]:
+        return [move for move in prob_manager.probs.keys()
+                if prob_manager.costs[move] <= cost]

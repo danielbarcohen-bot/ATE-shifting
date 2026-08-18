@@ -63,19 +63,19 @@ class Experiment:
                                                      transformations_dict=self.transformations_dict,
                                                      whole_df_ops=self.whole_df_ops)
 
-    def run_prune_no_hash(self):
-        return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
-                                          target_ate=self.target_ate,
-                                          epsilon=self.epsilon,
-                                          max_seq_length=self.max_length,
-                                          transformations_dict=self.transformations_dict)
+    # def run_prune_no_hash(self):
+    #     return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
+    #                                       target_ate=self.target_ate,
+    #                                       epsilon=self.epsilon,
+    #                                       max_seq_length=self.max_length,
+    #                                       transformations_dict=self.transformations_dict)
 
-    def run_prune_no_bit_mask(self):
-        return OEATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
-                                             target_ate=self.target_ate,
-                                             epsilon=self.epsilon,
-                                             max_seq_length=self.max_length,
-                                             transformations_dict=self.transformations_dict)
+    # def run_prune_no_bit_mask(self):
+    #     return OEATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
+    #                                          target_ate=self.target_ate,
+    #                                          epsilon=self.epsilon,
+    #                                          max_seq_length=self.max_length,
+    #                                          transformations_dict=self.transformations_dict)
 
     def run_llm_zero_shot(self, with_COT=False):
         curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes)

@@ -5,7 +5,7 @@ from typing import List, Callable
 import pandas as pd
 
 from search_methods.ATE_search import ATESearch
-from utils import df_signature_fast, apply_data_preparations_seq, get_base_line, \
+from utils import df_signature_fast, apply_data_preparations_seq, get_baseline_ate, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, calculate_ate_with_uncertainty, \
     analyze_ate_search_space
 
@@ -28,7 +28,7 @@ class OEATESearch(ATESearch):
                max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400):
         df_ = df.copy()
 
-        base_line_ate = get_base_line(common_causes, df_)
+        base_line_ate = get_baseline_ate(common_causes, df_)
         print(f"start ATE is {base_line_ate}")
         print(calculate_ate_with_uncertainty(df.copy(), 'treatment', 'outcome', common_causes))
         Q = deque([((), 0)])

@@ -8,7 +8,7 @@ import pandas as pd
 
 from search_methods.ATE_search import ATESearch
 from search_methods.probe_ATE_search import ProbManager
-from utils import apply_data_preparations_seq, get_base_line, \
+from utils import apply_data_preparations_seq, get_baseline_ate, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit
 
 
@@ -21,7 +21,7 @@ class BruteForceATESearch(ATESearch):
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
         df_ = df.copy()
 
-        base_line_ate = get_base_line(common_causes, df_)
+        base_line_ate = get_baseline_ate(common_causes, df_)
         print(f"base_line_ate: {base_line_ate}")
         Q = deque([()])
         try_count = 0

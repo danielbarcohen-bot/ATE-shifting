@@ -82,18 +82,18 @@ if __name__ == "__main__":
         # Call the correct run method
         if args.mode == "brute":
             experiment.run_brute()
-        if args.mode == "oe":
-            experiment.run_prune()
+        # if args.mode == "oe":
+        #     experiment.run_prune()
         # if args.mode == "astar":
         #     experiment.run_AStar()
         if args.mode == "probe":
             experiment.run_probe()
         if args.mode == "probe_no_hash":
             experiment.run_probe_no_hash()
-        if args.mode == "oe_no_hash":
-            experiment.run_prune_no_hash()
-        if args.mode == "oe_no_bit_mask":
-            experiment.run_prune_no_bit_mask()
+        # if args.mode == "oe_no_hash":
+        #     experiment.run_prune_no_hash()
+        # if args.mode == "oe_no_bit_mask":
+        #     experiment.run_prune_no_bit_mask()
         if args.mode == "llm_zero_shot":
             experiment.run_llm_zero_shot()
         if args.mode == "llm_few_shot":

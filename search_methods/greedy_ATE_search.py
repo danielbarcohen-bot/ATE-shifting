@@ -5,7 +5,7 @@ import pandas as pd
 
 from search_methods.ATE_search import ATESearch
 from search_methods.probe_ATE_search import ProbManager
-from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_base_line, \
+from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_baseline_ate, \
     calculate_ate_with_uncertainty
 
 
@@ -17,7 +17,7 @@ class GreedyATESearch(ATESearch):
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
         df_ = df.copy()
-        base_line_ate = get_base_line(common_causes, df_)
+        base_line_ate = get_baseline_ate(common_causes, df_)
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
                                    self.op_probs, whole_df_ops=whole_df_ops)
 
