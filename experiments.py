@@ -722,11 +722,12 @@ EXPERIMENTS = {
         "df": df_lalonde_no_missing_values,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
-        "target_ate": 0,
-        "epsilon": 400,
+        "target_ate": -500,
+        "epsilon": 500,
         "max_length": 10,
         'sequence_length': 2,
-        "op_probs": prob_dict
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops
     },
     "EXP28": {
         "df": df_acs_no_missing_values,

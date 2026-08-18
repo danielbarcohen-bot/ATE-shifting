@@ -42,18 +42,17 @@ def fill_min(df, col):
 
 # bin
 def bin_equal_frequency_k(df, col, k) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
     if s.nunique() <= k:
-        return df_
+        return df
 
     try:
         binnded_col = pd.qcut(s, q=k, labels=False)
     except:
-        return df_
+        return df
 
-    df_[col] = binnded_col
-    return df_
+    df[col] = binnded_col
+    return df
 
 
 def bin_equal_frequency_2(df, col) -> pd.DataFrame:
@@ -69,12 +68,11 @@ def bin_equal_frequency_10(df, col) -> pd.DataFrame:
 
 
 def bin_equal_width_k(df, col, k) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
     if s.nunique() <= k:
-        return df_
-    df_[col] = pd.cut(s, bins=k, labels=False, include_lowest=True)
-    return df_
+        return df
+    df[col] = pd.cut(s, bins=k, labels=False, include_lowest=True)
+    return df
 
 
 def bin_equal_width_2(df, col) -> pd.DataFrame:
@@ -91,73 +89,68 @@ def bin_equal_width_10(df, col) -> pd.DataFrame:
 
 # normalizing
 def min_max_norm(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
 
     min_v = s.min()
     max_v = s.max()
 
     if min_v == max_v:
-        df_[col] = pd.Series(0.0, index=s.index)
-        return df_
+        df[col] = pd.Series(0.0, index=s.index)
+        return df
 
-    df_[col] = (s - min_v) / (max_v - min_v)
-    return df_
+    df[col] = (s - min_v) / (max_v - min_v)
+    return df
 
 
 def log_norm(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
 
-    df_[col] = np.sign(s) * np.log1p(np.abs(s))
-    return df_
+    df[col] = np.sign(s) * np.log1p(np.abs(s))
+    return df
 
 
 # outlier detection
 def zscore_clip_3(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
 
-    df_[col] = s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
-    return df_
+    df[col] = s.where(np.abs((s - s.mean()) / (s.std() + 1e-8)) < 3, s.mean())
+    return df
 
 
 def zscore_filter_3(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
+    s = df[col]
 
     if s.nunique() <= 2:
-        return df_
+        return df
 
     z_score = np.abs((s - s.mean()) / (s.std() + 1e-8))
     mask = (z_score < 3) & (~s.isna())
 
-    return df_[mask]
+    return df[mask]
+
 
 def winsorize_aux(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-
-    w = winsorize(df_[col].to_numpy(), limits=[0.01, 0.01])
-    df_[col] = pd.Series(
+    if df.empty:
+        return df
+    w = winsorize(df[col].to_numpy(), limits=[0.01, 0.01])
+    df[col] = pd.Series(
         np.asarray(w),
-        index=df_.index,
+        index=df.index,
         name=col
     )
 
-    return df_
+    return df
 
 
 def IQR(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    s = df_[col]
-
+    s = df[col]
     q1 = s.quantile(0.25)
     q3 = s.quantile(0.75)
     iqr = q3 - q1
     if iqr == 0:
         return df
-    df_ = df_[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)]
-    return df_
+    df = df[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)]
+    return df
 
 
 def isolationForest(df, col) -> pd.DataFrame:
@@ -176,8 +169,7 @@ def isolationForest(df, col) -> pd.DataFrame:
 
 
 def dropDuplicates(df, col) -> pd.DataFrame:
-    df_ = df.copy()
-    return df_.drop_duplicates()
+    return df.drop_duplicates()
 
 
 def df_signature(df: pd.DataFrame):
@@ -217,7 +209,7 @@ def df_signature_fast_rounds(df: pd.DataFrame, cols: List[str], decimals=10) -> 
 
 
 def apply_data_preparations_seq(df: pd.DataFrame, seq_arr, transformations_dict):
-    df_ = df.copy() #TODO: MAY BE REMOVED - VALIDATE
+    df_ = df.copy()
     for func_name, col in seq_arr:
         df_ = transformations_dict[func_name](df_, col)
     return df_
@@ -303,28 +295,6 @@ def analyze_ate_search_space(seq_ates):
     return pd.DataFrame(summary)
 
 
-# def calculate_ate_linear_regression_algebra(df: pd.DataFrame, treatment: str, outcome: str , common_causes: List[str]):
-#     Y = df[outcome].values.reshape(-1, 1)
-#     T = df[treatment].values.reshape(-1, 1)
-#
-#     # Confounders
-#     X = df[common_causes].values
-#
-#     # Add intercept
-#     X = np.hstack([np.ones((X.shape[0], 1)), X])
-#
-#     # Combine treatment and confounders
-#     X_full = np.hstack([T, X])
-#
-#     # Use pseudo-inverse to handle singular/collinear columns
-#     beta = np.linalg.pinv(X_full) @ Y
-#
-#     # First coefficient is treatment effect
-#     ate = beta[0, 0]
-#
-#     return ate
-
-
 def bin_sequences(data, num_bins=10):
     values = np.array([float(v) for seq, v in data])
 
@@ -382,39 +352,9 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 
     return interesting
 
+
 def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
     return LinearATEModel(df[common_causes], df[treatment], df[outcome]).ate
-
-# def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-#     # Extract outcome variable
-#     Y = df[outcome].values
-#
-#     # Extract treatment and confounders
-#     T = df[treatment].values.reshape(-1, 1)
-#     X_confounders = df[common_causes].values
-#
-#     # 1. Create the full design matrix (X_full)
-#     # The columns must be in the order: [Treatment, Intercept, Confounder1, Confounder2, ...]
-#
-#     # Add intercept column (a column of ones)
-#     X_intercept = np.ones((df.shape[0], 1))
-#
-#     # Combine T, Intercept, and Confounders
-#     # This forms the X_full matrix for the regression: Y = beta0*T + beta1*Intercept + beta2*C1 + ...
-#     X_full = np.hstack([T, X_intercept, X_confounders])
-#
-#     # NOTE: The intercept should be the *second* column if you want the treatment effect
-#     # to remain the *first* coefficient (beta[0, 0]).
-#
-#     # 2. Use numpy.linalg.lstsq for the least-squares solution
-#     # beta will be the vector of coefficients: [ATE, Intercept_Coeff, Confounder1_Coeff, ...]
-#     # The [0] index extracts the coefficients array
-#     beta, residuals, rank, singular_values = np.linalg.lstsq(X_full, Y, rcond=None)
-#
-#     # First coefficient is the Average Treatment Effect (ATE)
-#     ate = beta[0]
-#
-#     return ate
 
 
 def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
@@ -422,52 +362,19 @@ def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: st
     ate = model.ate
     ci = model.ci()
     return {'ate': ate, 'ci': ci}
-    # X = sm.add_constant(df[[treatment] + common_causes])
-    # Y = df[outcome]
-    #
-    # # cov_type='HC1' gives you causal-inference-ready robust standard errors
-    # model = sm.OLS(Y, X).fit()  # cov_type='HC1')
-    #
-    # ate = model.params[treatment]
-    # ate_se = model.bse[treatment]
-    # ci = model.conf_int().loc[treatment]
-    # p_val = model.pvalues[treatment]
-    #
-    # return {
-    #     'ate': ate,
-    #     'se': ate_se,
-    #     'ci': (ci[0], ci[1]),
-    #     'significant': p_val < 0.05
-    # }
-
 
 
 def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):
-    # 1. Separate outcome, treatment, and control features (W)
     y = df[outcome_col].values
     T = df[treatment_col].values
     W = df.drop(columns=[outcome_col, treatment_col]).values
 
-    # 2. Create a 2D dummy array of ones so X is never None
     X_dummy = np.ones((df.shape[0], 1))
 
-    # 3. Standard, raw scikit-learn models (No boundary capping/clipping)
-    # model_y = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
-    # model_t = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
+    dml_model = LinearDML()
 
-    # 4. Initialize LinearDML
-    # LinearRegression is safe here because X_dummy is just a constant baseline
-    dml_model = LinearDML(
-        # model_y=model_y,
-        # model_t=model_t,
-        # discrete_treatment=True,
-        # cv=5
-    )
-
-    # 5. Fit the model using your features as controls (W)
     dml_model.fit(y, T, X=X_dummy, W=W)
 
-    # 6. Extract the single population ATE
     ate = dml_model.ate(X=X_dummy)
     return ate
 
@@ -477,65 +384,6 @@ def calculate_ate_dr(df, outcome_col='outcome', treatment_col='treatment'):
     T = df[treatment_col].values
     X = df.drop(columns=[outcome_col, treatment_col]).values
 
-    # model_y = RandomForestRegressor(n_estimators=100, max_depth=3, random_state=42)
-    # model_t = RandomForestClassifier(n_estimators=100, max_depth=3, random_state=42)
-
-    dr_model = DRLearner(
-        # model_regression=model_y,
-        # model_propensity=model_t,
-        # model_final=LinearRegression(),
-        # cv=5,
-        # min_propensity=0.01
-    )
+    dr_model = DRLearner()
     dr_model.fit(y, T, X=X)
     return dr_model.ate(X)
-# def manual_dml_ate(df, outcome_col='outcome', treatment_col='treatment'):
-#     X = df.drop(columns=[outcome_col, treatment_col])
-#     y = df[outcome_col].values
-#     T = df[treatment_col].values
-#
-#     y_res = np.zeros_like(y, dtype=float)
-#     T_res = np.zeros_like(T, dtype=float)
-#
-#     # Use 2-fold cross-fitting for maximum speed
-#     # random_state=42 makes it deterministic
-#     kf = KFold(n_splits=2, shuffle=True, random_state=42)
-#
-#     for train_idx, test_idx in kf.split(X):
-#         # LassoCV is extremely fast compared to Random Forest
-#         model_y = LassoCV(cv=3).fit(X.iloc[train_idx], y[train_idx])
-#         model_t = LassoCV(cv=3).fit(X.iloc[train_idx], T[train_idx])
-#
-#         y_res[test_idx] = y[test_idx] - model_y.predict(X.iloc[test_idx])
-#         T_res[test_idx] = T[test_idx] - model_t.predict(X.iloc[test_idx])
-#
-#     # Final step: Simple Linear Regression on residuals
-#     final_model = LinearRegression(fit_intercept=False).fit(T_res.reshape(-1, 1), y_res)
-#     return final_model.coef_[0]
-#
-#
-# def manual_dr_ate(df, outcome_col='outcome', treatment_col='treatment'):
-#     X = df.drop(columns=[outcome_col, treatment_col])
-#     y = df[outcome_col].values
-#     T = df[treatment_col].values
-#     n = len(y)
-#
-#     # 1. Propensity Score (Probability of Treatment) -> Fast & Deterministic
-#     clf = LogisticRegression(max_iter=1000).fit(X, T)
-#     e = np.clip(clf.predict_proba(X)[:, 1], 0.01, 0.99)  # Clip to avoid division by zero
-#
-#     # 2. Outcome Models -> Fast & Deterministic
-#     model_0 = LassoCV(cv=3).fit(X[T == 0], y[T == 0])
-#     model_1 = LassoCV(cv=3).fit(X[T == 1], y[T == 1])
-#
-#     mu_0 = model_0.predict(X)
-#     mu_1 = model_1.predict(X)
-#
-#     # 3. Individual AIPW Scores (The "Double Robust" Magic)
-#     # We calculate the treatment effect for every single row
-#     scores = (mu_1 + (T * (y - mu_1) / e)) - (mu_0 + ((1 - T) * (y - mu_0) / (1 - e)))
-#
-#     # 4. Average Treatment Effect (ATE)
-#     ate = np.mean(scores)
-#
-#     return ate
