@@ -210,7 +210,8 @@ class ProbeATESearch(ATESearch):
         self.transformations_dict = transformations_dict
         self.F_elements = F_elements
         self.whole_df_ops = whole_df_ops
-
+        # Precompute function prefixes once at startup
+        func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
         df_ = df.copy()
         baseline_ate = get_baseline_ate(common_causes, df_)
         print(f"START ATE IS: {baseline_ate}")
@@ -249,7 +250,8 @@ class ProbeATESearch(ATESearch):
                     if whole_df_ops and func_name in whole_df_ops:
                         if any(f_n == func_name for f_n, c in seq):
                             continue
-                    if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in seq if c == col):
+                    curr_prefix = func_prefixes[func_name]
+                    if any(func_prefixes[f_n] == curr_prefix for f_n, c in seq if c == col):
                         continue
 
                     checked += 1

@@ -20,6 +20,8 @@ class BruteForceATESearch(ATESearch):
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
         df_ = df.copy()
+        # Precompute function prefixes once at startup
+        func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
 
         base_line_ate = get_baseline_ate(common_causes, df_)
         print(f"base_line_ate: {base_line_ate}")
@@ -59,20 +61,21 @@ class BruteForceATESearch(ATESearch):
                     break
 
             # for func, col, move_bit in fast_moves:
-            for func in transformations_dict_keys:
-                if func in whole_df_ops:
-                    if any(f_n == func for f_n, c in seq_arr):
+            for func_name in transformations_dict_keys:
+                if func_name in whole_df_ops:
+                    if any(f_n == func_name for f_n, c in seq_arr):
                         continue
                     try_count += 1
-                    new_path = seq_arr + ((func, "TABLE"),)
+                    new_path = seq_arr + ((func_name, "TABLE"),)
                     Q.append(new_path)
                 else:
                     for col in common_causes:
-                        if any(f_n.split("_")[0] == func.split("_")[0] for f_n, c in seq_arr if c == col):
+                        curr_prefix = func_prefixes[func_name]
+                        if any(func_prefixes[f_n] == curr_prefix for f_n, c in seq_arr if c == col):
                             continue
                         try_count += 1
 
-                        new_path = seq_arr + ((func, col),)
+                        new_path = seq_arr + ((func_name, col),)
                         Q.append(new_path)
 
         end_time = time.time()
