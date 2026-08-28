@@ -6,13 +6,16 @@ import pandas as pd
 
 class TwinsDataLoader:
     def __init__(self):
-        self.CACHE_FILE = "twins_data.pkl"
-
+        loader_dir = os.path.dirname(os.path.abspath(__file__))
+        self.CACHE_FILE = os.path.join(loader_dir, "twins_data.pkl")
+        self.categorical_cols = ['pldel', 'birattnd', 'brstate', 'stoccfipb', 'mplbir', 'ormoth', 'mrace', 'orfath', 'frace', 'crace', 'birmon', 'brstate_reg', 'stoccfipb_reg', 'mplbir_reg']
     def load_data(self) -> pd.DataFrame:
         # load from disk if exists
         if os.path.exists(self.CACHE_FILE):
             print("loaded cached data")
-            return pd.read_pickle(self.CACHE_FILE)
+            df = pd.read_pickle(self.CACHE_FILE)
+            df.attrs['categorical_causes'] = self.categorical_cols
+            return df
         print("bring data")
         # The covariates data has 46 features
         x = pd.read_csv(
@@ -87,12 +90,14 @@ class TwinsDataLoader:
         df.fillna(value=df.mean(), inplace=True)  # filling the missing values
         df.fillna(value=df.mode().loc[0], inplace=True)
         df.to_pickle(self.CACHE_FILE)
+        df.attrs['categorical_causes'] = self.categorical_cols
         return df
 
 
 class LalondeDataLoader:
     def __init__(self):
-        self.CACHE_FILE = "lalonde_data.pkl"
+        loader_dir = os.path.dirname(os.path.abspath(__file__))
+        self.CACHE_FILE = os.path.join(loader_dir, "lalonde_data.pkl")
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):
@@ -108,7 +113,8 @@ class LalondeDataLoader:
 
 class ACSDataLoader:
     def __init__(self):
-        self.CACHE_FILE = "ACS_data.pkl"
+        loader_dir = os.path.dirname(os.path.abspath(__file__))
+        self.CACHE_FILE = os.path.join(loader_dir, "ACS_data.pkl")
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):
@@ -130,7 +136,8 @@ class ACSDataLoader:
 
 class IHDPDataLoader:
     def __init__(self):
-        self.CACHE_FILE = "IHDP_data.pkl"
+        loader_dir = os.path.dirname(os.path.abspath(__file__))
+        self.CACHE_FILE = os.path.join(loader_dir, "IHDP_data.pkl")
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):

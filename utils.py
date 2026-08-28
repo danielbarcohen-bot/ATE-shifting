@@ -353,37 +353,53 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
+def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
+    categorical_causes = df.attrs.get('categorical_causes', [])
+    if len(categorical_causes) == 0:
+        return df[common_causes]
+
+    X_encoded = pd.get_dummies(df[common_causes], columns=categorical_causes, drop_first=True, dtype=int)
+    return X_encoded
+
+
 def calculate_ate_linear_regression_lstsq(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-    return LinearATEModel(df[common_causes], df[treatment], df[outcome]).ate
+    x = prepare_inference_matrix(df, common_causes)
+    return LinearATEModel(x, df[treatment], df[outcome]).ate
 
 
 def calculate_ate_with_uncertainty(df: pd.DataFrame, treatment: str, outcome: str, common_causes: List[str]):
-    model = LinearATEModel(df[common_causes], df[treatment], df[outcome])
+    x = prepare_inference_matrix(df, common_causes)
+    model = LinearATEModel(x, df[treatment], df[outcome])
     ate = model.ate
     ci = model.ci()
     return {'ate': ate, 'ci': ci}
 
 
 def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):
+    common_causes = df.columns.difference(["treatment", "outcome"], sort=False)
     y = df[outcome_col].values
     T = df[treatment_col].values
-    W = df.drop(columns=[outcome_col, treatment_col]).values
+    W = prepare_inference_matrix(df, common_causes).values#df.drop(columns=[outcome_col, treatment_col]).values
 
-    X_dummy = np.ones((df.shape[0], 1))
 
-    dml_model = LinearDML()
+    is_outcome_binary = len(np.unique(y)) == 2
+    dml_model = LinearDML(discrete_outcome=is_outcome_binary, discrete_treatment=True, random_state=42)
 
-    dml_model.fit(y, T, X=X_dummy, W=W)
+    dml_model.fit(y, T, W=W)
 
-    ate = dml_model.ate(X=X_dummy)
+    ate = dml_model.ate()
     return ate
 
 
 def calculate_ate_dr(df, outcome_col='outcome', treatment_col='treatment'):
+    common_causes = df.columns.difference(["treatment", "outcome"], sort=False)
+
     y = df[outcome_col].values
     T = df[treatment_col].values
-    X = df.drop(columns=[outcome_col, treatment_col]).values
+    X = prepare_inference_matrix(df, common_causes).values#df.drop(columns=[outcome_col, treatment_col]).values
 
-    dr_model = DRLearner()
-    dr_model.fit(y, T, X=X)
-    return dr_model.ate(X)
+    is_outcome_binary = len(np.unique(y)) == 2
+
+    dr_model = DRLearner(discrete_outcome=is_outcome_binary, random_state=42)
+    dr_model.fit(y, T, W=X)
+    return dr_model.ate()

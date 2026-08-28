@@ -1,7 +1,7 @@
 import math
 import time
 from abc import ABC, abstractmethod
-from typing import List, Callable, Set, Tuple
+from typing import List, Callable, Set, Tuple, Optional, Dict
 
 import pandas as pd
 
@@ -17,57 +17,101 @@ class ProbManager:
         self.whole_df_ops = whole_df_ops or []
         self._initialize_weights(operations, columns, op_probs, F_elements)
 
-    def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
-        if F_elements is not None:
-            # Iterate operations in SAME ORDER as else branch
-            for op in operations:
-                if op in self.whole_df_ops:
-                    f_elem = f"{op}#TABLE"
-                    # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
-                    if f_elem in F_elements or op in F_elements:
-                        if op_probs is None:
-                            prob = 1.0 / len(F_elements)  # Will fix this below
-                        else:
-                            prob = op_probs[op] / sum(
-                                1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
-                        self.probs[f_elem] = prob
-                        self.costs[f_elem] = self._get_cost(f_elem)
-                else:
-                    for col in columns:
-                        f_elem = f"{op}#{col}"
-                        # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
-                        if f_elem in F_elements or op in F_elements:
-                            if op_probs is None:
-                                prob = 1.0 / len(F_elements)  # Will fix this below
-                            else:
-                                prob = op_probs[op] / sum(
-                                    1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
-                            self.probs[f_elem] = prob
-                            self.costs[f_elem] = self._get_cost(f_elem)
+    def _initialize_weights(self, operations: List[str], columns: List[str],
+                            op_probs: Optional[Dict[str, float]] = None,
+                            F_elements: Optional[List[str]] = None) -> None:
+
+        # Step 1: Determine which elements to consider
+        if F_elements is None:
+            # Full space: generate all valid combinations
+            elements_to_add = self._generate_all_elements(operations, columns)
         else:
-            F_size = ((len(operations) - len(self.whole_df_ops)) * len(columns)) + len(self.whole_df_ops)
-            for op in operations:
-                if op in self.whole_df_ops:
-                    print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
-                    f_elem = f"{op}#TABLE"
-                    if op_probs is None:
-                        prob = 1.0 / F_size  # (len(operations) * len(columns))
-                    else:
-                        prob = op_probs[op]
-                    self.probs[f_elem] = prob
-                    self.costs[f_elem] = self._get_cost(f_elem)
+            # Restricted space: use only provided elements
+            elements_to_add = F_elements
 
-                else:
-                    for col in columns:
-                        f_elem = f"{op}#{col}"
-                        if op_probs is None:
-                            prob = 1.0 / (F_size)
-                        else:
-                            prob = op_probs[op] / len(columns)
-                        self.probs[f_elem] = prob
-                        self.costs[f_elem] = self._get_cost(f_elem)
+        # Step 2: Assign probabilities and costs to each element
+        for f_elem in elements_to_add:
+            op, col = self._parse_element(f_elem)
 
-    def _get_cost(self, rule_name: str):
+            if op_probs is None:
+                # Uniform: each element gets equal probability
+                prob = 1.0 / len(elements_to_add)
+            else:
+                # Weighted: distribute operation's probability among its elements
+                op_elements = [elem for elem in elements_to_add if elem.startswith(f"{op}#")]
+                num_op_elements = len(op_elements)
+
+                # Each element of this operation gets equal share of op's probability
+                prob = op_probs[op] / num_op_elements
+
+            self.probs[f_elem] = prob
+            self.costs[f_elem] = self._calculate_cost(f_elem)
+
+    def _generate_all_elements(self, operations: List[str], columns: List[str]) -> List[str]:
+        elements = []
+        for op in operations:
+            if op in self.whole_df_ops:
+                elements.append(f"{op}#TABLE")
+            else:
+                for col in columns:
+                    elements.append(f"{op}#{col}")
+        return elements
+
+    def _parse_element(self, f_elem: str) -> tuple:
+        op, col = f_elem.split("#", 1)  # split on first # only
+        return op, col
+
+    # def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
+    #     if F_elements is not None:
+    #         # Iterate operations in SAME ORDER as else branch
+    #         for op in operations:
+    #             if op in self.whole_df_ops:
+    #                 f_elem = f"{op}#TABLE"
+    #                 # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
+    #                 if f_elem in F_elements or op in F_elements:
+    #                     if op_probs is None:
+    #                         prob = 1.0 / len(F_elements)  # Will fix this below
+    #                     else:
+    #                         prob = op_probs[op] / sum(
+    #                             1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
+    #                     self.probs[f_elem] = prob
+    #                     self.costs[f_elem] = self._calculate_cost(f_elem)
+    #             else:
+    #                 for col in columns:
+    #                     f_elem = f"{op}#{col}"
+    #                     # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
+    #                     if f_elem in F_elements or op in F_elements:
+    #                         if op_probs is None:
+    #                             prob = 1.0 / len(F_elements)  # Will fix this below
+    #                         else:
+    #                             prob = op_probs[op] / sum(
+    #                                 1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
+    #                         self.probs[f_elem] = prob
+    #                         self.costs[f_elem] = self._calculate_cost(f_elem)
+    #     else:
+    #         F_size = ((len(operations) - len(self.whole_df_ops)) * len(columns)) + len(self.whole_df_ops)
+    #         for op in operations:
+    #             if op in self.whole_df_ops:
+    #                 print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
+    #                 f_elem = f"{op}#TABLE"
+    #                 if op_probs is None:
+    #                     prob = 1.0 / F_size  # (len(operations) * len(columns))
+    #                 else:
+    #                     prob = op_probs[op]
+    #                 self.probs[f_elem] = prob
+    #                 self.costs[f_elem] = self._calculate_cost(f_elem)
+    #
+    #             else:
+    #                 for col in columns:
+    #                     f_elem = f"{op}#{col}"
+    #                     if op_probs is None:
+    #                         prob = 1.0 / (F_size)
+    #                     else:
+    #                         prob = op_probs[op] / len(columns)
+    #                     self.probs[f_elem] = prob
+    #                     self.costs[f_elem] = self._calculate_cost(f_elem)
+
+    def _calculate_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
 
     def get_sequence_probability(self, sequence):
@@ -77,25 +121,6 @@ class ProbManager:
             probability *= self.probs[rule_name]
         return probability
 
-    # def update_weights(self, probe_sequence, alpha=0.2):
-    #
-    #     """
-    #     Updates weights using the interpolation method based on a successful probe.
-    #     """
-    #     # Calculate the empirical distribution D_probe from the sequence
-    #     rule_counts = {}
-    #     for op, col in probe_sequence:
-    #         rule_name = f"{op}#{col}"
-    #         rule_counts[rule_name] = rule_counts.get(rule_name, 0) + 1
-    #
-    #     # 1. Update Operation Selection Rules ('O')
-    #     for rule_name in self.probs.keys():
-    #         # D_probe is 1 if the rule was used, 0 otherwise (in this simplified view)
-    #         is_used = 1.0 if rule_name in rule_counts else 0.0
-    #
-    #         # Interpolation: W_new = (1-a)*W_current + a*W_probe
-    #         self.probs[rule_name] = (1.0 - alpha) * self.probs[rule_name] + alpha * is_used
-    #         self.costs[rule_name] = self._get_cost(rule_name)
     def update_weights(self, probe_sequence, alpha=0.2):
         rule_counts = {}
         for op, col in probe_sequence:
@@ -118,7 +143,7 @@ class ProbManager:
         self.probs = {k: v / total for k, v in new_probs.items()}
 
         for rule_name in self.probs.keys():
-            self.costs[rule_name] = self._get_cost(rule_name)
+            self.costs[rule_name] = self._calculate_cost(rule_name)
 
 
 class DuplicateDetector(ABC):

@@ -21,7 +21,7 @@ class OperationSpaceExperiment:
     """
 
     def __init__(self, search_algorithm: ATESearch, df: pd.DataFrame, common_causes: List[str],
-                 target_ate: float, epsilon: float, max_seq_length: int,
+                 target_ate: float, epsilon: float,
                  transformations_dict: Dict, solution_sequence: Tuple,
                  whole_df_ops: List[str] = None, time_out_sec: int = 14400):
         """
@@ -31,7 +31,6 @@ class OperationSpaceExperiment:
             common_causes: List of confounder columns
             target_ate: Target ATE value
             epsilon: Epsilon threshold for success
-            max_seq_length: Max sequence length
             transformations_dict: Dict of all available operations
             solution_sequence: The known solution sequence [(op, col), (op, col), ...]
             whole_df_ops: List of operation names that apply to whole df (e.g., ['isolationForest'])
@@ -42,7 +41,6 @@ class OperationSpaceExperiment:
         self.common_causes = common_causes
         self.target_ate = target_ate
         self.epsilon = epsilon
-        self.max_seq_length = max_seq_length
         self.transformations_dict = transformations_dict
         self.solution_sequence = solution_sequence
         self.time_out_sec = time_out_sec
@@ -65,7 +63,7 @@ class OperationSpaceExperiment:
         # Add whole-df operations (appear once, no column suffix)
         for op in self.whole_df_ops:
             if op in self.transformations_dict:
-                F.append(op)
+                F.append(f"{op}#TABLE")
         return F
 
     def _extract_F_solution(self) -> set:
@@ -73,7 +71,7 @@ class OperationSpaceExperiment:
         F_sol = set()
         for op, col in self.solution_sequence:
             if op in self.whole_df_ops:
-                F_sol.add(op)  # No column suffix for whole-df ops
+                F_sol.add(f"{op}#TABLE")
             else:
                 F_sol.add(f"{op}#{col}")
         return F_sol
@@ -184,7 +182,6 @@ class OperationSpaceExperiment:
             common_causes=self.common_causes,
             target_ate=self.target_ate,
             epsilon=self.epsilon,
-            max_seq_length=self.max_seq_length,
             transformations_dict=subset_transformations,
             time_out_sec=self.time_out_sec,
             F_elements=F_subset,
@@ -204,8 +201,7 @@ class OperationSpaceExperiment:
 
 
 def run_F_experiment(search_algorithm: ATESearch, df: pd.DataFrame,
-                     common_causes: List[str], target_ate: float, epsilon: float,
-                     max_seq_length: int, transformations_dict: Dict,
+                     common_causes: List[str], target_ate: float, epsilon: float, transformations_dict: Dict,
                      solution_sequence: Tuple,
                      whole_df_ops: List[str] = None, i: int = 15, seed: int = None) -> Dict:
     """
@@ -241,7 +237,6 @@ def run_F_experiment(search_algorithm: ATESearch, df: pd.DataFrame,
         common_causes=common_causes,
         target_ate=target_ate,
         epsilon=epsilon,
-        max_seq_length=max_seq_length,
         transformations_dict=transformations_dict,
         solution_sequence=solution_sequence,
         whole_df_ops=whole_df_ops,
