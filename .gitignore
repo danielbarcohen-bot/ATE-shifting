@@ -22,3 +22,4 @@ search_methods/OE_ATE_search_no_bit_mask.py
 search_methods/OE_ATE_search_no_hash.py
 search_methods/AStar_search.py
 search_methods/probe_ATE_search_no_hash.py
+research_and_play.ipynb
