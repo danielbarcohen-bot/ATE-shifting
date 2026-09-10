@@ -354,7 +354,7 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 
 
 def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
-    categorical_causes = df.attrs.get('categorical_causes', [])
+    categorical_causes = df.attrs.get('categorical_causes', []) #TODO: change
     if len(categorical_causes) == 0:
         return df[common_causes]
 

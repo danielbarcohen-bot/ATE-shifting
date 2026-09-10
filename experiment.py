@@ -22,7 +22,7 @@ class Experiment:
     def __init__(
             self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
             target_ate: float, epsilon: float,
-            max_length: int, whole_df_ops: list[str] = None):
+            max_length: int, whole_df_ops: list[str] = None, legal_ops_by_type=None):
         self.df = df
         self.transformations_dict = transformations_dict
         self.common_causes = common_causes
@@ -30,6 +30,7 @@ class Experiment:
         self.epsilon = epsilon
         self.max_length = max_length
         self.whole_df_ops = whole_df_ops
+        self.legal_ops_by_type = legal_ops_by_type
 
     def run_brute(self):
         return BruteForceATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
@@ -42,7 +43,7 @@ class Experiment:
                                                         target_ate=self.target_ate,
                                                         epsilon=self.epsilon,
                                                         transformations_dict=self.transformations_dict,
-                                                        whole_df_ops=self.whole_df_ops)
+                                                        whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
 
     # def run_AStar(self):
     #     return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
@@ -54,14 +55,14 @@ class Experiment:
                                        target_ate=self.target_ate,
                                        epsilon=self.epsilon,
                                        transformations_dict=self.transformations_dict,
-                                       whole_df_ops=self.whole_df_ops)
+                                       whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
 
     def run_probe_no_hash(self):
         return ProbeATESearch(use_hash=False).search(df=self.df, common_causes=self.common_causes,
                                                      target_ate=self.target_ate,
                                                      epsilon=self.epsilon,
                                                      transformations_dict=self.transformations_dict,
-                                                     whole_df_ops=self.whole_df_ops)
+                                                     whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
 
     # def run_prune_no_hash(self):
     #     return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,

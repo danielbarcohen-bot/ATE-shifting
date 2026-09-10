@@ -77,7 +77,8 @@ if __name__ == "__main__":
             target_ate=config["target_ate"],
             epsilon=config["epsilon"],
             max_length=config["max_length"],
-            whole_df_ops=config.get("whole_df_ops", None)
+            whole_df_ops=config.get("whole_df_ops", None),
+            legal_ops_by_type=config.get("legal_ops_by_type", None)
         )
         # Call the correct run method
         if args.mode == "brute":

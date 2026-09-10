@@ -26,12 +26,12 @@ prob_dict = {'bin_equal_frequency_2': 0.0020222446916076846, 'bin_equal_frequenc
              'zscore_filter_3': 0.0239298955173576, 'winsorize': 0.0047185709470845974, 'IQR': 0.08998988877654196,
              'isolationForest': 0.015166835187057633, 'drop_duplicates': 0.3828783282777216}
 
-# {'bin_equal_frequency_2': 1e-10, 'bin_equal_frequency_5': 0.016233766233766232,
-# 'bin_equal_frequency_10': 0.012987012987012988, 'bin_equal_width_2': 1e-10,
-# 'bin_equal_width_5': 0.006493506493506494, 'bin_equal_width_10': 1e-10, 'norm_min_max': 0.577922077922078,
-# 'norm_log': 0.22727272727272727, 'zscore_clip_3': 0.025974025974025976,
-# 'zscore_filter_3': 0.025974025974025976, 'winsorize': 1e-10, 'IQR': 0.09090909090909091,
-# 'isolationForest': 0.04220779220779221}
+LEGAL_OPS_BY_TYPE = {
+    'Numerical':   ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5', 'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm', 'winsorize_aux', 'zscore_filter_3', 'IQR'],
+    'Ordinal':     [],
+    'Categorical': [],
+    'Binary':      [],
+}
 
 whole_df_ops = ['isolationForest', 'drop_duplicates']
 
@@ -727,7 +727,8 @@ EXPERIMENTS = {
         "max_length": 10,
         'sequence_length': 2,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     "EXP28": {
         "df": df_acs_no_missing_values,

@@ -11,11 +11,15 @@ from utils import apply_data_preparations_seq, calculate_ate_linear_regression_l
 
 
 class ProbManager:
-    def __init__(self, operations, columns, op_probs=None, F_elements=None, whole_df_ops=None):
+    def __init__(self, operations, columns, op_probs=None, F_elements=None, whole_df_ops=None, legal_ops_by_type=None,
+                 col_types=None):
         self.probs = {}
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
+        self.col_types = col_types or {}
+        self.legal_ops_by_type = legal_ops_by_type or {}
         self._initialize_weights(operations, columns, op_probs, F_elements)
+        print(self.probs)
 
     def _initialize_weights(self, operations: List[str], columns: List[str],
                             op_probs: Optional[Dict[str, float]] = None,
@@ -54,6 +58,9 @@ class ProbManager:
                 elements.append(f"{op}#TABLE")
             else:
                 for col in columns:
+                    col_type = self.col_types.get(col) if self.col_types else None
+                    if col_type is not None and op not in self.legal_ops_by_type.get(col_type, []):
+                        continue  # illegal combo (e.g. normalize on a binary col) — skip
                     elements.append(f"{op}#{col}")
         return elements
 
@@ -61,55 +68,7 @@ class ProbManager:
         op, col = f_elem.split("#", 1)  # split on first # only
         return op, col
 
-    # def _initialize_weights(self, operations, columns, op_probs, F_elements=None):
-    #     if F_elements is not None:
-    #         # Iterate operations in SAME ORDER as else branch
-    #         for op in operations:
-    #             if op in self.whole_df_ops:
-    #                 f_elem = f"{op}#TABLE"
-    #                 # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
-    #                 if f_elem in F_elements or op in F_elements:
-    #                     if op_probs is None:
-    #                         prob = 1.0 / len(F_elements)  # Will fix this below
-    #                     else:
-    #                         prob = op_probs[op] / sum(
-    #                             1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
-    #                     self.probs[f_elem] = prob
-    #                     self.costs[f_elem] = self._calculate_cost(f_elem)
-    #             else:
-    #                 for col in columns:
-    #                     f_elem = f"{op}#{col}"
-    #                     # Only add if this op#col is in F_elements (already exploded or op is bare whole_df_op)
-    #                     if f_elem in F_elements or op in F_elements:
-    #                         if op_probs is None:
-    #                             prob = 1.0 / len(F_elements)  # Will fix this below
-    #                         else:
-    #                             prob = op_probs[op] / sum(
-    #                                 1 for item in F_elements if item.startswith(f"{op}#"))  # len(columns)
-    #                         self.probs[f_elem] = prob
-    #                         self.costs[f_elem] = self._calculate_cost(f_elem)
-    #     else:
-    #         F_size = ((len(operations) - len(self.whole_df_ops)) * len(columns)) + len(self.whole_df_ops)
-    #         for op in operations:
-    #             if op in self.whole_df_ops:
-    #                 print(f"REMEMBER - whole df ops is {self.whole_df_ops}")
-    #                 f_elem = f"{op}#TABLE"
-    #                 if op_probs is None:
-    #                     prob = 1.0 / F_size  # (len(operations) * len(columns))
-    #                 else:
-    #                     prob = op_probs[op]
-    #                 self.probs[f_elem] = prob
-    #                 self.costs[f_elem] = self._calculate_cost(f_elem)
-    #
-    #             else:
-    #                 for col in columns:
-    #                     f_elem = f"{op}#{col}"
-    #                     if op_probs is None:
-    #                         prob = 1.0 / (F_size)
-    #                     else:
-    #                         prob = op_probs[op] / len(columns)
-    #                     self.probs[f_elem] = prob
-    #                     self.costs[f_elem] = self._calculate_cost(f_elem)
+
 
     def _calculate_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
@@ -230,14 +189,16 @@ class ProbeATESearch(ATESearch):
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
-               F_elements: List[str] = None, whole_df_ops: List[str] = None):
+               F_elements: List[str] = None, whole_df_ops: List[str] = None, legal_ops_by_type=None):
         # Store for access in helper methods
         self.transformations_dict = transformations_dict
         self.F_elements = F_elements
         self.whole_df_ops = whole_df_ops
+        self.legal_ops_by_type = legal_ops_by_type
         # Precompute function prefixes once at startup
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
         df_ = df.copy()
+        self.col_types = df.attrs.get('col_types', None)
         baseline_ate = get_baseline_ate(common_causes, df_)
         print(f"START ATE IS: {baseline_ate}")
 
@@ -245,7 +206,7 @@ class ProbeATESearch(ATESearch):
         self._duplicate_detector.reset(df_, common_causes)
 
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()],
-                                   common_causes, self.op_probs, F_elements, whole_df_ops)
+                                   common_causes, self.op_probs, F_elements, whole_df_ops, self.legal_ops_by_type, self.col_types)
         cost = 1
         best_ate_error = float('inf')
 
@@ -281,6 +242,13 @@ class ProbeATESearch(ATESearch):
 
                     checked += 1
                     curr_df = apply_data_preparations_seq(df_, new_seq, transformations_dict)
+
+                    if curr_df.isna().any().any():
+                        if not self._duplicate_detector.add_if_new(curr_df, common_causes):
+                            continue
+                        bank[cost].append(new_seq)
+                        continue
+
                     new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
                     current_error = abs(new_ate - target_ate)
 
@@ -343,7 +311,7 @@ sequence is: {solution_seq}
         if self.use_restart:
             temp_prob_manager = ProbManager(
                 [func_name for func_name, func in self.transformations_dict.items()],
-                common_causes, self.op_probs, self.F_elements, self.whole_df_ops)
+                common_causes, self.op_probs, self.F_elements, self.whole_df_ops, self.legal_ops_by_type, self.col_types)
             print(
                 f"(REAL, NOT adjusted by restarts) probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
         else:

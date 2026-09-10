@@ -98,16 +98,27 @@ class LalondeDataLoader:
     def __init__(self):
         loader_dir = os.path.dirname(os.path.abspath(__file__))
         self.CACHE_FILE = os.path.join(loader_dir, "lalonde_data.pkl")
+        self.col_types =  {
+            "nodegree": "Binary",
+            "black": "Binary",
+            "hispanic": "Binary",
+            "married": "Binary",
+            "age": "Numerical",
+            "education": "Numerical"
+        }
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):
             print("loaded cached data")
-            return pd.read_pickle(self.CACHE_FILE)
+            df = pd.read_pickle(self.CACHE_FILE)
+            df.attrs['col_types'] = self.col_types
+            return df
         print("bring data")
         df = pd.read_stata("http://www.nber.org/~rdehejia/data/nsw_dw.dta")
         df = df.rename(columns={'treat': 'treatment', 're78': 'outcome'})
         df = df[['nodegree', 'black', 'hispanic', 'age', 'education', 'married', 'treatment', 'outcome']]
         df.to_pickle(self.CACHE_FILE)
+        df.attrs['col_types'] = self.col_types
         return df
 
 
