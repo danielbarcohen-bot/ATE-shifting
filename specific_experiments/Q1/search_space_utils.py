@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from experiments import largest_data_transformations
+from experiments import largest_data_transformations, LEGAL_OPS_BY_TYPE
 from search_methods.OE_ATE_search import OEATESearch
 from search_methods.Random_search import RandomSearch
 from utils import analyze_ate_search_space
@@ -75,13 +75,13 @@ def plot_ate_analysis_interactive(summary_df, dataset_name):
     plt.show()
 
 
-def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_ates_arr, num_iterations=2000):
+def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_ates_arr, legal_ops_by_type, num_iterations=2000):
     start_time = time.time()
     # 1. Convert to dictionary for O(1) lightning-fast lookup
     search_space_registry = {sequence: ate for sequence, ate in seq_ates_arr}
 
     initial_count = len(search_space_registry)
-    print(f"🚀 Initialized registry with {initial_count} existing unique paths.")
+    print(f"Initialized registry with {initial_count} existing unique paths.")
 
     # 2. Loop through requested iterations
     for i in range(num_iterations):
@@ -89,7 +89,7 @@ def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_
             break
         sequence_length = np.random.randint(1, 25)
         # Call your generator to build a pipeline and compute ATE
-        sequence, ate = RandomSearch().search(df, common_causes, transformations_dict, sequence_length)
+        sequence, ate = RandomSearch().search(df, common_causes, transformations_dict, sequence_length, legal_ops_by_type)
 
         # Ensure sequence is immutable (tuple) so it can be hashed
         sequence_tuple = tuple(sequence)
@@ -102,22 +102,21 @@ def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_
     updated_results = list(search_space_registry.items())
 
     new_paths_found = len(updated_results) - initial_count
-    print(f"✅ Finished! Found {new_paths_found} brand-new unique paths.")
-    print(f"📊 Total search space registry now stands at {len(updated_results)} routes.")
+    print(f"Finished! Found {new_paths_found} brand-new unique paths.")
+    print(f"Total search space registry now stands at {len(updated_results)} routes.")
 
     return updated_results
 
 
 def get_ate_bins_df(df, common_causes, time_out_sec, df_name):
     oe_search_result = OEATESearch().search(df=df, common_causes=common_causes, target_ate=np.inf,
-                                            epsilon=0,
-                                            max_seq_length=100, transformations_dict=largest_data_transformations,
-                                            time_out_sec=time_out_sec)
+                                            epsilon=0, transformations_dict=largest_data_transformations,
+                                            time_out_sec=time_out_sec, legal_ops_by_type=LEGAL_OPS_BY_TYPE)
 
     save_tuples_to_csv(f"search_space_OE_{df_name}.csv", oe_search_result['seq_ates'])
 
     seq_ates_with_random = add_random_walks(df, common_causes, largest_data_transformations,
-                                            oe_search_result['seq_ates'])
+                                            oe_search_result['seq_ates'], LEGAL_OPS_BY_TYPE)
 
     save_tuples_to_csv(f"search_space_total_{df_name}.csv", seq_ates_with_random)
 

@@ -29,15 +29,23 @@ def get_baseline_ate(common_causes, df):
 
 # fill
 def fill_median(df, col):
-    df_ = df.copy()
-    df_[col] = df_[col].fillna(df_[col].median())
-    return df_
+    df[col] = df[col].fillna(df[col].median())
+    return df
 
 
-def fill_min(df, col):
-    df_ = df.copy()
-    df_[col] = df_[col].fillna(df_[col].min())
-    return df_
+def fill_mean(df, col):
+    df[col] = df[col].fillna(df[col].mean())
+    return df
+
+
+def fill_mode(df, col):
+    df[col] = df[col].fillna(df[col].mode())
+    return df
+
+
+def fill_drop_na(df, col):
+    df = df.dropna()
+    return df
 
 
 # bin
@@ -354,7 +362,7 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 
 
 def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
-    categorical_causes = df.attrs.get('categorical_causes', []) #TODO: change
+    categorical_causes = df.attrs.get('categorical_causes', [])  # TODO: change
     if len(categorical_causes) == 0:
         return df[common_causes]
 
@@ -379,8 +387,7 @@ def calculate_ate_dml(df, outcome_col='outcome', treatment_col='treatment'):
     common_causes = df.columns.difference(["treatment", "outcome"], sort=False)
     y = df[outcome_col].values
     T = df[treatment_col].values
-    W = prepare_inference_matrix(df, common_causes).values#df.drop(columns=[outcome_col, treatment_col]).values
-
+    W = prepare_inference_matrix(df, common_causes).values  # df.drop(columns=[outcome_col, treatment_col]).values
 
     is_outcome_binary = len(np.unique(y)) == 2
     dml_model = LinearDML(discrete_outcome=is_outcome_binary, discrete_treatment=True, random_state=42)
@@ -396,7 +403,7 @@ def calculate_ate_dr(df, outcome_col='outcome', treatment_col='treatment'):
 
     y = df[outcome_col].values
     T = df[treatment_col].values
-    X = prepare_inference_matrix(df, common_causes).values#df.drop(columns=[outcome_col, treatment_col]).values
+    X = prepare_inference_matrix(df, common_causes).values  # df.drop(columns=[outcome_col, treatment_col]).values
 
     is_outcome_binary = len(np.unique(y)) == 2
 

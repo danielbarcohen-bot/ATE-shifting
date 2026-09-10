@@ -24,8 +24,8 @@ def canonical(seq):
 
 
 class OEATESearch(ATESearch):
-    def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               max_seq_length: int, transformations_dict: dict[str, Callable], time_out_sec: int = 14400):
+    def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float, transformations_dict: dict[str, Callable], time_out_sec: int = 14400, legal_ops_by_type=None):
+        col_types = df.attrs.get('col_types', None)
         df_ = df.copy()
 
         base_line_ate = get_baseline_ate(common_causes, df_)
@@ -63,6 +63,9 @@ class OEATESearch(ATESearch):
             curr_df = apply_data_preparations_seq(df_, seq_arr, transformations_dict)
 
             for func_name, col, move_bit in fast_moves:
+                col_type = col_types.get(col) if col_types else None
+                if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
+                    continue  # illegal combo (e.g. normalize on a binary col) — skip
                 if time.time() - start_time > time_out_sec:
                     print("\n\n*** TIMED OUT!! ***\n")
                     break

@@ -3,7 +3,8 @@ import random
 import pandas as pd
 
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
-from utils import bin_equal_frequency_2, fill_median, fill_min, zscore_clip_3, bin_equal_frequency_10, \
+from utils import bin_equal_frequency_2, fill_median, fill_mean, fill_mode, fill_drop_na, zscore_clip_3, \
+    bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, \
     winsorize_aux, \
     zscore_filter_3, IQR, isolationForest, dropDuplicates
@@ -14,26 +15,42 @@ df_acs = ACSDataLoader().load_data()
 df_IHDP = IHDPDataLoader().load_data()
 df_walmart = WalmartDataLoader().load_data()
 
-df_twins_no_missing_values = df_twins.dropna()
-df_lalonde_no_missing_values = df_lalonde.dropna()
-df_acs_no_missing_values = df_acs.dropna()
-df_IHDP_no_missing_values = df_IHDP.dropna()
+# df_twins_no_missing_values = df_twins.dropna()
+# df_lalonde_no_missing_values = df_lalonde.dropna()
+# df_acs_no_missing_values = df_acs.dropna()
+# df_IHDP_no_missing_values = df_IHDP.dropna()
+df_twins_loaded = df_twins
+df_lalonde_loaded = df_lalonde
+df_acs_loaded = df_acs
+df_IHDP_loaded = df_IHDP
 
-prob_dict = {'bin_equal_frequency_2': 0.0020222446916076846, 'bin_equal_frequency_5': 0.011796427367711493,
-             'bin_equal_frequency_10': 0.00741489720256151, 'bin_equal_width_2': 0.0006740815638692282,
-             'bin_equal_width_5': 0.011796427367711493, 'bin_equal_width_10': 0.005729693292888439,
-             'norm_min_max': 0.26120660599932594, 'norm_log': 0.18267610380856084, 'zscore_clip_3': 0.0239298955173576,
-             'zscore_filter_3': 0.0239298955173576, 'winsorize': 0.0047185709470845974, 'IQR': 0.08998988877654196,
-             'isolationForest': 0.015166835187057633, 'drop_duplicates': 0.3828783282777216}
+# prob_dict = {'bin_equal_frequency_2': 0.0020222446916076846, 'bin_equal_frequency_5': 0.011796427367711493,
+#              'bin_equal_frequency_10': 0.00741489720256151, 'bin_equal_width_2': 0.0006740815638692282,
+#              'bin_equal_width_5': 0.011796427367711493, 'bin_equal_width_10': 0.005729693292888439,
+#              'norm_min_max': 0.26120660599932594, 'norm_log': 0.18267610380856084, 'zscore_clip_3': 0.0239298955173576,
+#              'zscore_filter_3': 0.0239298955173576, 'winsorize': 0.0047185709470845974, 'IQR': 0.08998988877654196,
+#              'isolationForest': 0.015166835187057633, 'drop_duplicates': 0.3828783282777216}
+prob_dict = {'fill_median': 0.09870099744838784, 'fill_mode': 0.09046624913013222, 'fill_mean': 0.10693574576664347,
+             'fill_drop_na': 0.3598932962189747, 'bin_equal_frequency_2': 0.0006958942240779402,
+             'bin_equal_frequency_5': 0.0040593829737879845, 'bin_equal_frequency_10': 0.002551612154952447,
+             'bin_equal_width_2': 0.00023196474135931338, 'bin_equal_width_5': 0.0040593829737879845,
+             'bin_equal_width_10': 0.001971700301554164, 'norm_min_max': 0.08988633727673394,
+             'norm_log': 0.06286244490837392, 'zscore_clip_3': 0.008234748318255625,
+             'zscore_filter_3': 0.008234748318255625, 'winsorize': 0.0016237531895151936, 'IQR': 0.030967292971468337,
+             'isolationForest': 0.005219206680584551, 'drop_duplicates': 0.13163999072141033}
 
 LEGAL_OPS_BY_TYPE = {
-    'Numerical':   ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5', 'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm', 'winsorize_aux', 'zscore_filter_3', 'IQR'],
-    'Ordinal':     [],
-    'Categorical': [],
-    'Binary':      [],
+    'Numerical': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
+                  'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm',
+                  'winsorize_aux', 'zscore_filter_3', 'IQR', 'fill_mean', 'fill_median'],
+    'Ordinal': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
+                'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm',
+                'winsorize_aux', 'zscore_filter_3', 'IQR', 'fill_mode', 'fill_median'],
+    'Categorical': ['fill_mode'],
+    'Binary': ['fill_mode'],
 }
 
-whole_df_ops = ['isolationForest', 'drop_duplicates']
+whole_df_ops = ['isolationForest', 'drop_duplicates', 'fill_drop_na']
 
 small_data_transformations_no_fill = {
     "zscore_clip_3": zscore_clip_3,
@@ -42,7 +59,7 @@ small_data_transformations_no_fill = {
 
 small_data_transformations = {
     "fill_median": fill_median,
-    "fill_min": fill_min,
+    # "fill_min": fill_min,
     "zscore_clip_3": zscore_clip_3,
     "bin_2": bin_equal_frequency_2
 }
@@ -60,6 +77,10 @@ large_data_transformations = {
 }
 
 largest_data_transformations = {
+    "fill_median": fill_median,
+    "fill_mode": fill_mode,
+    "fill_mean": fill_mean,
+    "fill_drop_na": fill_drop_na,
     "bin_equal_frequency_2": bin_equal_frequency_2,
     "bin_equal_frequency_5": bin_equal_frequency_5,
     "bin_equal_frequency_10": bin_equal_frequency_10,
@@ -161,7 +182,7 @@ EXPERIMENTS = {
     ######### df Does not have missing values |adding new probe mechanics
 
     "EXP8": {  # run algorithms on the whole dataset, different target
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0.0019,  # 0,
@@ -176,7 +197,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 9 sec | popped 15| restarts 2 (optimal solution)
     },
     "EXP9": {  # the result need to be with 3 operations
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -0.06,
@@ -190,7 +211,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 34 sec | popped 67| restarts 1 (optimal solution)
     },
     "EXP10": {  # poc example - shift ATE LALONDE
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 1577,
@@ -204,7 +225,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 1 sec | popped 56| restarts 3 (optimal solution)
     },
     "EXP11": {  # poc example - shift ATE ACS
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 20376,
@@ -218,7 +239,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 43 sec | popped 24| restarts 3 (optimal)
     },
     "EXP12": {  # poc example - shift ATE IHDP
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": small_data_transformations_no_fill,
         "common_causes": ["x" + str(i) for i in range(1, 26)],
         "target_ate": 3.994,
@@ -234,7 +255,7 @@ EXPERIMENTS = {
     ##################################################################################
     ###################SAME EXP WITH LARGE TRANSFORM DICT############################
     "EXP8_large": {  # run algorithms on the whole dataset, different target
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_twins.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0.0019,  # 0,
@@ -248,9 +269,9 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 79 sec | popped 35| restarts 2(optimal solution)
     },
     "EXP9_large": {
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
@@ -266,7 +287,7 @@ EXPERIMENTS = {
 
     },
     "EXP10_large": {  # poc example - shift ATE LALONDE
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 1577,
@@ -280,7 +301,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes:  sec 36| popped 709| restarts 5(len 6)
     },
     "EXP11_large": {  # poc example - shift ATE ACS
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 20376,
@@ -294,7 +315,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes:  sec | popped | restarts
     },
     "EXP12_large": {  # poc example - shift ATE IHDP
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": ["x" + str(i) for i in range(1, 26)],
         "target_ate": 3.994,
@@ -311,7 +332,7 @@ EXPERIMENTS = {
     ######################################################################
     ##################### large transformations ##########################
     "EXP13": {  # LALONDE, larger transforamtions | HELPER TO CHECK!
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0,  # 1900,
@@ -325,7 +346,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes:  sec | popped | restarts
     },
     "EXP13.5": {  # LALONDE, larger transforamtions
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 1871,  # wanted - 1883.3,
@@ -344,7 +365,7 @@ EXPERIMENTS = {
 
     },
     "EXP14": {  # poc example - shift ATE ACS | HELPER TO CHECK!
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0,
@@ -358,7 +379,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes:  sec | popped | restarts  ()
     },
     "EXP14.5": {  # poc example - shift ATE ACS
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
@@ -377,7 +398,7 @@ EXPERIMENTS = {
 
     },
     "EXP14.5.1": {  # poc example - shift ATE ACS
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 25000,
@@ -391,7 +412,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes: 12696 sec | popped 13843| restarts 4 (len 10)
     },
     "EXP15": {  # poc example - shift ATE IHDP | HELPER TO CHECK!
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": ["x" + str(i) for i in range(1, 26)],
         "target_ate": -5,
@@ -405,7 +426,7 @@ EXPERIMENTS = {
         # probe (lin reg heu) takes:  sec | popped | restarts
     },
     "EXP15.5": {  # poc example - shift ATE IHDP
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": large_data_transformations,
         "common_causes": ["x" + str(i) for i in range(1, 26)],
         "target_ate": 4.5,
@@ -423,9 +444,9 @@ EXPERIMENTS = {
 
     },
     "EXP16": {  # the result need to be with 3 operations | HELPER TO CHECK!
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 0.0022,  # -1,
         "epsilon": 0.0002,  # 1,
         "max_length": 10
@@ -442,9 +463,9 @@ EXPERIMENTS = {
     ##########################################################################################
     **{f"EXP17.{k}": {  # TWINS CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_twins_no_missing_values.sample(frac=0.1 * k),
+        "df": df_twins_loaded.sample(frac=0.1 * k),
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5
@@ -465,7 +486,7 @@ EXPERIMENTS = {
 
     **{f"EXP18.{k}": {  # ACS CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_acs_no_missing_values.sample(frac=0.1 * k),
+        "df": df_acs_loaded.sample(frac=0.1 * k),
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
@@ -490,8 +511,8 @@ EXPERIMENTS = {
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
         "common_causes": (cols := random.sample(
-            df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
-        "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
+            df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
+        "df": df_twins_loaded[cols + ["treatment", "outcome"]],
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5
@@ -519,7 +540,7 @@ EXPERIMENTS = {
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": large_data_transformations,
         "common_causes": (cols := random.sample(df_acs.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
-        "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
+        "df": df_acs_loaded[cols + ["treatment", "outcome"]],
         "target_ate": 16500,
         "epsilon": 100,
         "max_length": 10
@@ -531,9 +552,9 @@ EXPERIMENTS = {
     },
     **{f"EXP21.{k}": {  # TWINS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_twins_no_missing_values] * k, ignore_index=True),
+        "df": pd.concat([df_twins_loaded] * k, ignore_index=True),
         "transformations_dict": large_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5
@@ -542,7 +563,7 @@ EXPERIMENTS = {
     },
     **{f"EXP22.{k}": {  # ACS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_acs_no_missing_values] * k, ignore_index=True),
+        "df": pd.concat([df_acs_loaded] * k, ignore_index=True),
         "transformations_dict": large_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 16500,
@@ -553,9 +574,9 @@ EXPERIMENTS = {
     },
     #############################   LARGEST DICT   ################################
     "EXP23_low": {
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 0.036,  # -0.06,
         "epsilon": 0.012,  # 0.06,
         "max_length": 5,
@@ -572,9 +593,9 @@ EXPERIMENTS = {
 
     },
     "EXP23_high": {
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 0.084,  # 0.18,
         "epsilon": 0.012,  # 0.06,
         "max_length": 5,
@@ -591,7 +612,7 @@ EXPERIMENTS = {
 
     },
     "EXP24_low": {
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 0,  # 1571,
@@ -610,7 +631,7 @@ EXPERIMENTS = {
 
     },
     "EXP24_high": {
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 3342,
@@ -629,7 +650,7 @@ EXPERIMENTS = {
 
     },
     "EXP25_low": {
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 2990,  # 5774,
@@ -648,7 +669,7 @@ EXPERIMENTS = {
 
     },
     "EXP25_high": {
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 14558,  # 11774,
@@ -667,7 +688,7 @@ EXPERIMENTS = {
 
     },
     "EXP26_high": {
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 4.22,
@@ -686,7 +707,7 @@ EXPERIMENTS = {
 
     },
     "EXP26_low": {
-        "df": df_IHDP_no_missing_values,
+        "df": df_IHDP_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_IHDP.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": 3.62,
@@ -708,18 +729,19 @@ EXPERIMENTS = {
     ################################### SCALABILITY EVALUATIONS ##############################
     ##########################################################################################
     "EXP27": {
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": -0.06,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 0.06,#-0.06,
         "epsilon": 0.06,
         "max_length": 5,
         "sequence_length": 2,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     "EXP27_lal": {
-        "df": df_lalonde_no_missing_values,
+        "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -500,
@@ -731,7 +753,7 @@ EXPERIMENTS = {
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     "EXP28": {
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
@@ -739,7 +761,8 @@ EXPERIMENTS = {
         "max_length": 10,
         "sequence_length": 3,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     "EXP35": {
         "df": df_walmart,
@@ -750,7 +773,8 @@ EXPERIMENTS = {
         "max_length": 10,
         "sequence_length": 5,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     "EXP35_high": {
         "df": df_walmart,
@@ -761,32 +785,35 @@ EXPERIMENTS = {
         "max_length": 10,
         "sequence_length": 4,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     },
     **{f"EXP29.{k}": {  # TWINS CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_twins_no_missing_values.sample(frac=0.1 * k),
+        "df": df_twins_loaded.sample(frac=0.1 * k),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     }
         for k in range(1, 10)
     },
 
     **{f"EXP30.{k}": {  # ACS CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_acs_no_missing_values.sample(frac=0.1 * k),
+        "df": df_acs_loaded.sample(frac=0.1 * k),
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
         "epsilon": 1000,  # 100,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     }
         for k in range(1, 10)
     },
@@ -800,7 +827,8 @@ EXPERIMENTS = {
         "epsilon": 2533,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     }
         for k in range(1, 10)
     },
@@ -808,13 +836,14 @@ EXPERIMENTS = {
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": largest_data_transformations,
         "common_causes": (cols := random.sample(
-            df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
-        "df": df_twins_no_missing_values[cols + ["treatment", "outcome"]],
+            df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
+        "df": df_twins_loaded[cols + ["treatment", "outcome"]],
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
     } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
     **{f"EXP32.{k}": {  # ACS CHECK - k random confunder
@@ -822,12 +851,13 @@ EXPERIMENTS = {
         "transformations_dict": largest_data_transformations,
         "common_causes": (
             cols := random.sample(df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
-        "df": df_acs_no_missing_values[cols + ["treatment", "outcome"]],
+        "df": df_acs_loaded[cols + ["treatment", "outcome"]],
         "target_ate": 18774,  # 16500,
         "epsilon": 1000,  # 100,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist()), 3)
     },
@@ -841,27 +871,30 @@ EXPERIMENTS = {
         "epsilon": 2533,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist()), 3)
     },
     **{f"EXP33.{k}": {  # TWINS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_twins_no_missing_values.assign(replica_id=i)
+        "df": pd.concat([df_twins_loaded.assign(replica_id=i)
                          for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome", "replica_id"],
+                                                            sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 6)
     },
     **{f"EXP34.{k}": {  # ACS CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_acs_no_missing_values.assign(replica_id=i)
+        "df": pd.concat([df_acs_loaded.assign(replica_id=i)
                          for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
@@ -869,7 +902,8 @@ EXPERIMENTS = {
         "epsilon": 1000,  # 100,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 6)
     },
@@ -883,15 +917,16 @@ EXPERIMENTS = {
         "epsilon": 2533,
         "max_length": 10,
         "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 6)
     },
     **{f"EXP39.{k}": {  # F size - twins uniform
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
@@ -899,15 +934,16 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         "solution_sequence": (('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
     **{f"EXP40.{k}": {  # F size - twins probs with restart
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_twins_no_missing_values,
+        "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": -0.06,
         "epsilon": 0.06,
         "max_length": 5,
@@ -915,12 +951,13 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         "solution_sequence": (('IQR', 'gestat10'), ('bin_equal_frequency_2', 'wt')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
     **{f"EXP41.{k}": {  # F size - acs uniform
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
@@ -931,12 +968,13 @@ EXPERIMENTS = {
         "i": k,
         "solution_sequence": (('bin_equal_width_2', 'education'), ('isolationForest', 'Age'),
                               ('bin_equal_frequency_2', 'Age')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
     **{f"EXP42.{k}": {  # F size - acs probs with restart
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
@@ -947,12 +985,13 @@ EXPERIMENTS = {
         "i": k,
         "solution_sequence": (('norm_log', 'education'), ('bin_equal_width_5', 'education'),
                               ('isolationForest', 'Age')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
     **{f"EXP43.{k}": {  # F size - acs probs with NO restart
-        "df": df_acs_no_missing_values,
+        "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 18774,  # 16500,
@@ -963,7 +1002,8 @@ EXPERIMENTS = {
         "i": k,
         "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'),
                               ('isolationForest', 'Age')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
@@ -980,7 +1020,8 @@ EXPERIMENTS = {
         "solution_sequence": (('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'),
                               ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living15'),
                               ('bin_equal_frequency_2', 'sqft_lot15')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
@@ -997,7 +1038,8 @@ EXPERIMENTS = {
         "solution_sequence": (('norm_log', 'grade'), ('IQR', 'sqft_basement'), ('IQR', 'sqft_lot'),
                               ('bin_equal_frequency_5', 'yr_built'), ('IQR', 'bedrooms'),
                               ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_5', 'sqft_lot15')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
@@ -1014,7 +1056,8 @@ EXPERIMENTS = {
         "solution_sequence": (('norm_log', 'sqft_lot'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'),
                               ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'),
                               ('zscore_filter_3', 'sqft_lot15')),
-        "whole_df_ops": whole_df_ops
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },

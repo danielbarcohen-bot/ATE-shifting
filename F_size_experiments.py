@@ -249,15 +249,15 @@ def run_F_experiment(search_algorithm: ATESearch, df: pd.DataFrame,
 
 if __name__ == "__main__":
     from search_methods.probe_ATE_search import ProbeATESearch
-    from experiments import largest_data_transformations, df_twins_no_missing_values
+    from experiments import largest_data_transformations, df_twins_loaded
 
     probe_search_alg = ProbeATESearch()
 
-    common_causes_twins = df_twins_no_missing_values.columns.difference(["treatment", "outcome"], sort=False).tolist()
+    common_causes_twins = df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist()
 
     results = run_F_experiment(
         search_algorithm=probe_search_alg,
-        df=df_twins_no_missing_values,
+        df=df_twins_loaded,
         common_causes=common_causes_twins,
         target_ate=-0.06,
         epsilon=0.06,

@@ -19,7 +19,6 @@ class ProbManager:
         self.col_types = col_types or {}
         self.legal_ops_by_type = legal_ops_by_type or {}
         self._initialize_weights(operations, columns, op_probs, F_elements)
-        print(self.probs)
 
     def _initialize_weights(self, operations: List[str], columns: List[str],
                             op_probs: Optional[Dict[str, float]] = None,
@@ -195,10 +194,10 @@ class ProbeATESearch(ATESearch):
         self.F_elements = F_elements
         self.whole_df_ops = whole_df_ops
         self.legal_ops_by_type = legal_ops_by_type
+        self.col_types = df.attrs.get('col_types', None)
         # Precompute function prefixes once at startup
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
         df_ = df.copy()
-        self.col_types = df.attrs.get('col_types', None)
         baseline_ate = get_baseline_ate(common_causes, df_)
         print(f"START ATE IS: {baseline_ate}")
 

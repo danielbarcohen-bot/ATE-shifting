@@ -36,14 +36,15 @@ class Experiment:
         return BruteForceATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
                                             epsilon=self.epsilon,
                                             transformations_dict=self.transformations_dict,
-                                            whole_df_ops=self.whole_df_ops)
+                                            whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
 
     def run_prune(self):
         return ProbeATESearch(use_restart=False).search(df=self.df, common_causes=self.common_causes,
                                                         target_ate=self.target_ate,
                                                         epsilon=self.epsilon,
                                                         transformations_dict=self.transformations_dict,
-                                                        whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
+                                                        whole_df_ops=self.whole_df_ops,
+                                                        legal_ops_by_type=self.legal_ops_by_type)
 
     # def run_AStar(self):
     #     return AStarATESearch().search(df=self.df, common_causes=self.common_causes,
@@ -62,21 +63,8 @@ class Experiment:
                                                      target_ate=self.target_ate,
                                                      epsilon=self.epsilon,
                                                      transformations_dict=self.transformations_dict,
-                                                     whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
-
-    # def run_prune_no_hash(self):
-    #     return OEATESearchNoHash().search(df=self.df, common_causes=self.common_causes,
-    #                                       target_ate=self.target_ate,
-    #                                       epsilon=self.epsilon,
-    #                                       max_seq_length=self.max_length,
-    #                                       transformations_dict=self.transformations_dict)
-
-    # def run_prune_no_bit_mask(self):
-    #     return OEATESearchNoBitMask().search(df=self.df, common_causes=self.common_causes,
-    #                                          target_ate=self.target_ate,
-    #                                          epsilon=self.epsilon,
-    #                                          max_seq_length=self.max_length,
-    #                                          transformations_dict=self.transformations_dict)
+                                                     whole_df_ops=self.whole_df_ops,
+                                                     legal_ops_by_type=self.legal_ops_by_type)
 
     def run_llm_zero_shot(self, with_COT=False):
         curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes)
@@ -107,19 +95,21 @@ class Experiment:
 class RandomExperiment:
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float,
-                 sequence_length: int):
+                 sequence_length: int, legal_ops_by_type=None):
         self.df = df
         self.transformations_dict = transformations_dict
         self.common_causes = common_causes
         self.target_ate = target_ate
         self.epsilon = epsilon
         self.sequence_length = sequence_length
+        self.legal_ops_by_type = legal_ops_by_type
 
     def run_random(self):
         ates = []
         for _ in range(10):
             seq, ate = RandomSearch().search(df=self.df, transformations_dict=self.transformations_dict,
-                                             common_causes=self.common_causes, sequence_length=self.sequence_length)
+                                             common_causes=self.common_causes, sequence_length=self.sequence_length,
+                                             legal_ops_by_type=self.legal_ops_by_type)
             print(seq)
             ates.append(ate.item())
             if abs(ate - self.target_ate) < self.epsilon:
@@ -134,9 +124,9 @@ class RandomExperiment:
 class ProbabilitiesExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float],
-                 whole_df_ops: list[str] = None):
+                 whole_df_ops: list[str] = None, legal_ops_by_type=None):
         super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
-                         whole_df_ops)
+                         whole_df_ops, legal_ops_by_type)
         self.op_probs = op_probs
 
     def run_probe_no_restart(self):
@@ -145,7 +135,8 @@ class ProbabilitiesExperiment(Experiment):
                                                                                 target_ate=self.target_ate,
                                                                                 epsilon=self.epsilon,
                                                                                 transformations_dict=self.transformations_dict,
-                                                                                whole_df_ops=self.whole_df_ops)
+                                                                                whole_df_ops=self.whole_df_ops,
+                                                                                legal_ops_by_type=self.legal_ops_by_type)
 
     def run_probe_no_restart_no_hash(self):
         return ProbeATESearch(use_restart=False, op_probs=self.op_probs, use_hash=False).search(df=self.df,
@@ -153,14 +144,16 @@ class ProbabilitiesExperiment(Experiment):
                                                                                                 target_ate=self.target_ate,
                                                                                                 epsilon=self.epsilon,
                                                                                                 transformations_dict=self.transformations_dict,
-                                                                                                whole_df_ops=self.whole_df_ops)
+                                                                                                whole_df_ops=self.whole_df_ops,
+                                                                                                legal_ops_by_type=self.legal_ops_by_type)
 
     def run_probe(self):
         return ProbeATESearch(op_probs=self.op_probs).search(df=self.df, common_causes=self.common_causes,
                                                              target_ate=self.target_ate,
                                                              epsilon=self.epsilon,
                                                              transformations_dict=self.transformations_dict,
-                                                             whole_df_ops=self.whole_df_ops)
+                                                             whole_df_ops=self.whole_df_ops,
+                                                             legal_ops_by_type=self.legal_ops_by_type)
 
     def run_probe_no_hash(self):
         return ProbeATESearch(op_probs=self.op_probs, use_hash=False).search(df=self.df,
@@ -168,7 +161,8 @@ class ProbabilitiesExperiment(Experiment):
                                                                              target_ate=self.target_ate,
                                                                              epsilon=self.epsilon,
                                                                              transformations_dict=self.transformations_dict,
-                                                                             whole_df_ops=self.whole_df_ops)
+                                                                             whole_df_ops=self.whole_df_ops,
+                                                                             legal_ops_by_type=self.legal_ops_by_type)
 
     def run_probe_brute(self):
         return ProbeATESearch(op_probs=self.op_probs, use_restart=False, is_brute=True).search(df=self.df,
@@ -176,20 +170,24 @@ class ProbabilitiesExperiment(Experiment):
                                                                                                target_ate=self.target_ate,
                                                                                                epsilon=self.epsilon,
                                                                                                transformations_dict=self.transformations_dict,
-                                                                                               whole_df_ops=self.whole_df_ops)
+                                                                                               whole_df_ops=self.whole_df_ops,
+                                                                                               legal_ops_by_type=self.legal_ops_by_type)
 
     def run_greedy(self):
         return GreedyATESearch(self.op_probs, self.max_length).search(df=self.df, common_causes=self.common_causes,
-                                                     target_ate=self.target_ate,
-                                                     epsilon=self.epsilon,
-                                                     transformations_dict=self.transformations_dict,
-                                                     whole_df_ops=self.whole_df_ops)
+                                                                      target_ate=self.target_ate,
+                                                                      epsilon=self.epsilon,
+                                                                      transformations_dict=self.transformations_dict,
+                                                                      whole_df_ops=self.whole_df_ops,
+                                                                      legal_ops_by_type=self.legal_ops_by_type)
 
     def run_brute_prob(self):
         return BruteForceATESearch(self.op_probs).search(df=self.df, common_causes=self.common_causes,
                                                          target_ate=self.target_ate,
                                                          epsilon=self.epsilon,
-                                                         transformations_dict=self.transformations_dict)
+                                                         transformations_dict=self.transformations_dict,
+                                                         whole_df_ops=self.whole_df_ops,
+                                                         legal_ops_by_type=self.legal_ops_by_type)
 
 
 class FExperiment(Experiment):
@@ -197,7 +195,7 @@ class FExperiment(Experiment):
                  target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i: int,
                  solution_sequence, whole_df_ops: list[str] = None):
         super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
-                         whole_df_ops=whole_df_ops)
+                         whole_df_ops=whole_df_ops) #TODO: add also the legal_ops_by_type
         self.op_probs = op_probs
         self.i = i
         self.solution_sequence = solution_sequence

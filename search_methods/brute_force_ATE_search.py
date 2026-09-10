@@ -18,7 +18,9 @@ class BruteForceATESearch(ATESearch):
         self.op_probs = op_probs
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None, legal_ops_by_type=None):
+        col_types = df.attrs.get('col_types', None)
+
         df_ = df.copy()
         # Precompute function prefixes once at startup
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
@@ -60,7 +62,6 @@ class BruteForceATESearch(ATESearch):
                         flush=True)
                     break
 
-            # for func, col, move_bit in fast_moves:
             for func_name in transformations_dict_keys:
                 if func_name in whole_df_ops:
                     if any(f_n == func_name for f_n, c in seq_arr):
@@ -70,6 +71,10 @@ class BruteForceATESearch(ATESearch):
                     Q.append(new_path)
                 else:
                     for col in common_causes:
+                        col_type = col_types.get(col) if col_types else None
+                        if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
+                            continue  # illegal combo (e.g. normalize on a binary col) — skip
+
                         curr_prefix = func_prefixes[func_name]
                         if any(func_prefixes[f_n] == curr_prefix for f_n, c in seq_arr if c == col):
                             continue

@@ -9,12 +9,65 @@ class TwinsDataLoader:
         loader_dir = os.path.dirname(os.path.abspath(__file__))
         self.CACHE_FILE = os.path.join(loader_dir, "twins_data.pkl")
         self.categorical_cols = ['pldel', 'birattnd', 'brstate', 'stoccfipb', 'mplbir', 'ormoth', 'mrace', 'orfath', 'frace', 'crace', 'birmon', 'brstate_reg', 'stoccfipb_reg', 'mplbir_reg']
+        self.col_types = {
+            "csex": "Binary",
+            "dmar": "Binary",
+            "anemia": "Binary",
+            "cardiac": "Binary",
+            "lung": "Binary",
+            "diabetes": "Binary",
+            "herpes": "Binary",
+            "hydra": "Binary",
+            "hemo": "Binary",
+            "chyper": "Binary",
+            "phyper": "Binary",
+            "eclamp": "Binary",
+            "incervix": "Binary",
+            "pre4000": "Binary",
+            "preterm": "Binary",
+            "renal": "Binary",
+            "rh": "Binary",
+            "uterine": "Binary",
+            "othermr": "Binary",
+            "tobacco": "Binary",
+            "alcohol": "Binary",
+            "data_year": "Numerical",
+            "nprevistq": "Numerical",
+            "dfageq": "Numerical",
+            "dlivord_min": "Numerical",
+            "dtotord_min": "Numerical",
+            "bord": "Numerical",
+            "mager8": "Ordinal",
+            "meduc6": "Ordinal",
+            "mpre5": "Ordinal",
+            "adequacy": "Ordinal",
+            "gestat10": "Ordinal",
+            "cigar6": "Ordinal",
+            "drink5": "Ordinal",
+            "feduc6": "Ordinal",
+            "pldel": "Categorical",
+            "birattnd": "Categorical",
+            "brstate": "Categorical",
+            "stoccfipb": "Categorical",
+            "mplbir": "Categorical",
+            "ormoth": "Categorical",
+            "mrace": "Categorical",
+            "orfath": "Categorical",
+            "frace": "Categorical",
+            "crace": "Categorical",
+            "birmon": "Categorical",
+            "brstate_reg": "Categorical",
+            "stoccfipb_reg": "Categorical",
+            "mplbir_reg": "Categorical"
+        }
+
     def load_data(self) -> pd.DataFrame:
         # load from disk if exists
         if os.path.exists(self.CACHE_FILE):
             print("loaded cached data")
             df = pd.read_pickle(self.CACHE_FILE)
             df.attrs['categorical_causes'] = self.categorical_cols
+            df.attrs['col_types'] = self.col_types
             return df
         print("bring data")
         # The covariates data has 46 features
@@ -87,10 +140,11 @@ class TwinsDataLoader:
 
         df = pd.DataFrame(columns=cols, data=data)
         df = df.drop(columns=['wt', 'infant_id'])
-        df.fillna(value=df.mean(), inplace=True)  # filling the missing values
-        df.fillna(value=df.mode().loc[0], inplace=True)
+        # df.fillna(value=df.mean(), inplace=True)  # filling the missing values
+        # df.fillna(value=df.mode().loc[0], inplace=True)
         df.to_pickle(self.CACHE_FILE)
         df.attrs['categorical_causes'] = self.categorical_cols
+        df.attrs['col_types'] = self.col_types
         return df
 
 
@@ -126,11 +180,22 @@ class ACSDataLoader:
     def __init__(self):
         loader_dir = os.path.dirname(os.path.abspath(__file__))
         self.CACHE_FILE = os.path.join(loader_dir, "ACS_data.pkl")
+        self.col_types = {
+            "Public health coverage": "Binary",
+            "private health coverage": "Binary",
+            "medicare for people 65 and older": "Binary",
+            "insurance through employer": "Binary",
+            "gender": "Binary",
+            "Age": "Numerical",
+            "education": "Numerical"
+        }
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):
             print("loaded cached data")
-            return pd.read_pickle(self.CACHE_FILE)
+            df = pd.read_pickle(self.CACHE_FILE)
+            df.attrs['col_types'] = self.col_types
+            return df
         print("bring data")
         df = pd.read_csv("acs.csv")
         df = df.rename(columns={'Educational attainment': 'education',
@@ -142,6 +207,7 @@ class ACSDataLoader:
         df = df[['education', 'Public health coverage', 'private health coverage', 'medicare for people 65 and older',
                  'insurance through employer', 'gender', 'Age', 'treatment', 'outcome']]
         df.to_pickle(self.CACHE_FILE)
+        df.attrs['col_types'] = self.col_types
         return df
 
 
@@ -149,11 +215,41 @@ class IHDPDataLoader:
     def __init__(self):
         loader_dir = os.path.dirname(os.path.abspath(__file__))
         self.CACHE_FILE = os.path.join(loader_dir, "IHDP_data.pkl")
+        self.col_types = {
+            "x1": "Numerical",
+            "x2": "Numerical",
+            "x3": "Numerical",
+            "x4": "Numerical",
+            "x5": "Numerical",
+            "x6": "Numerical",
+            "x7": "Binary",
+            "x8": "Binary",
+            "x9": "Binary",
+            "x10": "Binary",
+            "x11": "Binary",
+            "x12": "Binary",
+            "x13": "Binary",
+            "x14": "Binary",
+            "x15": "Binary",
+            "x16": "Binary",
+            "x17": "Binary",
+            "x18": "Binary",
+            "x19": "Binary",
+            "x20": "Binary",
+            "x21": "Binary",
+            "x22": "Binary",
+            "x23": "Binary",
+            "x24": "Binary",
+            "x25": "Binary",
+            "x26": "Binary"
+        }
 
     def load_data(self) -> pd.DataFrame:
         if os.path.exists(self.CACHE_FILE):
             print("loaded cached data")
-            return pd.read_pickle(self.CACHE_FILE)
+            df = pd.read_pickle(self.CACHE_FILE)
+            df.attrs['col_types'] = self.col_types
+            return df
         print("bring data")
         df = pd.read_csv(
             "https://raw.githubusercontent.com/AMLab-Amsterdam/CEVAE/master/datasets/IHDP/csv/ihdp_npci_1.csv",
@@ -165,11 +261,32 @@ class IHDPDataLoader:
         df = df.rename(columns={'y_factual': 'outcome'})
         df = df[["x" + str(i) for i in range(1, 26)] + ["treatment", "outcome"]]
         df.to_pickle(self.CACHE_FILE)
+        df.attrs['col_types'] = self.col_types
         return df
 
 
 class WalmartDataLoader:
     def load_data(self) -> pd.DataFrame:
+        col_types = {
+            "waterfront": "Binary",
+            "bedrooms": "Numerical",
+            "bathrooms": "Numerical",
+            "sqft_living": "Numerical",
+            "sqft_lot": "Numerical",
+            "floors": "Numerical",
+            "sqft_above": "Numerical",
+            "sqft_basement": "Numerical",
+            "yr_built": "Numerical",
+            "yr_renovated": "Numerical",
+            "sqft_living15": "Numerical",
+            "sqft_lot15": "Numerical",
+            "view": "Ordinal",
+            "condition": "Ordinal",
+            "grade": "Ordinal"
+        }
+
         BASE_DIR = Path(__file__).resolve().parent
         FILE_PATH = BASE_DIR / "house_price_vs_walmart_distances.csv"
-        return pd.read_csv(FILE_PATH)
+        df = pd.read_csv(FILE_PATH)
+        df.attrs['col_types'] = col_types
+        return df

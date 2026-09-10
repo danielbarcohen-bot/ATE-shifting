@@ -15,7 +15,9 @@ class GreedyATESearch(ATESearch):
         self.max_seq_length = max_seq_length
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None, legal_ops_by_type=None):
+
+        col_types = df.attrs.get('col_types', None)
         df_ = df.copy()
         base_line_ate = get_baseline_ate(common_causes, df_)
         prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
@@ -54,6 +56,9 @@ class GreedyATESearch(ATESearch):
             selected_col = None
             for col in common_causes:
                 for func_name in transformations_dict.keys():
+                    col_type = col_types.get(col) if col_types else None
+                    if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
+                        continue  # illegal combo (e.g. normalize on a binary col) — skip
                     rule_name = f"{func_name}#{col}"
                     if not whole_df_ops is None and func_name in whole_df_ops:
                         rule_name = f"{func_name}#TABLE"
