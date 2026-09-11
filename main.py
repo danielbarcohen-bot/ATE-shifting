@@ -61,6 +61,7 @@ if __name__ == "__main__":
             max_sequence_length=config["max_length"],
             op_probs=config["op_probs"],
             i=config["i"],
+            seed=config["seed"],
             solution_sequence=config["solution_sequence"],
             whole_df_ops=config.get("whole_df_ops", None)
         )

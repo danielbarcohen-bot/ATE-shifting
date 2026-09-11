@@ -41,11 +41,11 @@ prob_dict = {'fill_median': 0.09870099744838784, 'fill_mode': 0.0904662491301322
 
 LEGAL_OPS_BY_TYPE = {
     'Numerical': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
-                  'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm',
-                  'winsorize_aux', 'zscore_filter_3', 'IQR', 'fill_mean', 'fill_median'],
+                  'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'norm_min_max', 'norm_log',
+                  'winsorize', 'zscore_filter_3', 'IQR', 'fill_mean', 'fill_median'],
     'Ordinal': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
-                'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'min_max_norm', 'log_norm',
-                'winsorize_aux', 'zscore_filter_3', 'IQR', 'fill_mode', 'fill_median'],
+                'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'norm_min_max', 'norm_log',
+                'winsorize', 'zscore_filter_3', 'IQR', 'fill_mode', 'fill_median'],
     'Categorical': ['fill_mode'],
     'Binary': ['fill_mode'],
 }
@@ -923,7 +923,6 @@ EXPERIMENTS = {
     } for k in range(1, 6)
     },
     **{f"EXP39.{k}": {  # F size - twins uniform
-        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
@@ -933,6 +932,7 @@ EXPERIMENTS = {
         "sequence_length": 2,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 39,
         "solution_sequence": (('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
@@ -940,7 +940,6 @@ EXPERIMENTS = {
     } for k in range(1, 16)
     },
     **{f"EXP40.{k}": {  # F size - twins probs with restart
-        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
@@ -950,6 +949,7 @@ EXPERIMENTS = {
         "sequence_length": 2,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 40,
         "solution_sequence": (('IQR', 'gestat10'), ('bin_equal_frequency_2', 'wt')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
@@ -966,6 +966,7 @@ EXPERIMENTS = {
         "sequence_length": 3,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 41,
         "solution_sequence": (('bin_equal_width_2', 'education'), ('isolationForest', 'Age'),
                               ('bin_equal_frequency_2', 'Age')),
         "whole_df_ops": whole_df_ops,
@@ -983,6 +984,7 @@ EXPERIMENTS = {
         "sequence_length": 3,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 42,
         "solution_sequence": (('norm_log', 'education'), ('bin_equal_width_5', 'education'),
                               ('isolationForest', 'Age')),
         "whole_df_ops": whole_df_ops,
@@ -1000,6 +1002,7 @@ EXPERIMENTS = {
         "sequence_length": 3,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 43,
         "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'),
                               ('isolationForest', 'Age')),
         "whole_df_ops": whole_df_ops,
@@ -1017,6 +1020,7 @@ EXPERIMENTS = {
         "sequence_length": 5,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 44,
         "solution_sequence": (('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'),
                               ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living15'),
                               ('bin_equal_frequency_2', 'sqft_lot15')),
@@ -1035,6 +1039,7 @@ EXPERIMENTS = {
         "sequence_length": 5,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 45,
         "solution_sequence": (('norm_log', 'grade'), ('IQR', 'sqft_basement'), ('IQR', 'sqft_lot'),
                               ('bin_equal_frequency_5', 'yr_built'), ('IQR', 'bedrooms'),
                               ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_5', 'sqft_lot15')),
@@ -1043,6 +1048,7 @@ EXPERIMENTS = {
 
     } for k in range(1, 16)
     },
+    # MAY NOT NEED TO RUN AGAIN
     **{f"EXP46.{k}": {  # F size - walmart probs with\out restart | more probable solution sequence
         "df": df_walmart,
         "transformations_dict": largest_data_transformations,
@@ -1053,6 +1059,7 @@ EXPERIMENTS = {
         "sequence_length": 5,
         "op_probs": prob_dict,
         "i": k,
+        'seed': 46,
         "solution_sequence": (('norm_log', 'sqft_lot'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'),
                               ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'),
                               ('zscore_filter_3', 'sqft_lot15')),

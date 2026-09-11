@@ -193,12 +193,13 @@ class ProbabilitiesExperiment(Experiment):
 class FExperiment(Experiment):
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i: int,
-                 solution_sequence, whole_df_ops: list[str] = None):
+                 solution_sequence, seed, whole_df_ops: list[str] = None):
         super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
                          whole_df_ops=whole_df_ops) #TODO: add also the legal_ops_by_type
         self.op_probs = op_probs
         self.i = i
         self.solution_sequence = solution_sequence
+        self.seed = seed
 
     def run_probe_uniform(self):
         search_alg = ProbeATESearch()
@@ -212,7 +213,7 @@ class FExperiment(Experiment):
             solution_sequence=self.solution_sequence,
             i=self.i,
             whole_df_ops=self.whole_df_ops,
-            seed=42  # For reproducibility
+            seed=self.seed  # For reproducibility
         )
 
     def run_probe_probs_with_restart(self):
@@ -227,7 +228,7 @@ class FExperiment(Experiment):
             solution_sequence=self.solution_sequence,
             i=self.i,
             whole_df_ops=self.whole_df_ops,
-            seed=42  # For reproducibility
+            seed=self.seed  # For reproducibility
         )
 
     def run_probe_probs_with_no_restart(self):
@@ -242,5 +243,5 @@ class FExperiment(Experiment):
             solution_sequence=self.solution_sequence,
             i=self.i,
             whole_df_ops=self.whole_df_ops,
-            seed=42  # For reproducibility
+            seed=self.seed  # For reproducibility
         )

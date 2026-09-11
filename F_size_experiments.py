@@ -4,6 +4,7 @@ from typing import List, Dict, Tuple
 
 import pandas as pd
 
+from experiments import LEGAL_OPS_BY_TYPE
 from search_methods.ATE_search import ATESearch
 
 
@@ -38,6 +39,7 @@ class OperationSpaceExperiment:
         """
         self.search_algorithm = search_algorithm
         self.df = df
+        self.col_types = df.attrs.get('col_types', {})
         self.common_causes = common_causes
         self.target_ate = target_ate
         self.epsilon = epsilon
@@ -59,6 +61,9 @@ class OperationSpaceExperiment:
         for op in self.transformations_dict.keys():
             if op not in self.whole_df_ops:
                 for col in self.common_causes:
+                    col_type = self.col_types.get(col) if self.col_types else None
+                    if col_type is not None and op not in LEGAL_OPS_BY_TYPE.get(col_type, []):
+                        continue  # illegal combo (e.g. normalize on a binary col) — skip
                     F.append(f"{op}#{col}")
         # Add whole-df operations (appear once, no column suffix)
         for op in self.whole_df_ops:
@@ -107,8 +112,8 @@ class OperationSpaceExperiment:
         """
         Run the experiment once for a selected i.
         """
-        # if seed is not None:
-        #     random.seed(seed)
+        if seed is not None:
+            random.seed(seed)
         num_groups = 15
         if not (1 <= i <= num_groups):
             raise ValueError(f"i must be between 1 and {num_groups}")
@@ -185,7 +190,8 @@ class OperationSpaceExperiment:
             transformations_dict=subset_transformations,
             time_out_sec=self.time_out_sec,
             F_elements=F_subset,
-            whole_df_ops=self.whole_df_ops
+            whole_df_ops=self.whole_df_ops,
+            legal_ops_by_type=LEGAL_OPS_BY_TYPE
         )
         # If search completes without exception, it found the solution
         result['found_solution'] = True
@@ -247,24 +253,24 @@ def run_F_experiment(search_algorithm: ATESearch, df: pd.DataFrame,
     return results
 
 
-if __name__ == "__main__":
-    from search_methods.probe_ATE_search import ProbeATESearch
-    from experiments import largest_data_transformations, df_twins_loaded
-
-    probe_search_alg = ProbeATESearch()
-
-    common_causes_twins = df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist()
-
-    results = run_F_experiment(
-        search_algorithm=probe_search_alg,
-        df=df_twins_loaded,
-        common_causes=common_causes_twins,
-        target_ate=-0.06,
-        epsilon=0.06,
-        max_seq_length=5,
-        transformations_dict=largest_data_transformations,
-        solution_sequence=(('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10')),
-        i=15,
-        whole_df_ops=['isolationForest'],
-        seed=42  # For reproducibility
-    )
+# if __name__ == "__main__":
+#     from search_methods.probe_ATE_search import ProbeATESearch
+#     from experiments import largest_data_transformations, df_twins_loaded, LEGAL_OPS_BY_TYPE
+#
+#     probe_search_alg = ProbeATESearch()
+#
+#     common_causes_twins = df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist()
+#
+#     results = run_F_experiment(
+#         search_algorithm=probe_search_alg,
+#         df=df_twins_loaded,
+#         common_causes=common_causes_twins,
+#         target_ate=-0.06,
+#         epsilon=0.06,
+#         max_seq_length=5,
+#         transformations_dict=largest_data_transformations,
+#         solution_sequence=(('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10')),
+#         i=15,
+#         whole_df_ops=['isolationForest'],
+#         seed=42  # For reproducibility
+#     )
