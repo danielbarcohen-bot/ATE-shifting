@@ -89,6 +89,7 @@ def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_
             break
         sequence_length = np.random.randint(1, 25)
         # Call your generator to build a pipeline and compute ATE
+        print(f"search {i}")
         sequence, ate = RandomSearch().search(df, common_causes, transformations_dict, sequence_length, legal_ops_by_type)
 
         # Ensure sequence is immutable (tuple) so it can be hashed

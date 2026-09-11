@@ -22,7 +22,8 @@ if __name__ == "__main__":
             common_causes=config["common_causes"],
             target_ate=config["target_ate"],
             epsilon=config["epsilon"],
-            sequence_length=config["sequence_length"]
+            sequence_length=config["sequence_length"],
+            legal_ops_by_type=config["legal_ops_by_type"]
         )
         experiment.run_random()
     if args.mode in ["probe_probs_no_restart", "probe_probs_with_restart", "greedy", "brute_prob", "probe_brute", "probe_probs_no_restart_no_hash", "probe_probs_with_restart_no_hash"]:

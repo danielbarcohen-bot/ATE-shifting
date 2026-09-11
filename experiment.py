@@ -111,7 +111,7 @@ class RandomExperiment:
                                              common_causes=self.common_causes, sequence_length=self.sequence_length,
                                              legal_ops_by_type=self.legal_ops_by_type)
             print(seq)
-            ates.append(ate.item())
+            ates.append(ate)#.item())
             if abs(ate - self.target_ate) < self.epsilon:
                 print(f"found solution, ATE is {ate}, sequence is \n{seq}")
         print(f"ATEs are {sorted(ates)}")

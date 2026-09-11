@@ -7,7 +7,7 @@ import pandas as pd
 from search_methods.ATE_search import ATESearch
 from utils import df_signature_fast, apply_data_preparations_seq, get_baseline_ate, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, calculate_ate_with_uncertainty, \
-    analyze_ate_search_space
+    analyze_ate_search_space, get_fill_permutations
 
 
 def canonical(seq):
@@ -30,8 +30,9 @@ class OEATESearch(ATESearch):
 
         base_line_ate = get_baseline_ate(common_causes, df_)
         print(f"start ATE is {base_line_ate}")
-        print(calculate_ate_with_uncertainty(df.copy(), 'treatment', 'outcome', common_causes))
-        Q = deque([((), 0)])
+        # print(calculate_ate_with_uncertainty(df.copy(), 'treatment', 'outcome', common_causes))
+        fill_methods = get_fill_permutations(df, col_types, legal_ops_by_type)
+        Q = deque([((), 0)]) if fill_methods == [] else deque([(route, 0) for route in fill_methods])
         seen_dfs = set()
         prune_count = 0
         num_prog_seen = 0
@@ -63,15 +64,15 @@ class OEATESearch(ATESearch):
             curr_df = apply_data_preparations_seq(df_, seq_arr, transformations_dict)
 
             for func_name, col, move_bit in fast_moves:
-                col_type = col_types.get(col) if col_types else None
-                if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
-                    continue  # illegal combo (e.g. normalize on a binary col) — skip
                 if time.time() - start_time > time_out_sec:
                     print("\n\n*** TIMED OUT!! ***\n")
                     break
                 if found_solution:
                     break
 
+                col_type = col_types.get(col) if col_types else None
+                if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
+                    continue  # illegal combo (e.g. normalize on a binary col) — skip
                 if func_name == "isolationForest" and any(f_n == "isolationForest" for f_n, c in seq_arr):
                     continue
                 if func_name == "drop_duplicates" and any(f_n == "drop_duplicates" for f_n, c in seq_arr):

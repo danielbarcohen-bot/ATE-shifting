@@ -1,4 +1,5 @@
 import hashlib
+import itertools
 from typing import List
 
 import numpy as np
@@ -361,8 +362,36 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
+def get_fill_permutations(df, col_types, legal_ops_by_type):
+    """מחזירה רשימה של כל שילובי המילוי האפשריים.
+
+    כל איבר ברשימה הוא טאפל מהצורה: ((fill_op, col), (fill_op, col), ...)
+    """
+    cols_with_nan = [col for col in df.columns if df[col].isna().any()]
+    if not cols_with_nan:
+        return []
+    options_per_column = [(('fill_drop_na', 'TABLE'),)]
+
+    for col in cols_with_nan:
+        col_type = col_types.get(col) if col_types else None
+
+        if col_type is not None:
+            allowed_ops = legal_ops_by_type.get(col_type, [])
+            fill_ops = [op for op in allowed_ops if op.startswith("fill_") and op != "fill_drop_na"]
+
+            if fill_ops:
+                col_options = [(op, col) for op in fill_ops]
+                options_per_column.append(col_options)
+
+    if not options_per_column:
+        return []
+
+    all_combinations = list(itertools.product(*options_per_column))
+
+    return all_combinations
+
 def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
-    categorical_causes = df.attrs.get('categorical_causes', [])  # TODO: change
+    categorical_causes = df.attrs.get('categorical_causes', [])
     if len(categorical_causes) == 0:
         return df[common_causes]
 
