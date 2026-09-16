@@ -363,10 +363,6 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 
 
 def get_fill_permutations(df, col_types, legal_ops_by_type):
-    """מחזירה רשימה של כל שילובי המילוי האפשריים.
-
-    כל איבר ברשימה הוא טאפל מהצורה: ((fill_op, col), (fill_op, col), ...)
-    """
     cols_with_nan = [col for col in df.columns if df[col].isna().any()]
     if not cols_with_nan:
         return []
