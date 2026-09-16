@@ -24,7 +24,7 @@ def canonical(seq):
 
 
 class OEATESearch(ATESearch):
-    def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float, transformations_dict: dict[str, Callable], time_out_sec: int = 14400, legal_ops_by_type=None):
+    def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float, transformations_dict: dict[str, Callable], time_out_sec: int = 14400, legal_ops_by_type=None, seq_ates_writer=None):
         col_types = df.attrs.get('col_types', None)
         df_ = df.copy()
 
@@ -37,7 +37,9 @@ class OEATESearch(ATESearch):
         prune_count = 0
         num_prog_seen = 0
         solution_seq = None
-        seq_ates = [((), base_line_ate)]
+        # optional csv writer (opened by the caller) that receives every explored (sequence, ATE) pair
+        if seq_ates_writer is not None:
+            seq_ates_writer.writerow(((), base_line_ate))
         run_times = []
         run_times_pop = []
         Q_poped_num = 0
@@ -92,7 +94,8 @@ class OEATESearch(ATESearch):
                     new_ate = calculate_ate_linear_regression_lstsq(new_df.copy(), 'treatment', 'outcome',
                                                                     common_causes)
                     new_path = seq_arr + ((func_name, col),)
-                    seq_ates.append((new_path, new_ate))
+                    if seq_ates_writer is not None:
+                        seq_ates_writer.writerow((new_path, new_ate))
 
                     new_distance = abs(new_ate - target_ate)
                     if new_distance < smallest_distance_from_target:
@@ -130,6 +133,4 @@ class OEATESearch(ATESearch):
         print(f"checked {num_prog_seen} combinations", flush=True)
         print(f"distances from ATE (with time):\n{distances_at_time_from_target}", flush=True)
         # return solution_seq
-        return {"solution_seq": solution_seq,
-                # "ates_distrb": analyze_ate_search_space(seq_ates)
-                "seq_ates": seq_ates}
+        return {"solution_seq": solution_seq}

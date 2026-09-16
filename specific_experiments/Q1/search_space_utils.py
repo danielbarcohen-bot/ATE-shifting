@@ -1,4 +1,6 @@
+import ast
 import csv
+import io
 import time
 
 
@@ -76,12 +78,13 @@ def plot_ate_analysis_interactive(summary_df, dataset_name):
     plt.show()
 
 
-def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_ates_arr, legal_ops_by_type, num_iterations=2000):
+def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_ates_writer, seen_sequences,
+                     legal_ops_by_type, num_iterations=2000):
     start_time = time.time()
-    # 1. Convert to dictionary for O(1) lightning-fast lookup
-    search_space_registry = {sequence: ate for sequence, ate in seq_ates_arr}
+    # 1. Only the sequences are kept in memory (for dedup); new (sequence, ATE) pairs go to seq_ates_writer
+    seen_sequences = set(seen_sequences)
 
-    initial_count = len(search_space_registry)
+    initial_count = len(seen_sequences)
     print(f"Initialized registry with {initial_count} existing unique paths.")
 
     # 2. Loop through requested iterations
@@ -97,32 +100,32 @@ def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_
         sequence_tuple = tuple(sequence)
 
         # 3. Deduplication check
-        if sequence_tuple not in search_space_registry:
-            search_space_registry[sequence_tuple] = ate
+        if sequence_tuple not in seen_sequences:
+            seen_sequences.add(sequence_tuple)
+            seq_ates_writer.writerow((sequence_tuple, ate))
 
-    # 4. Format back into your required list of tuples structure
-    updated_results = list(search_space_registry.items())
-
-    new_paths_found = len(updated_results) - initial_count
+    new_paths_found = len(seen_sequences) - initial_count
     print(f"Finished! Found {new_paths_found} brand-new unique paths.")
-    print(f"Total search space registry now stands at {len(updated_results)} routes.")
-
-    return updated_results
+    print(f"Total search space registry now stands at {len(seen_sequences)} routes.")
 
 
-def get_ate_bins_df(df, common_causes, time_out_sec, df_name):
-    oe_search_result = OEATESearch().search(df=df, common_causes=common_causes, target_ate=np.inf,
-                                            epsilon=0, transformations_dict=largest_data_transformations,
-                                            time_out_sec=time_out_sec, legal_ops_by_type=LEGAL_OPS_BY_TYPE)
+def get_ate_bins_df(df, common_causes, time_out_sec, df_name, seq_ates_buffer_bytes: int = 1 << 20):
+    seq_ates_path = f"search_space_OE_{df_name}.csv"
+    raw = io.BufferedWriter(io.FileIO(seq_ates_path, "w"), buffer_size=seq_ates_buffer_bytes)
+    with io.TextIOWrapper(raw, encoding="utf-8", newline="", write_through=True) as out:
+        seq_ates_writer = csv.writer(out)
+        OEATESearch().search(df=df, common_causes=common_causes, target_ate=np.inf,
+                             epsilon=0, transformations_dict=largest_data_transformations,
+                             time_out_sec=time_out_sec, legal_ops_by_type=LEGAL_OPS_BY_TYPE,
+                             seq_ates_writer=seq_ates_writer)
 
-    save_tuples_to_csv(f"search_space_OE_{df_name}.csv", oe_search_result['seq_ates'])
+        # flush so the OE rows are on disk before reading back the sequences seen so far
+        out.flush()
+        seen_sequences = {sequence for sequence, _ in load_tuples_from_csv(seq_ates_path)}
+        add_random_walks(df, common_causes, largest_data_transformations, seq_ates_writer, seen_sequences,
+                         LEGAL_OPS_BY_TYPE)
 
-    seq_ates_with_random = add_random_walks(df, common_causes, largest_data_transformations,
-                                            oe_search_result['seq_ates'], LEGAL_OPS_BY_TYPE)
-
-    save_tuples_to_csv(f"search_space_total_{df_name}.csv", seq_ates_with_random)
-
-    ate_bins_data = analyze_ate_search_space(seq_ates_with_random)
+    ate_bins_data = analyze_ate_search_space(load_tuples_from_csv(seq_ates_path))
     return ate_bins_data
 
 
@@ -133,3 +136,9 @@ def save_tuples_to_csv(file_name, data):
     with open(file_name, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerows(data)
+
+
+def load_tuples_from_csv(file_name):
+    # sequences are stored as tuple reprs; literal_eval turns them back into hashable tuples
+    with open(file_name, newline="", encoding="utf-8") as f:
+        return [(ast.literal_eval(seq), float(ate)) for seq, ate in csv.reader(f)]
