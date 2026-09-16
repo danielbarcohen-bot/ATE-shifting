@@ -1,3 +1,6 @@
 dowhy==0.8
 networkx==2.8.8
-pandas
+pandas<3.0
+matplotlib
+econml
+numpy<2.4
