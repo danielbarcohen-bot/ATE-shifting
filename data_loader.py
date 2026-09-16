@@ -290,3 +290,18 @@ class WalmartDataLoader:
         df = pd.read_csv(FILE_PATH)
         df.attrs['col_types'] = col_types
         return df
+
+
+def data_factory(dataset_name: str) -> pd.DataFrame:
+    if dataset_name == 'twins':
+        return TwinsDataLoader().load_data()
+    elif dataset_name == 'ihdp':
+        return IHDPDataLoader().load_data()
+    elif dataset_name == 'walmart':
+        return WalmartDataLoader().load_data()
+    elif dataset_name == 'lalonde':
+        return LalondeDataLoader().load_data()
+    elif dataset_name == 'acs':
+        return ACSDataLoader().load_data()
+    else:
+        assert False, dataset_name

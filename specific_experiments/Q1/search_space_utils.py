@@ -1,7 +1,7 @@
 import csv
 import time
 
-import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
 
@@ -12,6 +12,7 @@ from utils import analyze_ate_search_space
 
 
 def plot_ate_analysis_interactive(summary_df, dataset_name):
+    import matplotlib.pyplot as plt  # local import to not mess up importing the module
     summary_df = summary_df.copy()
 
     # Midpoint of interval
