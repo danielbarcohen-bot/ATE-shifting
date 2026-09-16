@@ -2,7 +2,7 @@ import ast
 import csv
 import io
 import time
-
+import random
 
 import numpy as np
 import pandas as pd
@@ -78,34 +78,50 @@ def plot_ate_analysis_interactive(summary_df, dataset_name):
     plt.show()
 
 
-def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_ates_writer, seen_sequences,
+def add_random_walks(df: pd.DataFrame,
+                     common_causes,
+                     transformations_dict,
+                     seq_ates_writer,
+                     seen_sequences: list,
                      legal_ops_by_type, num_iterations=2000):
     start_time = time.time()
     # 1. Only the sequences are kept in memory (for dedup); new (sequence, ATE) pairs go to seq_ates_writer
-    seen_sequences = set(seen_sequences)
+    # fill_len = len(list(filter(lambda y: y[0].startswith('fill'), next(filter(lambda x: x[0][0].startswith('fill_'), seen_sequences)))))
+    min_gen_len = max(len(list(filter(lambda x: not x[0].startswith('fill_') , seq))) for seq in seen_sequences)
 
     initial_count = len(seen_sequences)
     print(f"Initialized registry with {initial_count} existing unique paths.")
+    new_paths_found = 0
 
     # 2. Loop through requested iterations
     for i in range(num_iterations):
         if time.time() - start_time > 1800:  # max 30 minutes of generating
             break
-        sequence_length = np.random.randint(1, 25)
+        sequence_length = np.random.randint(min_gen_len, 25)
+        to_extend = random.choice(seen_sequences)
+        if len(to_extend) == sequence_length:
+            sequence_length += 1
         # Call your generator to build a pipeline and compute ATE
         print(f"search {i}")
-        sequence, ate = RandomSearch().search(df, common_causes, transformations_dict, sequence_length, legal_ops_by_type)
+        sequence, ate = RandomSearch().search(
+            df, common_causes,
+            transformations_dict,
+            sequence_length,
+            legal_ops_by_type,
+            to_extend
+        )
 
         # Ensure sequence is immutable (tuple) so it can be hashed
         sequence_tuple = tuple(sequence)
 
         # 3. Deduplication check
         if sequence_tuple not in seen_sequences:
-            seen_sequences.add(sequence_tuple)
+            # seen_sequences.add(sequence_tuple)
             seq_ates_writer.writerow((sequence_tuple, ate))
+            new_paths_found += 1
 
-    new_paths_found = len(seen_sequences) - initial_count
-    print(f"Finished! Found {new_paths_found} brand-new unique paths.")
+    # new_paths_found = len(seen_sequences) - initial_count
+    print(f"Finished! Explored {new_paths_found} more programs.")
     print(f"Total search space registry now stands at {len(seen_sequences)} routes.")
 
 
@@ -124,7 +140,7 @@ def get_ate_bins_df(df, common_causes, time_out_sec, df_name, add_random: int = 
 
         # flush so the OE rows are on disk before reading back the sequences seen so far
         out.flush()
-        seen_sequences = {sequence for sequence, _ in load_tuples_from_csv(seq_ates_path)}
+        seen_sequences = [sequence for sequence, _ in load_tuples_from_csv(seq_ates_path)]
         add_random_walks(df, common_causes, largest_data_transformations, seq_ates_writer, seen_sequences,
                          LEGAL_OPS_BY_TYPE,num_iterations=add_random)
 

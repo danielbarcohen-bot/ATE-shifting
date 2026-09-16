@@ -95,7 +95,7 @@ class Experiment:
 class RandomExperiment:
     def __init__(self, df: pd.DataFrame, transformations_dict: dict[str, Callable], common_causes: List[str],
                  target_ate: float, epsilon: float,
-                 sequence_length: int, legal_ops_by_type=None):
+                 sequence_length: int, legal_ops_by_type):
         self.df = df
         self.transformations_dict = transformations_dict
         self.common_causes = common_causes
