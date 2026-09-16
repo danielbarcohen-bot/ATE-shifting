@@ -7,7 +7,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from experiments import largest_data_transformations, LEGAL_OPS_BY_TYPE
+from experiments import largest_data_transformations, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE
 from search_methods.OE_ATE_search import OEATESearch
 from search_methods.Random_search import RandomSearch
 from utils import analyze_ate_search_space
@@ -109,21 +109,24 @@ def add_random_walks(df: pd.DataFrame, common_causes, transformations_dict, seq_
     print(f"Total search space registry now stands at {len(seen_sequences)} routes.")
 
 
-def get_ate_bins_df(df, common_causes, time_out_sec, df_name, seq_ates_buffer_bytes: int = 1 << 20):
+def get_ate_bins_df(df, common_causes, time_out_sec, df_name, add_random: int = 2000, seq_ates_buffer_bytes: int = 1 << 20):
     seq_ates_path = f"search_space_OE_{df_name}.csv"
     raw = io.BufferedWriter(io.FileIO(seq_ates_path, "w"), buffer_size=seq_ates_buffer_bytes)
     with io.TextIOWrapper(raw, encoding="utf-8", newline="", write_through=True) as out:
         seq_ates_writer = csv.writer(out)
         OEATESearch().search(df=df, common_causes=common_causes, target_ate=np.inf,
-                             epsilon=0, transformations_dict=largest_data_transformations,
-                             time_out_sec=time_out_sec, legal_ops_by_type=LEGAL_OPS_BY_TYPE,
+                             epsilon=0,
+                             transformations_dict=largest_data_transformations,
+                             time_out_sec=time_out_sec,
+                             ops_by_type=LEGAL_OPS_BY_TYPE,
+                             fill_by_type=LEGAL_FILL_BY_TYPE,
                              seq_ates_writer=seq_ates_writer)
 
         # flush so the OE rows are on disk before reading back the sequences seen so far
         out.flush()
         seen_sequences = {sequence for sequence, _ in load_tuples_from_csv(seq_ates_path)}
         add_random_walks(df, common_causes, largest_data_transformations, seq_ates_writer, seen_sequences,
-                         LEGAL_OPS_BY_TYPE)
+                         LEGAL_OPS_BY_TYPE,num_iterations=add_random)
 
     ate_bins_data = analyze_ate_search_space(load_tuples_from_csv(seq_ates_path))
     return ate_bins_data

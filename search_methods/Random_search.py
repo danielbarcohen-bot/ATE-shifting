@@ -5,7 +5,7 @@ from typing import Callable, List
 
 import pandas as pd
 
-from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_fill_permutations
+from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_fill_combinations
 
 
 class RandomSearch:
@@ -22,7 +22,7 @@ class RandomSearch:
         sequence = ()
 
         if df.isna().any(axis=None):
-            fill_methods = get_fill_permutations(df, col_types, legal_ops_by_type)
+            fill_methods = get_fill_combinations(df, col_types, legal_ops_by_type)
             sequence = random.choice(fill_methods)
 
         for _ in range(sequence_length):

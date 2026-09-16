@@ -42,10 +42,16 @@ prob_dict = {'fill_median': 0.09870099744838784, 'fill_mode': 0.0904662491301322
 LEGAL_OPS_BY_TYPE = {
     'Numerical': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
                   'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'norm_min_max', 'norm_log',
-                  'winsorize', 'zscore_filter_3', 'IQR', 'fill_mean', 'fill_median'],
+                  'winsorize', 'zscore_filter_3', 'IQR'],
     'Ordinal': ['bin_equal_frequency_2', 'zscore_clip_3', 'bin_equal_frequency_10', 'bin_equal_frequency_5',
                 'bin_equal_width_5', 'bin_equal_width_2', 'bin_equal_width_10', 'norm_min_max', 'norm_log',
-                'winsorize', 'zscore_filter_3', 'IQR', 'fill_mode', 'fill_median'],
+                'winsorize', 'zscore_filter_3', 'IQR'],
+    'Categorical': [],
+    'Binary': [],
+}
+LEGAL_FILL_BY_TYPE = {
+    'Numerical': ['fill_mean', 'fill_median'],
+    'Ordinal': ['fill_mode', 'fill_median'],
     'Categorical': ['fill_mode'],
     'Binary': ['fill_mode'],
 }

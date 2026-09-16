@@ -1,6 +1,6 @@
 import hashlib
 import itertools
-from typing import List
+from typing import List, Sequence, Dict
 
 import numpy as np
 import pandas as pd
@@ -34,13 +34,13 @@ def fill_median(df, col):
     return df
 
 
-def fill_mean(df, col):
+def fill_mean(df, col) -> None:
     df[col] = df[col].fillna(df[col].mean())
     return df
 
 
-def fill_mode(df, col):
-    df[col] = df[col].fillna(df[col].mode())
+def fill_mode(df, col) -> None:
+    df[col] = df[col].fillna(df[col].mode()[0])
     return df
 
 
@@ -178,7 +178,8 @@ def isolationForest(df, col) -> pd.DataFrame:
 
 
 def dropDuplicates(df, col) -> pd.DataFrame:
-    return df.drop_duplicates()
+    df.drop_duplicates(inplace=True) #TODO: filter columns somehow?
+    return df
 
 
 def df_signature(df: pd.DataFrame):
@@ -231,7 +232,11 @@ def list_seq_to_tuple_seq(list_seq):
     return tuple_seq
 
 
-def get_moves_and_moveBit(common_causes, transformations_names):
+def get_moves_and_moveBit(
+        common_causes: List[str],
+        transformations_names: Sequence[str],
+        col_types: Dict[str,str],
+        ops_by_type: Dict[str,List[str]]):
     bit_map = {}
     counter = 0
     for f in transformations_names:
@@ -246,9 +251,10 @@ def get_moves_and_moveBit(common_causes, transformations_names):
     fast_moves = []
     for c in common_causes:
         for f in transformations_names:
-            group = f.split('_')[0]
-            bit_pos = bit_map[(group, c)]
-            fast_moves.append((f, c, 1 << bit_pos))
+            if f in ops_by_type[col_types[c]]:
+                group = f.split('_')[0]
+                bit_pos = bit_map[(group, c)]
+                fast_moves.append((f, c, 1 << bit_pos))
     return fast_moves
 
 
@@ -362,27 +368,23 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
-def get_fill_permutations(df, col_types, legal_ops_by_type):
+def get_fill_combinations(df, col_types, legal_ops_by_type):
     cols_with_nan = [col for col in df.columns if df[col].isna().any()]
-    if not cols_with_nan:
-        return []
-    options_per_column = [(('fill_drop_na', 'TABLE'),)]
+    assert cols_with_nan
+    options_per_column = []
 
     for col in cols_with_nan:
         col_type = col_types.get(col) if col_types else None
 
         if col_type is not None:
-            allowed_ops = legal_ops_by_type.get(col_type, [])
-            fill_ops = [op for op in allowed_ops if op.startswith("fill_") and op != "fill_drop_na"]
+            fill_ops = legal_ops_by_type[col_type]
+            col_options = [(op, col) for op in fill_ops]
+            options_per_column.append(col_options)
 
-            if fill_ops:
-                col_options = [(op, col) for op in fill_ops]
-                options_per_column.append(col_options)
+    # if not options_per_column:
+    #     return []
 
-    if not options_per_column:
-        return []
-
-    all_combinations = list(itertools.product(*options_per_column))
+    all_combinations = [(('fill_drop_na', 'TABLE'),)] + list(itertools.product(*options_per_column))
 
     return all_combinations
 
