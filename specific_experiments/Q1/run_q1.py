@@ -5,11 +5,8 @@ from data_loader import data_factory
 from specific_experiments.Q1.search_space_utils import get_ate_bins_df
 
 if __name__ == '__main__':
-    # Unpack args:
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('dataset',type=str)
-    # args = parser.parse_args()
-    dataset = sys.argv[2]
+
+    dataset = sys.argv[1]
 
     df = data_factory(dataset)
     common_causes = df.columns.difference(["treatment", "outcome"], sort=False).tolist()
