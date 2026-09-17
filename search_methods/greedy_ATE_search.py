@@ -4,8 +4,8 @@ from typing import Callable, List
 import pandas as pd
 
 from search_methods.probe_ATE_search import ProbManager
-from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_baseline_ate, \
-    calculate_ate_with_uncertainty
+from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
+    calculate_ate_with_uncertainty, get_fill_combinations
 
 
 class GreedyATESearch:
@@ -14,18 +14,36 @@ class GreedyATESearch:
         self.max_seq_length = max_seq_length
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None, legal_ops_by_type=None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None,
+               legal_ops_by_type = None, legal_fill_by_type = None):
 
         col_types = df.attrs.get('col_types', None)
         df_ = df.copy()
-        base_line_ate = get_baseline_ate(common_causes, df_)
-        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()], common_causes,
-                                   self.op_probs, whole_df_ops=whole_df_ops)
+        needs_fill = df.isnull().values.any()
+        prob_manager = ProbManager(
+                            list(transformations_dict.keys()),
+                            common_causes,
+                            self.op_probs,
+                            None,
+                            whole_df_ops,legal_ops_by_type,legal_fill_by_type,col_types,
+                            [col for col in df.columns if df[col].isna().any()])
+        fill_seqs = [(seq,prob_manager.get_sequence_probability(seq)) for
+                     seq in get_fill_combinations(df_, col_types, legal_fill_by_type)] if needs_fill else []
 
         start_time = time.time()
         sequence = (())
 
-        while len(sequence) <= self.max_seq_length:
+        if needs_fill:
+            sequence = max(fill_seqs,key=lambda x: x[1])[0]
+            curr_df = apply_data_preparations_seq(df_, sequence, transformations_dict)
+            base_line_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome',
+                                                            common_causes)
+        else:
+            base_line_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome',
+                                                            common_causes)
+        fill_length = len(sequence)
+
+        while len(sequence) - fill_length <= self.max_seq_length:
             curr_df = apply_data_preparations_seq(df_, sequence, transformations_dict)
             new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome',
                                                             common_causes)
@@ -53,22 +71,28 @@ class GreedyATESearch:
             highest_prob = -1
             selected_func = None
             selected_col = None
-            for col in common_causes:
-                for func_name in transformations_dict.keys():
+            for func_name in transformations_dict.keys():
+                if func_name.startswith('fill_'): continue
+                if func_name in whole_df_ops:
+                    if any(f_n == func_name for f_n, c in sequence):
+                        continue
+                    else:
+                        curr_prob = prob_manager.probs[(func_name, 'TABLE')]
+                        if curr_prob > highest_prob:
+                            highest_prob = curr_prob
+                            selected_func = func_name
+                            selected_col = "TABLE"
+                        continue
+                # ELSE:
+                for col in common_causes:
                     col_type = col_types.get(col) if col_types else None
                     if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
                         continue  # illegal combo (e.g. normalize on a binary col) — skip
-                    rule_name = f"{func_name}#{col}"
-                    if not whole_df_ops is None and func_name in whole_df_ops:
-                        rule_name = f"{func_name}#TABLE"
-                    if func_name in whole_df_ops:
-                        if any(f_n == func_name for f_n, c in sequence):
-                            continue
                     if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in sequence if c == col):
                         continue
-                    curr_prob = prob_manager.probs[rule_name]
+                    curr_prob = prob_manager.probs[(func_name,col)]
                     if curr_prob > highest_prob:
                         highest_prob = curr_prob
                         selected_func = func_name
-                        selected_col = col if func_name not in whole_df_ops else "TABLE"
+                        selected_col = col
             sequence = sequence + ((selected_func, selected_col),)

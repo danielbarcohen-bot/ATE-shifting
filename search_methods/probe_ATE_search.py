@@ -368,7 +368,7 @@ sequence is: {solution_seq}
 
         if self.use_restart:
             temp_prob_manager = ProbManager(
-                [func_name for func_name, func in self.transformations_dict.items()],
+                list(self.transformations_dict.keys()),
                 common_causes, self.op_probs, self.F_elements, self.whole_df_ops, self.legal_ops_by_type,
                 legal_fill_by_type=self.fill_by_type, col_types=self.col_types, fill_columns=self.fill_columns)
             print(
