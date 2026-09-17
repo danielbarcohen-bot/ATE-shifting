@@ -7,7 +7,6 @@ from typing import List, Optional, Callable
 import pandas as pd
 from anthropic import Anthropic
 
-from search_methods.ATE_search import ATESearch
 from secret import API_KEY_SONNET
 from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq, list_seq_to_tuple_seq
 
@@ -44,7 +43,7 @@ class Claude:
             return f"Error: {str(e)}"
 
 
-class LLMSearch(ATESearch):
+class LLMSearch:
     def __init__(self, system: str, prompt: str):
         self.LLM = Claude(API_KEY_SONNET)
         self.prompt = prompt

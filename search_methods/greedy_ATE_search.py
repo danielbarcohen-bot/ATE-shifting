@@ -3,13 +3,12 @@ from typing import Callable, List
 
 import pandas as pd
 
-from search_methods.ATE_search import ATESearch
 from search_methods.probe_ATE_search import ProbManager
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_baseline_ate, \
     calculate_ate_with_uncertainty
 
 
-class GreedyATESearch(ATESearch):
+class GreedyATESearch:
     def __init__(self, op_probs, max_seq_length: int):
         self.op_probs = op_probs
         self.max_seq_length = max_seq_length

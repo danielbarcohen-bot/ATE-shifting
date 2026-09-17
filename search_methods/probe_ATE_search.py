@@ -5,7 +5,6 @@ from typing import List, Callable, Set, Tuple, Optional, Dict
 
 import pandas as pd
 
-from search_methods.ATE_search import ATESearch
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
     get_baseline_ate, df_signature_fast, calculate_ate_with_uncertainty
 
@@ -167,7 +166,7 @@ class EqualityDuplicateDetector(DuplicateDetector):
         self.seen_dfs = [df.copy()]
 
 
-class ProbeATESearch(ATESearch):
+class ProbeATESearch:
     def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True):
         self.use_restart = use_restart
         self.op_probs = op_probs

@@ -5,7 +5,7 @@ from typing import List, Dict, Tuple
 import pandas as pd
 
 from experiments import LEGAL_OPS_BY_TYPE
-from search_methods.ATE_search import ATESearch
+from search_methods.probe_ATE_search import ProbeATESearch
 
 
 class OperationSpaceExperiment:
@@ -21,7 +21,7 @@ class OperationSpaceExperiment:
     4. Repeat 3 times with different random shuffles of G
     """
 
-    def __init__(self, search_algorithm: ATESearch, df: pd.DataFrame, common_causes: List[str],
+    def __init__(self, search_algorithm: ProbeATESearch, df: pd.DataFrame, common_causes: List[str],
                  target_ate: float, epsilon: float,
                  transformations_dict: Dict, solution_sequence: Tuple,
                  whole_df_ops: List[str] = None, time_out_sec: int = 14400):

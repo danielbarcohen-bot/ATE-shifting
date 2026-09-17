@@ -5,7 +5,6 @@ from typing import List, Callable
 
 import pandas as pd
 
-from search_methods.ATE_search import ATESearch
 from utils import df_signature_fast, apply_data_preparations_seq, get_baseline_ate, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, calculate_ate_with_uncertainty, \
     analyze_ate_search_space, get_fill_combinations
@@ -24,7 +23,7 @@ def canonical(seq):
     return key
 
 
-class OEATESearch(ATESearch):
+class OEATESearch:
     def search(self,
                df: pd.DataFrame,
                common_causes: List[str],
