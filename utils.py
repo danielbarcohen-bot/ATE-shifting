@@ -22,10 +22,6 @@ def calculate_ate(model: CausalModel):
     return estimate.value
 
 
-def get_baseline_ate(common_causes, df):
-    df_ = df.copy()
-    df_ = df_.dropna()
-    return calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
 
 
 # fill
@@ -235,6 +231,7 @@ def list_seq_to_tuple_seq(list_seq):
 def get_moves_and_moveBit(
         common_causes: List[str],
         transformations_names: Sequence[str],
+        whole_table_ops: Sequence[str],
         col_types: Dict[str,str],
         ops_by_type: Dict[str,List[str]]):
     bit_map = {}
@@ -249,8 +246,11 @@ def get_moves_and_moveBit(
     # Pre-calculate moves: (func, col, bit_value)
     # bit_value is 2^counter (e.g., 1, 2, 4, 8, 16...)
     fast_moves = []
-    for c in common_causes:
-        for f in transformations_names:
+    for f in transformations_names:
+        if f in whole_table_ops:
+            fast_moves.append((f, 'TABLE', 0))
+            continue
+        for c in common_causes:
             if f in ops_by_type[col_types[c]]:
                 group = f.split('_')[0]
                 bit_pos = bit_map[(group, c)]

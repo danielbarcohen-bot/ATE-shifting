@@ -13,6 +13,7 @@ class RandomSearch:
                df: pd.DataFrame,
                common_causes: List[str],
                transformations_dict: dict[str, Callable],
+               whole_table_ops: List[str],
                sequence_length: int,
                legal_ops_by_type,
                sequence_to_extend = None
@@ -23,7 +24,7 @@ class RandomSearch:
             for col in common_causes
             for transformation in transformations_dict.keys()
             if transformation in legal_ops_by_type[col_types[col]]
-        ]
+        ] + [('TABLE',op) for op in whole_table_ops]
         random.shuffle(actions)
         sequence = () if sequence_to_extend is None else sequence_to_extend
         seen_transformation_classes_per_col = defaultdict(list)

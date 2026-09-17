@@ -81,6 +81,7 @@ def plot_ate_analysis_interactive(summary_df, dataset_name):
 def add_random_walks(df: pd.DataFrame,
                      common_causes,
                      transformations_dict,
+                     whole_table_ops,
                      seq_ates_writer,
                      seen_sequences: list,
                      legal_ops_by_type, num_iterations=2000):
@@ -106,6 +107,7 @@ def add_random_walks(df: pd.DataFrame,
         sequence, ate = RandomSearch().search(
             df, common_causes,
             transformations_dict,
+            whole_table_ops,
             sequence_length,
             legal_ops_by_type,
             to_extend
@@ -130,9 +132,11 @@ def get_ate_bins_df(df, common_causes, time_out_sec, df_name, add_random: int = 
     raw = io.BufferedWriter(io.FileIO(seq_ates_path, "w"), buffer_size=seq_ates_buffer_bytes)
     with io.TextIOWrapper(raw, encoding="utf-8", newline="", write_through=True) as out:
         seq_ates_writer = csv.writer(out)
+        whole_table_ops = ['isolationForest', 'drop_duplicates']
         OEATESearch().search(df=df, common_causes=common_causes, target_ate=np.inf,
                              epsilon=0,
                              transformations_dict=largest_data_transformations,
+                             whole_table_ops=whole_table_ops,
                              time_out_sec=time_out_sec,
                              ops_by_type=LEGAL_OPS_BY_TYPE,
                              fill_by_type=LEGAL_FILL_BY_TYPE,
@@ -141,7 +145,7 @@ def get_ate_bins_df(df, common_causes, time_out_sec, df_name, add_random: int = 
         # flush so the OE rows are on disk before reading back the sequences seen so far
         out.flush()
         seen_sequences = [sequence for sequence, _ in load_tuples_from_csv(seq_ates_path)]
-        add_random_walks(df, common_causes, largest_data_transformations, seq_ates_writer, seen_sequences,
+        add_random_walks(df, common_causes, largest_data_transformations, whole_table_ops, seq_ates_writer, seen_sequences,
                          LEGAL_OPS_BY_TYPE,num_iterations=add_random)
 
     ate_bins_data = analyze_ate_search_space(load_tuples_from_csv(seq_ates_path))

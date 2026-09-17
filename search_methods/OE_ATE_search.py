@@ -5,7 +5,7 @@ from typing import List, Callable
 
 import pandas as pd
 
-from utils import df_signature_fast, apply_data_preparations_seq, get_baseline_ate, \
+from utils import df_signature_fast, apply_data_preparations_seq, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, calculate_ate_with_uncertainty, \
     analyze_ate_search_space, get_fill_combinations
 
@@ -30,6 +30,7 @@ class OEATESearch:
                target_ate: float,
                epsilon: float,
                transformations_dict: dict[str, Callable],
+               whole_table_ops: set[str],
                time_out_sec: int = 14400,
                ops_by_type=None,
                fill_by_type=None,
@@ -65,7 +66,7 @@ class OEATESearch:
                 if seq_ates_writer is not None:
                     seq_ates_writer.writerow((fill_sequence, new_ate))
         else:
-            baseline_ate = get_baseline_ate(common_causes, df_)
+            baseline_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
             print(f"start ATE is {baseline_ate}")
             Q = deque([((), 0)])
             if seq_ates_writer is not None:
@@ -80,7 +81,7 @@ class OEATESearch:
         # run_times = []
         # run_times_pop = []
         Q_poped_num = 0
-        fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys(), col_types, ops_by_type)
+        fast_moves = get_moves_and_moveBit(common_causes, transformations_dict.keys(), whole_table_ops, col_types, ops_by_type)
         found_solution = False
 
         print("Init complete")
