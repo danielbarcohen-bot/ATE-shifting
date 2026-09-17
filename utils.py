@@ -371,15 +371,7 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
 def get_fill_combinations(df, col_types, legal_ops_by_type):
     cols_with_nan = [col for col in df.columns if df[col].isna().any()]
     assert cols_with_nan
-    options_per_column = []
-
-    for col in cols_with_nan:
-        col_type = col_types.get(col) if col_types else None
-
-        if col_type is not None:
-            fill_ops = legal_ops_by_type[col_type]
-            col_options = [(op, col) for op in fill_ops]
-            options_per_column.append(col_options)
+    options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
 
     # if not options_per_column:
     #     return []
@@ -387,6 +379,21 @@ def get_fill_combinations(df, col_types, legal_ops_by_type):
     all_combinations = [(('fill_drop_na', 'TABLE'),)] + list(itertools.product(*options_per_column))
 
     return all_combinations
+
+def get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
+    options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
+    return list(itertools.chain(*options_per_column)) + [('fill_drop_na', 'TABLE')]
+def _get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
+    options_per_column = []
+    for col in cols_with_nan:
+        col_type = col_types.get(col) if col_types else None
+
+        if col_type is not None:
+            fill_ops = legal_ops_by_type[col_type]
+            col_options = [(op, col) for op in fill_ops]
+            options_per_column.append(col_options)
+    return options_per_column
+
 
 def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
     categorical_causes = df.attrs.get('categorical_causes', [])
