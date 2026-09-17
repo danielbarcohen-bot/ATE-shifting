@@ -30,6 +30,12 @@ class GreedyATESearch:
         fill_seqs = [(seq,prob_manager.get_sequence_probability(seq)) for
                      seq in get_fill_combinations(df_, col_types, legal_fill_by_type)] if needs_fill else []
 
+        operations = [(op, col) for op in transformations_dict.keys() for col in common_causes
+                      if not op.startswith('fill_') and op in legal_ops_by_type[col_types[col]]]
+        operations += [(op, 'TABLE') for op in whole_df_ops if not op.startswith('fill_')]
+        operations.sort(key=lambda op_col: prob_manager.probs[op_col], reverse=True)
+        op_index = 0
+
         start_time = time.time()
         sequence = (())
 
@@ -43,56 +49,51 @@ class GreedyATESearch:
                                                             common_causes)
         fill_length = len(sequence)
 
-        while len(sequence) - fill_length <= self.max_seq_length:
+        finished = False
+        while len(sequence) - fill_length <= self.max_seq_length and not finished:
             curr_df = apply_data_preparations_seq(df_, sequence, transformations_dict)
             new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome',
                                                             common_causes)
             current_error = abs(new_ate - target_ate)
 
-            if current_error < epsilon or len(sequence) == self.max_seq_length:
-                if current_error < epsilon:
-                    print("FOUND SOLUTION")
-                else:
-                    print("DIDNT FIND SOLUTION")
+            if current_error < epsilon or len(sequence) - fill_length == self.max_seq_length:
+                break
 
-                print(
-                    f"""***\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {sequence}\n***""",
-                    flush=True)
-                print(f"Execution time: {time.time() - start_time:.3f} sec")
-                print(f"probability of this sequence is: {prob_manager.get_sequence_probability(sequence)}")
-                try:
-                    print(
-                        f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
-                except Exception as e:
-                    print(f"Failed to calculate uncertainty:\n{e}")
-                print(f"sequence is: {sequence}")
-                exit()
-
-            highest_prob = -1
-            selected_func = None
-            selected_col = None
-            for func_name in transformations_dict.keys():
-                if func_name.startswith('fill_'): continue
-                if func_name in whole_df_ops:
+            # walk down the probability-sorted operations and take the first one that
+            # is still allowed to enter the sequence
+            selected = None
+            while op_index < len(operations):
+                func_name, col = operations[op_index]
+                op_index += 1
+                if col == 'TABLE':
                     if any(f_n == func_name for f_n, c in sequence):
-                        continue
-                    else:
-                        curr_prob = prob_manager.probs[(func_name, 'TABLE')]
-                        if curr_prob > highest_prob:
-                            highest_prob = curr_prob
-                            selected_func = func_name
-                            selected_col = "TABLE"
-                        continue
-                # ELSE:
-                for col in common_causes:
-                    col_type = col_types.get(col) if col_types else None
-                    if col_type is not None and func_name not in legal_ops_by_type.get(col_type, []):
-                        continue  # illegal combo (e.g. normalize on a binary col) — skip
-                    if any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in sequence if c == col):
-                        continue
-                    curr_prob = prob_manager.probs[(func_name,col)]
-                    if curr_prob > highest_prob:
-                        highest_prob = curr_prob
-                        selected_func = func_name
-                        selected_col = col
-            sequence = sequence + ((selected_func, selected_col),)
+                        continue  # whole-df op already used
+                elif any(f_n.split("_")[0] == func_name.split("_")[0] for f_n, c in sequence if c == col):
+                    continue  # same op family already applied to this column
+                selected = (func_name, col)
+                break
+
+            if selected is None:
+                #exhausted the families
+                finished = True
+                continue
+            sequence = sequence + (selected,)
+
+        #Print solution:
+        if current_error < epsilon:
+            print("FOUND SOLUTION")
+        else:
+            print("DIDNT FIND SOLUTION")
+
+        print(
+            f"""***\nFINISHED\nATE before: {base_line_ate}\nATE now is: {new_ate}\nsequence is: {sequence}\n***""",
+            flush=True)
+        print(f"Execution time: {time.time() - start_time:.3f} sec")
+        print(f"probability of this sequence is: {prob_manager.get_sequence_probability(sequence)}")
+        try:
+            print(
+                f"uncertainty:\n{calculate_ate_with_uncertainty(curr_df.copy(), 'treatment', 'outcome', common_causes)}")
+        except Exception as e:
+            print(f"Failed to calculate uncertainty:\n{e}")
+        print(f"sequence is: {sequence}")
+
