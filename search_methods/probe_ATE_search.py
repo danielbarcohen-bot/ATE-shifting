@@ -168,11 +168,11 @@ class EqualityDuplicateDetector(DuplicateDetector):
         if any(df.equals(seen) for seen in self.seen_dfs):
             return False
 
-        self.seen_dfs.append(df.copy())
+        self.seen_dfs.append(df)
         return True
 
     def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
-        self.seen_dfs = [df.copy()]
+        self.seen_dfs = [df]
 
 
 class ProbeATESearch:
