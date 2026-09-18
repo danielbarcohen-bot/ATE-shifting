@@ -45,6 +45,47 @@ def fill_drop_na(df, col):
     return df
 
 
+def _fill_value(s, stat):
+    if stat == 'mode':
+        modes = s.mode()
+        return modes[0] if not modes.empty else None
+    return getattr(s, stat)()
+
+
+def _fill_all(df, numerical_stat, ordinal_stat):
+    col_types = df.attrs.get('col_types', {})
+    for col in df.columns:
+        if not df[col].isna().any():
+            continue
+        col_type = col_types.get(col)
+        if col_type == 'Numerical':
+            stat = numerical_stat
+        elif col_type == 'Ordinal':
+            stat = ordinal_stat
+        else:
+            stat = 'mode'
+        value = _fill_value(df[col], stat)
+        if value is not None:
+            df[col] = df[col].fillna(value)
+    return df
+
+
+def fill_all_mean_mode(df, col):
+    return _fill_all(df, 'mean', 'mode')
+
+
+def fill_all_mean_median(df, col):
+    return _fill_all(df, 'mean', 'median')
+
+
+def fill_all_median_mode(df, col):
+    return _fill_all(df, 'median', 'mode')
+
+
+def fill_all_median_median(df, col):
+    return _fill_all(df, 'median', 'median')
+
+
 # bin
 def bin_equal_frequency_k(df, col, k) -> pd.DataFrame:
     s = df[col]
@@ -369,6 +410,10 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
+TABLE_FILL_OPS = ['fill_drop_na', 'fill_all_mean_mode', 'fill_all_mean_median',
+                  'fill_all_median_mode', 'fill_all_median_median']
+
+
 def get_fill_combinations(df, col_types, legal_ops_by_type):
     cols_with_nan = [col for col in df.columns if df[col].isna().any()]
     assert cols_with_nan
@@ -377,13 +422,13 @@ def get_fill_combinations(df, col_types, legal_ops_by_type):
     # if not options_per_column:
     #     return []
 
-    all_combinations = [(('fill_drop_na', 'TABLE'),)] + list(itertools.product(*options_per_column))
+    all_combinations = [((op, 'TABLE'),) for op in TABLE_FILL_OPS] + list(itertools.product(*options_per_column))
 
     return all_combinations
 
 def get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
     options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
-    return list(itertools.chain(*options_per_column)) + [('fill_drop_na', 'TABLE')]
+    return list(itertools.chain(*options_per_column)) + [(op, 'TABLE') for op in TABLE_FILL_OPS]
 def _get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
     options_per_column = []
     for col in cols_with_nan:

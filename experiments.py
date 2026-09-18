@@ -3,7 +3,8 @@ import random
 import pandas as pd
 
 from data_loader import TwinsDataLoader, LalondeDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
-from utils import bin_equal_frequency_2, fill_median, fill_mean, fill_mode, fill_drop_na, zscore_clip_3, \
+from utils import bin_equal_frequency_2, fill_median, fill_mean, fill_mode, fill_drop_na, fill_all_mean_mode, \
+    fill_all_mean_median, fill_all_median_mode, fill_all_median_median, zscore_clip_3, \
     bin_equal_frequency_10, \
     bin_equal_frequency_5, bin_equal_width_5, bin_equal_width_2, bin_equal_width_10, min_max_norm, log_norm, \
     winsorize_aux, \
@@ -30,8 +31,15 @@ df_IHDP_loaded = df_IHDP
 #              'norm_min_max': 0.26120660599932594, 'norm_log': 0.18267610380856084, 'zscore_clip_3': 0.0239298955173576,
 #              'zscore_filter_3': 0.0239298955173576, 'winsorize': 0.0047185709470845974, 'IQR': 0.08998988877654196,
 #              'isolationForest': 0.015166835187057633, 'drop_duplicates': 0.3828783282777216}
-prob_dict = {'fill_median': 0.09870099744838784, 'fill_mode': 0.09046624913013222, 'fill_mean': 0.10693574576664347,
-             'fill_drop_na': 0.3598932962189747, 'bin_equal_frequency_2': 0.0006958942240779402,
+prob_dict = {'fill_median': 0.09870099744838784,
+             'fill_mode': 0.09046624913013222,
+             'fill_mean': 0.10693574576664347,
+             'fill_drop_na': 0.3598932962189747,
+             'fill_all_mean_mode': 0.09870099744838784,  # (prob_dict['fill_mean'] + prob_dict['fill_mode']) / 2,
+             'fill_all_mean_median': 0.10281837160751565,  # (prob_dict['fill_mean'] + prob_dict['fill_median']) / 2,
+             'fill_all_median_mode': 0.09458362328926004,  # (prob_dict['fill_median'] + prob_dict['fill_mode']) / 2,
+             'fill_all_median_median': 0.09870099744838784,  # prob_dict['fill_median'],
+             'bin_equal_frequency_2': 0.0006958942240779402,
              'bin_equal_frequency_5': 0.0040593829737879845, 'bin_equal_frequency_10': 0.002551612154952447,
              'bin_equal_width_2': 0.00023196474135931338, 'bin_equal_width_5': 0.0040593829737879845,
              'bin_equal_width_10': 0.001971700301554164, 'norm_min_max': 0.08988633727673394,
@@ -87,6 +95,10 @@ largest_data_transformations = {
     "fill_mode": fill_mode,
     "fill_mean": fill_mean,
     "fill_drop_na": fill_drop_na,
+    "fill_all_mean_mode": fill_all_mean_mode,
+    "fill_all_mean_median": fill_all_mean_median,
+    "fill_all_median_mode": fill_all_median_mode,
+    "fill_all_median_median": fill_all_median_median,
     "bin_equal_frequency_2": bin_equal_frequency_2,
     "bin_equal_frequency_5": bin_equal_frequency_5,
     "bin_equal_frequency_10": bin_equal_frequency_10,
