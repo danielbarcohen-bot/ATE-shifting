@@ -1,6 +1,6 @@
 import hashlib
 import itertools
-from typing import List
+from typing import List, Sequence, Dict
 
 import numpy as np
 import pandas as pd
@@ -22,10 +22,6 @@ def calculate_ate(model: CausalModel):
     return estimate.value
 
 
-def get_baseline_ate(common_causes, df):
-    df_ = df.copy()
-    df_ = df_.dropna()
-    return calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
 
 
 # fill
@@ -34,19 +30,60 @@ def fill_median(df, col):
     return df
 
 
-def fill_mean(df, col):
+def fill_mean(df, col) -> None:
     df[col] = df[col].fillna(df[col].mean())
     return df
 
 
-def fill_mode(df, col):
-    df[col] = df[col].fillna(df[col].mode())
+def fill_mode(df, col) -> None:
+    df[col] = df[col].fillna(df[col].mode()[0])
     return df
 
 
 def fill_drop_na(df, col):
     df = df.dropna()
     return df
+
+
+def _fill_value(s, stat):
+    if stat == 'mode':
+        modes = s.mode()
+        return modes[0] if not modes.empty else None
+    return getattr(s, stat)()
+
+
+def _fill_all(df, numerical_stat, ordinal_stat):
+    col_types = df.attrs.get('col_types', {})
+    for col in df.columns:
+        if not df[col].isna().any():
+            continue
+        col_type = col_types.get(col)
+        if col_type == 'Numerical':
+            stat = numerical_stat
+        elif col_type == 'Ordinal':
+            stat = ordinal_stat
+        else:
+            stat = 'mode'
+        value = _fill_value(df[col], stat)
+        if value is not None:
+            df[col] = df[col].fillna(value)
+    return df
+
+
+def fill_all_mean_mode(df, col):
+    return _fill_all(df, 'mean', 'mode')
+
+
+def fill_all_mean_median(df, col):
+    return _fill_all(df, 'mean', 'median')
+
+
+def fill_all_median_mode(df, col):
+    return _fill_all(df, 'median', 'mode')
+
+
+def fill_all_median_median(df, col):
+    return _fill_all(df, 'median', 'median')
 
 
 # bin
@@ -178,7 +215,8 @@ def isolationForest(df, col) -> pd.DataFrame:
 
 
 def dropDuplicates(df, col) -> pd.DataFrame:
-    return df.drop_duplicates()
+    df.drop_duplicates(inplace=True) #TODO: filter columns somehow?
+    return df
 
 
 def df_signature(df: pd.DataFrame):
@@ -231,7 +269,12 @@ def list_seq_to_tuple_seq(list_seq):
     return tuple_seq
 
 
-def get_moves_and_moveBit(common_causes, transformations_names):
+def get_moves_and_moveBit(
+        common_causes: List[str],
+        transformations_names: Sequence[str],
+        whole_table_ops: Sequence[str],
+        col_types: Dict[str,str],
+        ops_by_type: Dict[str,List[str]]):
     bit_map = {}
     counter = 0
     for f in transformations_names:
@@ -244,11 +287,15 @@ def get_moves_and_moveBit(common_causes, transformations_names):
     # Pre-calculate moves: (func, col, bit_value)
     # bit_value is 2^counter (e.g., 1, 2, 4, 8, 16...)
     fast_moves = []
-    for c in common_causes:
-        for f in transformations_names:
-            group = f.split('_')[0]
-            bit_pos = bit_map[(group, c)]
-            fast_moves.append((f, c, 1 << bit_pos))
+    for f in transformations_names:
+        if f in whole_table_ops:
+            fast_moves.append((f, 'TABLE', 0))
+            continue
+        for c in common_causes:
+            if f in ops_by_type[col_types[c]]:
+                group = f.split('_')[0]
+                bit_pos = bit_map[(group, c)]
+                fast_moves.append((f, c, 1 << bit_pos))
     return fast_moves
 
 
@@ -262,6 +309,7 @@ def analyze_ate_search_space(seq_ates):
     df['length'] = df['sequence'].apply(len)
 
     # Remove inf/nan to prevent binning errors
+    assert not df.isnull().values.any()
     df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=['ate'])
 
     if df.empty:
@@ -362,29 +410,36 @@ def find_interesting(entries, threshold=2, round_after_n_digit=3):
     return interesting
 
 
-def get_fill_permutations(df, col_types, legal_ops_by_type):
-    cols_with_nan = [col for col in df.columns if df[col].isna().any()]
-    if not cols_with_nan:
-        return []
-    options_per_column = [(('fill_drop_na', 'TABLE'),)]
+TABLE_FILL_OPS = ['fill_drop_na', 'fill_all_mean_mode', 'fill_all_mean_median',
+                  'fill_all_median_mode', 'fill_all_median_median']
 
+
+def get_fill_combinations(df, col_types, legal_ops_by_type):
+    cols_with_nan = [col for col in df.columns if df[col].isna().any()]
+    assert cols_with_nan
+    options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
+
+    # if not options_per_column:
+    #     return []
+
+    all_combinations = [((op, 'TABLE'),) for op in TABLE_FILL_OPS] + list(itertools.product(*options_per_column))
+
+    return all_combinations
+
+def get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
+    options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
+    return list(itertools.chain(*options_per_column)) + [(op, 'TABLE') for op in TABLE_FILL_OPS]
+def _get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
+    options_per_column = []
     for col in cols_with_nan:
         col_type = col_types.get(col) if col_types else None
 
         if col_type is not None:
-            allowed_ops = legal_ops_by_type.get(col_type, [])
-            fill_ops = [op for op in allowed_ops if op.startswith("fill_") and op != "fill_drop_na"]
+            fill_ops = legal_ops_by_type[col_type]
+            col_options = [(op, col) for op in fill_ops]
+            options_per_column.append(col_options)
+    return options_per_column
 
-            if fill_ops:
-                col_options = [(op, col) for op in fill_ops]
-                options_per_column.append(col_options)
-
-    if not options_per_column:
-        return []
-
-    all_combinations = list(itertools.product(*options_per_column))
-
-    return all_combinations
 
 def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.DataFrame:
     categorical_causes = df.attrs.get('categorical_causes', [])

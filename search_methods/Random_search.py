@@ -1,28 +1,41 @@
 import random
 from collections import defaultdict
 from itertools import product
-from typing import Callable, List
+from typing import Callable, List, Dict
 
 import pandas as pd
 
-from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_fill_permutations
+from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, get_fill_combinations
 
 
 class RandomSearch:
-    def search(self, df: pd.DataFrame, common_causes: List[str],transformations_dict: dict[str, Callable], sequence_length: int, legal_ops_by_type=None):
+    def search(self,
+               df: pd.DataFrame,
+               common_causes: List[str],
+               transformations_dict: dict[str, Callable],
+               whole_table_ops: List[str],
+               sequence_length: int,
+               legal_ops_by_type,
+               sequence_to_extend = None
+               ):
         col_types = df.attrs.get('col_types', None)
         actions = [
             (col, transformation)
             for col in common_causes
             for transformation in transformations_dict.keys()
-            if col_types.get(col) is None or transformation in legal_ops_by_type.get(col_types.get(col), [])
-        ]
+            if transformation in legal_ops_by_type[col_types[col]]
+        ] + [('TABLE',op) for op in whole_table_ops]
         random.shuffle(actions)
+        sequence = () if sequence_to_extend is None else sequence_to_extend
         seen_transformation_classes_per_col = defaultdict(list)
-        sequence = ()
+        for (op,col) in sequence:
+            if col == 'TABLE' or op.startswith('fill_'):
+                continue
+            trans_class = op.split("_")[0]
+            seen_transformation_classes_per_col[col].append(trans_class)
 
-        if df.isna().any(axis=None):
-            fill_methods = get_fill_permutations(df, col_types, legal_ops_by_type)
+        if sequence_to_extend is not None and df.isna().any(axis=None):
+            fill_methods = get_fill_combinations(df, col_types, legal_ops_by_type)
             sequence = random.choice(fill_methods)
 
         for _ in range(sequence_length):

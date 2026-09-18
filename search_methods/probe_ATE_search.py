@@ -5,63 +5,72 @@ from typing import List, Callable, Set, Tuple, Optional, Dict
 
 import pandas as pd
 
-from search_methods.ATE_search import ATESearch
 from utils import apply_data_preparations_seq, calculate_ate_linear_regression_lstsq, \
-    get_baseline_ate, df_signature_fast, calculate_ate_with_uncertainty
+    df_signature_fast, calculate_ate_with_uncertainty, get_fill_combinations, get_fill_options
 
 
 class ProbManager:
-    def __init__(self, operations, columns, op_probs=None, F_elements=None, whole_df_ops=None, legal_ops_by_type=None,
-                 col_types=None):
+    def __init__(self,
+                 operations, #not fill just ops, format [(op,col)]
+                 columns,
+                 op_probs=None,
+                 F_elements=None,
+                 whole_df_ops=None,
+                 legal_ops_by_type=None,
+                 legal_fill_by_type=None,
+                 col_types=None, fill_columns=None):
         self.probs = {}
         self.costs = {}
         self.whole_df_ops = whole_df_ops or []
         self.col_types = col_types or {}
         self.legal_ops_by_type = legal_ops_by_type or {}
-        self._initialize_weights(operations, columns, op_probs, F_elements)
+        self.legal_fill_by_type = legal_fill_by_type or {}
+        fill_ops = get_fill_options(fill_columns,col_types,self.legal_fill_by_type)
+        operations = [(op,col) for op in operations for col in columns if op in legal_ops_by_type[col_types[col]]]
+        operations += [(op, 'TABLE') for op in whole_df_ops]
+        if F_elements is not None:
+            operations = list(filter(lambda op_col: op_col[0] + "#" + op_col[1] in F_elements ,operations))
+        self.fill_columns = fill_columns or []
+        self._initialize_weights(
+            operations,
+            fill_ops,
+            columns,
+            op_probs
+        )
 
-    def _initialize_weights(self, operations: List[str], columns: List[str],
-                            op_probs: Optional[Dict[str, float]] = None,
-                            F_elements: Optional[List[str]] = None) -> None:
+    def get_sequence_cost(self, sequence) -> int:
+        return sum(self.costs[(func_name, col)] for func_name, col in sequence)
 
-        # Step 1: Determine which elements to consider
-        if F_elements is None:
-            # Full space: generate all valid combinations
-            elements_to_add = self._generate_all_elements(operations, columns)
-        else:
-            # Restricted space: use only provided elements
-            elements_to_add = F_elements
+    def _initialize_weights(self,
+                            operations: List[Tuple[str,str]],
+                            fill_ops: List[Tuple[str,str]],
+                            columns: List[str],
+                            op_probs: Optional[Dict[str, float]] = None
+                            ) -> None:
+
+        elements_to_add = operations + fill_ops
 
         # Step 2: Assign probabilities and costs to each element
-        for f_elem in elements_to_add:
-            op, col = self._parse_element(f_elem)
-
+        for op, col in elements_to_add:
             if op_probs is None:
                 # Uniform: each element gets equal probability
                 prob = 1.0 / len(elements_to_add)
             else:
                 # Weighted: distribute operation's probability among its elements
-                op_elements = [elem for elem in elements_to_add if elem.startswith(f"{op}#")]
+                op_elements = [elem for elem in elements_to_add if elem[0] == op]
                 num_op_elements = len(op_elements)
 
                 # Each element of this operation gets equal share of op's probability
                 prob = op_probs[op] / num_op_elements
 
-            self.probs[f_elem] = prob
+            self.probs[(op,col)] = prob
+
+        # Step 3: Normalize so all elements (fills included) sum to 1, then derive costs
+        total = sum(self.probs.values())
+        self.probs = {k: v / total for k, v in self.probs.items()}
+        for f_elem in self.probs:
             self.costs[f_elem] = self._calculate_cost(f_elem)
 
-    def _generate_all_elements(self, operations: List[str], columns: List[str]) -> List[str]:
-        elements = []
-        for op in operations:
-            if op in self.whole_df_ops:
-                elements.append(f"{op}#TABLE")
-            else:
-                for col in columns:
-                    col_type = self.col_types.get(col) if self.col_types else None
-                    if col_type is not None and op not in self.legal_ops_by_type.get(col_type, []):
-                        continue  # illegal combo (e.g. normalize on a binary col) — skip
-                    elements.append(f"{op}#{col}")
-        return elements
 
     def _parse_element(self, f_elem: str) -> tuple:
         op, col = f_elem.split("#", 1)  # split on first # only
@@ -75,8 +84,7 @@ class ProbManager:
     def get_sequence_probability(self, sequence):
         probability = 1
         for func_name, col in sequence:
-            rule_name = f"{func_name}#{col}"
-            probability *= self.probs[rule_name]
+            probability *= self.probs[(func_name,col)]
         return probability
 
     def update_weights(self, probe_sequence, alpha=0.2):
@@ -160,14 +168,14 @@ class EqualityDuplicateDetector(DuplicateDetector):
         if any(df.equals(seen) for seen in self.seen_dfs):
             return False
 
-        self.seen_dfs.append(df.copy())
+        self.seen_dfs.append(df)
         return True
 
     def reset(self, df: pd.DataFrame, common_causes: List[str]) -> None:
-        self.seen_dfs = [df.copy()]
+        self.seen_dfs = [df]
 
 
-class ProbeATESearch(ATESearch):
+class ProbeATESearch:
     def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True):
         self.use_restart = use_restart
         self.op_probs = op_probs
@@ -176,6 +184,8 @@ class ProbeATESearch(ATESearch):
         self.transformations_dict = None  # Will be set during search
         self.F_elements = None
         self.whole_df_ops = None
+        self.fill_by_type = None
+        self.fill_columns = None
 
     def _create_duplicate_detector(self, is_brute: bool, use_hash: bool) -> DuplicateDetector:
         """Factory method to create the appropriate duplicate detector."""
@@ -188,28 +198,46 @@ class ProbeATESearch(ATESearch):
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
                transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
-               F_elements: List[str] = None, whole_df_ops: List[str] = None, legal_ops_by_type=None):
+               F_elements: List[str] = None, whole_df_ops: List[str] = None, legal_ops_by_type=None,
+               fill_by_type=None):
         # Store for access in helper methods
         self.transformations_dict = transformations_dict
         self.F_elements = F_elements
         self.whole_df_ops = whole_df_ops
         self.legal_ops_by_type = legal_ops_by_type
+        self.fill_by_type = fill_by_type
         self.col_types = df.attrs.get('col_types', None)
+        self.fill_columns = [col for col in df.columns if df[col].isna().any()]
         # Precompute function prefixes once at startup
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
         df_ = df.copy()
-        baseline_ate = get_baseline_ate(common_causes, df_)
-        print(f"START ATE IS: {baseline_ate}")
 
-        bank = {0: [()]}  # init with the empty sequence
-        self._duplicate_detector.reset(df_, common_causes)
+        prob_manager = ProbManager(list(transformations_dict.keys()),
+                                   common_causes, self.op_probs, F_elements, whole_df_ops, self.legal_ops_by_type,
+                                   legal_fill_by_type=self.fill_by_type, col_types=self.col_types,
+                                   fill_columns=self.fill_columns)
 
-        prob_manager = ProbManager([func_name for func_name, func in transformations_dict.items()],
-                                   common_causes, self.op_probs, F_elements, whole_df_ops, self.legal_ops_by_type, self.col_types)
+        # baseline_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
+
+        if self.fill_columns:
+            print(f'No start ate, there are {len(self.fill_columns)} columns with missing values')
+        else:
+            print(f"START ATE IS: {calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)}")
+
+
+
+        bank, init_distance, best_init = self._init_bank(df_, common_causes, target_ate, prob_manager)
+        print(bank)
+        print(init_distance)
+        print(best_init)
+        if init_distance < epsilon:
+            print(f"FOUND SOLUTION WITH NO NEED OF DATA PREP\nsequence is: {best_init}", flush=True)
+            return best_init
+
         cost = 1
-        best_ate_error = float('inf')
+        best_ate_error = init_distance
 
-        smallest_distance_from_target = abs(baseline_ate - target_ate)
+        smallest_distance_from_target = init_distance
         distances_at_time_from_target = [(smallest_distance_from_target, 0)]
         checked = 0
         start_time = time.time()
@@ -227,8 +255,11 @@ class ProbeATESearch(ATESearch):
                 if should_restart:
                     break
 
+                if (cost - prob_manager.costs[move]) not in bank:
+                    continue
+
                 for seq in bank[cost - prob_manager.costs[move]]:
-                    func_name, col = move.split("#")
+                    func_name, col = move
                     new_seq = seq + ((func_name, col),)
 
                     # Enforce operation repetition rules
@@ -258,7 +289,9 @@ class ProbeATESearch(ATESearch):
 
                     # Found solution within tolerance
                     if current_error < epsilon:
-                        self._print_solution(new_seq, baseline_ate, new_ate, prob_manager,
+                        self._print_solution(new_seq,
+                                             calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes) if not self.fill_columns else 'N/A',
+                                             new_ate, prob_manager,
                                              curr_df, common_causes, checked, start_time,
                                              distances_at_time_from_target)
                         return new_seq
@@ -276,12 +309,9 @@ class ProbeATESearch(ATESearch):
                         prob_manager.update_weights(new_seq)
 
                         # Reset for restart
-                        smallest_distance_from_target = abs(baseline_ate - target_ate)
+                        bank, smallest_distance_from_target, _ = self._init_bank(df_, common_causes, target_ate,
+                                                                                 prob_manager)
                         distances_at_time_from_target.append((smallest_distance_from_target, time.time() - start_time))
-
-                        bank.clear()
-                        bank[0] = [()]
-                        self._duplicate_detector.reset(df_, common_causes)
 
                         cost = 1
                         should_restart = True
@@ -293,7 +323,36 @@ class ProbeATESearch(ATESearch):
             if not should_restart:
                 cost += 1
 
-    def _print_solution(self, solution_seq: Tuple, baseline_ate: float, new_ate: float,
+    def _init_bank(self, df_: pd.DataFrame, common_causes: List[str], target_ate: float,
+                   prob_manager: 'ProbManager') -> Tuple[Dict[int, List[Tuple]], float, Tuple]:
+        """Reset the duplicate detector and build the initial bank.
+        Returns (bank, smallest distance from target among the initial sequences, best initial sequence)."""
+        self._duplicate_detector.reset(df_, common_causes)
+
+        if self.fill_by_type is None or not df_.isnull().values.any():
+            baseline_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
+            return {0: [()]}, abs(baseline_ate - target_ate), ()  # init with the empty sequence
+
+        fill_methods = [(seq, prob_manager.get_sequence_cost(seq)) for seq in get_fill_combinations(df_, self.col_types, self.fill_by_type)]
+        fill_methods.sort(key=lambda x: x[1])
+        print(f"{len(fill_methods)} options to fill missing")
+        bank = {}
+        smallest_distance_from_target = None
+        best_init = None
+        for fill_sequence, fill_cost in fill_methods:
+            filled_df = apply_data_preparations_seq(df_, fill_sequence, self.transformations_dict)
+            if not self._duplicate_detector.add_if_new(filled_df, common_causes):  # OE on the fill sequences
+                continue
+            new_ate = calculate_ate_linear_regression_lstsq(filled_df, 'treatment', 'outcome', common_causes)
+            if fill_cost not in bank:
+                bank[fill_cost] = []
+            bank[fill_cost].append(fill_sequence)
+            if smallest_distance_from_target is None or abs(new_ate - target_ate) < smallest_distance_from_target:
+                smallest_distance_from_target = abs(new_ate - target_ate)
+                best_init = fill_sequence
+        return bank, smallest_distance_from_target, best_init
+
+    def _print_solution(self, solution_seq: Tuple, baseline_ate: float | str, new_ate: float,
                         prob_manager: 'ProbManager', curr_df: pd.DataFrame, common_causes: List[str],
                         checked: int, start_time: float, distances_at_time_from_target: List) -> None:
         """Print the solution details."""
@@ -309,8 +368,9 @@ sequence is: {solution_seq}
 
         if self.use_restart:
             temp_prob_manager = ProbManager(
-                [func_name for func_name, func in self.transformations_dict.items()],
-                common_causes, self.op_probs, self.F_elements, self.whole_df_ops, self.legal_ops_by_type, self.col_types)
+                list(self.transformations_dict.keys()),
+                common_causes, self.op_probs, self.F_elements, self.whole_df_ops, self.legal_ops_by_type,
+                legal_fill_by_type=self.fill_by_type, col_types=self.col_types, fill_columns=self.fill_columns)
             print(
                 f"(REAL, NOT adjusted by restarts) probability of this sequence is: {temp_prob_manager.get_sequence_probability(solution_seq)}")
         else:

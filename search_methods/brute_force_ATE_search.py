@@ -6,13 +6,12 @@ from typing import List, Callable
 import numpy as np
 import pandas as pd
 
-from search_methods.ATE_search import ATESearch
 from search_methods.probe_ATE_search import ProbManager
-from utils import apply_data_preparations_seq, get_baseline_ate, \
+from utils import apply_data_preparations_seq,  \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit
 
 
-class BruteForceATESearch(ATESearch):
+class BruteForceATESearch:
 
     def __init__(self, op_probs=None):
         self.op_probs = op_probs
@@ -25,7 +24,9 @@ class BruteForceATESearch(ATESearch):
         # Precompute function prefixes once at startup
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
 
-        base_line_ate = get_baseline_ate(common_causes, df_)
+        needs_fill = df.isnull().values.any()
+        base_line_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome',
+                                                            common_causes) if not needs_fill else 'N/A'
         print(f"base_line_ate: {base_line_ate}")
         Q = deque([()])
         try_count = 0
