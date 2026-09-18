@@ -7,11 +7,7 @@ from F_size_experiments import run_F_experiment
 from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
     FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK
 from search_methods.LLM_search import LLMSearch
-# from search_methods.probe_ATE_search_heuristic_linear_reg import ProbeATESearchLinearRegHeuristic
-from search_methods.OE_ATE_search_no_bit_mask import OEATESearchNoBitMask
-from search_methods.OE_ATE_search_no_hash import OEATESearchNoHash
 from search_methods.Random_search import RandomSearch
-# from search_methods.AStar_search import AStarATESearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
 from search_methods.greedy_ATE_search import GreedyATESearch
 from search_methods.probe_ATE_search import ProbeATESearch
