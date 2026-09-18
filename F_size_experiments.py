@@ -1,3 +1,4 @@
+import os
 import random
 import time
 from typing import List, Dict, Tuple
@@ -113,7 +114,8 @@ class OperationSpaceExperiment:
         Run the experiment once for a selected i.
         """
         if seed is not None:
-            random.seed(seed)
+            repetition = int(os.environ.get("REPETITION", 1))
+            random.seed(seed * repetition)
         num_groups = 15
         if not (1 <= i <= num_groups):
             raise ValueError(f"i must be between 1 and {num_groups}")

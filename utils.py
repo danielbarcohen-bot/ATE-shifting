@@ -22,8 +22,6 @@ def calculate_ate(model: CausalModel):
     return estimate.value
 
 
-
-
 # fill
 def fill_median(df, col):
     df[col] = df[col].fillna(df[col].median())
@@ -215,7 +213,7 @@ def isolationForest(df, col) -> pd.DataFrame:
 
 
 def dropDuplicates(df, col) -> pd.DataFrame:
-    df.drop_duplicates(inplace=True) #TODO: filter columns somehow?
+    df.drop_duplicates(inplace=True)  # TODO: filter columns somehow?
     return df
 
 
@@ -273,8 +271,8 @@ def get_moves_and_moveBit(
         common_causes: List[str],
         transformations_names: Sequence[str],
         whole_table_ops: Sequence[str],
-        col_types: Dict[str,str],
-        ops_by_type: Dict[str,List[str]]):
+        col_types: Dict[str, str],
+        ops_by_type: Dict[str, List[str]]):
     bit_map = {}
     counter = 0
     for f in transformations_names:
@@ -426,9 +424,12 @@ def get_fill_combinations(df, col_types, legal_ops_by_type):
 
     return all_combinations
 
+
 def get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
     options_per_column = _get_fill_options(cols_with_nan, col_types, legal_ops_by_type)
     return list(itertools.chain(*options_per_column)) + [(op, 'TABLE') for op in TABLE_FILL_OPS]
+
+
 def _get_fill_options(cols_with_nan, col_types, legal_ops_by_type):
     options_per_column = []
     for col in cols_with_nan:
