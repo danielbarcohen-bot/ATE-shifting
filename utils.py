@@ -268,6 +268,7 @@ def analyze_ate_search_space(seq_ates):
     df['length'] = df['sequence'].apply(len)
 
     # Remove inf/nan to prevent binning errors
+    assert not df.isnull().values.any()
     df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=['ate'])
 
     if df.empty:

@@ -7,7 +7,7 @@ import pandas as pd
 
 from utils import df_signature_fast, apply_data_preparations_seq, \
     calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, calculate_ate_with_uncertainty, \
-    analyze_ate_search_space, get_fill_combinations
+    get_fill_combinations
 
 
 def canonical(seq):
