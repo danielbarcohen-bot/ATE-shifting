@@ -1,143 +1,164 @@
 bucket_range,min_ate_in_bin,max_ate_in_bin,min_length,best_sequence,count
-"(3.882, 3.886]",3.8855140547759586,3.8855140547759586,4,"(('bin_equal_frequency_10', 'x6'), ('IQR', 'x2'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",1
-"(3.886, 3.889]",3.8855166444011884,3.8882713335018835,4,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",13
-"(3.889, 3.892]",3.888630302709238,3.8915292847809564,3,"(('zscore_clip_3', 'x5'), ('IQR', 'x2'), ('IQR', 'x5'))",57
-"(3.892, 3.895]",3.8916017794552715,3.8946079478089066,3,"(('bin_equal_frequency_2', 'x4'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",177
-"(3.895, 3.898]",3.8946155564169676,3.897636214310868,3,"(('bin_equal_width_2', 'x3'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",263
-"(3.898, 3.901]",3.8976464625860165,3.9006740545941456,2,"(('zscore_clip_3', 'x5'), ('IQR', 'x5'))",535
-"(3.901, 3.904]",3.900681167945038,3.9036898951772407,3,"(('bin_equal_frequency_2', 'x3'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",190
-"(3.904, 3.907]",3.9037150589374416,3.906728053210582,3,"(('bin_equal_frequency_5', 'x6'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",162
-"(3.907, 3.91]",3.9067573007594714,3.9097737642131474,3,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('bin_equal_width_2', 'x5'))",302
-"(3.91, 3.913]",3.909785835542994,3.912802970117288,3,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('bin_equal_width_2', 'x3'))",1082
-"(3.913, 3.916]",3.9128163598573913,3.91584298183015,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'))",3452
-"(3.916, 3.919]",3.915844068058767,3.9188761080774253,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_width_2', 'x5'))",7488
-"(3.919, 3.922]",3.918876986739431,3.9219097563464915,1,"(('bin_equal_frequency_10', 'x6'),)",15904
-"(3.922, 3.925]",3.921910611593889,3.924942728287026,1,"(('bin_equal_frequency_2', 'x4'),)",29303
-"(3.925, 3.928]",3.924942905353599,3.9279754898258528,1,"(('bin_equal_frequency_2', 'x5'),)",38593
-"(3.928, 3.931]",3.927975758772238,3.9310082981006396,0,(),46750
-"(3.931, 3.934]",3.9310087672832275,3.934041653474624,1,"(('bin_equal_frequency_2', 'x3'),)",34610
-"(3.934, 3.937]",3.9340419583992263,3.9370736421777934,2,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'))",19043
-"(3.937, 3.94]",3.9370747896514633,3.9401069155387,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_5', 'x6'))",7357
-"(3.94, 3.943]",3.940108037387809,3.9431397353052695,2,"(('bin_equal_frequency_2', 'x4'), ('IQR', 'x6'))",7040
-"(3.943, 3.946]",3.9431412429861705,3.9461735714997266,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_width_5', 'x6'))",9508
-"(3.946, 3.949]",3.9461739995059553,3.9492064769896036,1,"(('IQR', 'x6'),)",14608
-"(3.949, 3.952]",3.9492066970060353,3.952239430084248,1,"(('bin_equal_width_5', 'x6'),)",14693
-"(3.952, 3.955]",3.9522397733060775,3.955272467452355,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_5', 'x6'))",8219
-"(3.955, 3.958]",3.955272591696837,3.958305279145323,2,"(('bin_equal_frequency_5', 'x6'), ('zscore_filter_3', 'x5'))",4335
-"(3.958, 3.961]",3.9583062604829484,3.9613367253066105,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x2'))",1939
-"(3.961, 3.964]",3.961339238453486,3.9643714319569554,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_2', 'x6'))",2095
-"(3.964, 3.967]",3.964371699947102,3.967402932203849,2,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x1'))",3784
-"(3.967, 3.97]",3.9674058344015073,3.9704367274579715,1,"(('bin_equal_frequency_2', 'x6'),)",6260
-"(3.97, 3.973]",3.970437869304556,3.9734690451429016,2,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'))",7585
-"(3.973, 3.977]",3.9734705962943435,3.9765030254295746,1,"(('bin_equal_width_2', 'x6'),)",6517
-"(3.977, 3.98]",3.9765035000529023,3.979536017455186,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_2', 'x6'))",4657
-"(3.98, 3.983]",3.9795403968074083,3.982567406472656,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('zscore_clip_3', 'x2'))",1930
-"(3.983, 3.986]",3.9825742364925145,3.9856020118921474,3,"(('bin_equal_frequency_2', 'x5'), ('IQR', 'x4'), ('bin_equal_frequency_10', 'x6'))",1026
-"(3.986, 3.989]",3.9856037830016984,3.988633729422034,2,"(('bin_equal_frequency_10', 'x6'), ('IQR', 'x4'))",2278
-"(3.989, 3.992]",3.9886372859474135,3.9916671242171646,2,"(('norm_log', 'x6'), ('bin_equal_width_2', 'x6'))",3026
-"(3.992, 3.995]",3.9916692548773423,3.9947011361838807,2,"(('bin_equal_width_2', 'x6'), ('IQR', 'x5'))",4499
-"(3.995, 3.998]",3.9947022537421892,3.997733865221618,2,"(('bin_equal_frequency_2', 'x5'), ('IQR', 'x4'))",7921
-"(3.998, 4.001]",3.997734373414314,4.000765282026645,1,"(('IQR', 'x4'),)",9976
-"(4.001, 4.004]",4.000767438667361,4.003800045084185,2,"(('bin_equal_frequency_2', 'x1'), ('IQR', 'x4'))",7034
-"(4.004, 4.007]",4.003800903459924,4.006827939173117,2,"(('bin_equal_width_2', 'x1'), ('IQR', 'x4'))",3169
-"(4.007, 4.01]",4.006833194444521,4.009865079279734,2,"(('zscore_clip_3', 'x5'), ('isolationForest', 'TABLE'))",1639
-"(4.01, 4.013]",4.009867047568259,4.012892142089012,2,"(('IQR', 'x4'), ('bin_equal_frequency_2', 'x6'))",1538
-"(4.013, 4.016]",4.012899971241587,4.0159306929192535,2,"(('bin_equal_width_5', 'x6'), ('IQR', 'x4'))",1726
-"(4.016, 4.019]",4.015933492702134,4.018964080420303,2,"(('bin_equal_width_2', 'x6'), ('IQR', 'x4'))",2209
-"(4.019, 4.022]",4.018967072343967,4.02199430516389,2,"(('zscore_filter_3', 'x5'), ('IQR', 'x4'))",2047
-"(4.022, 4.025]",4.02199852743364,4.025019540064079,3,"(('bin_equal_frequency_2', 'x1'), ('zscore_filter_3', 'x5'), ('IQR', 'x4'))",1161
-"(4.025, 4.028]",4.025045707224264,4.02805341146192,3,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x2'), ('IQR', 'x4'))",717
-"(4.028, 4.031]",4.02806519927671,4.0310923044364255,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x6'), ('IQR', 'x4'))",947
-"(4.031, 4.034]",4.031112533159172,4.03412891296952,2,"(('bin_equal_frequency_2', 'x6'), ('IQR', 'x4'))",1547
-"(4.034, 4.037]",4.0341327996364775,4.037161700891289,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('IQR', 'x4'))",1340
-"(4.037, 4.04]",4.03716482758823,4.040193663261163,2,"(('bin_equal_width_5', 'x3'), ('isolationForest', 'TABLE'))",1363
-"(4.04, 4.043]",4.040197632513846,4.043217972767859,3,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x3'))",1235
-"(4.043, 4.046]",4.043230220498779,4.046260776053867,2,"(('bin_equal_width_10', 'x2'), ('isolationForest', 'TABLE'))",1925
-"(4.046, 4.049]",4.046263716024452,4.049293908349464,3,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x4'))",1778
-"(4.049, 4.052]",4.049299489114281,4.052321272924781,2,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'))",2093
-"(4.052, 4.055]",4.052333440592563,4.05535445835889,2,"(('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",2095
-"(4.055, 4.058]",4.055366855945721,4.058392120284504,2,"(('winsorize', 'x5'), ('isolationForest', 'TABLE'))",2459
-"(4.058, 4.061]",4.058395269835499,4.061426380984367,2,"(('bin_equal_width_5', 'x2'), ('isolationForest', 'TABLE'))",3055
-"(4.061, 4.064]",4.061428029627493,4.064459548014051,2,"(('bin_equal_width_2', 'x1'), ('isolationForest', 'TABLE'))",3635
-"(4.064, 4.067]",4.06446003447488,4.067492368323656,2,"(('bin_equal_width_10', 'x3'), ('isolationForest', 'TABLE'))",3726
-"(4.067, 4.071]",4.067492751489027,4.070522041508803,2,"(('bin_equal_width_2', 'x3'), ('isolationForest', 'TABLE'))",3560
-"(4.071, 4.074]",4.070525658033626,4.073558043057991,2,"(('bin_equal_width_10', 'x1'), ('isolationForest', 'TABLE'))",3765
-"(4.074, 4.077]",4.073560418185551,4.076591430690007,2,"(('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x1'))",3311
-"(4.077, 4.08]",4.07659199080549,4.079624220048937,2,"(('bin_equal_width_5', 'x6'), ('IQR', 'x6'))",4301
-"(4.08, 4.083]",4.079628580775328,4.082656800936501,1,"(('isolationForest', 'TABLE'),)",4956
-"(4.083, 4.086]",4.082659533124572,4.085687515727363,2,"(('norm_log', 'x3'), ('isolationForest', 'TABLE'))",5271
-"(4.086, 4.089]",4.085690685975322,4.088722998774381,2,"(('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x3'))",3945
-"(4.089, 4.092]",4.088724671002346,4.091755664245641,2,"(('bin_equal_width_10', 'x5'), ('isolationForest', 'TABLE'))",4383
-"(4.092, 4.095]",4.09175691968101,4.094789044832348,2,"(('norm_log', 'x6'), ('isolationForest', 'TABLE'))",3481
-"(4.095, 4.098]",4.094789491274697,4.0978193578907876,2,"(('norm_log', 'x5'), ('isolationForest', 'TABLE'))",3807
-"(4.098, 4.101]",4.097823310425433,4.10085508562066,2,"(('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",4279
-"(4.101, 4.104]",4.1008575278564265,4.103886381834084,2,"(('bin_equal_frequency_2', 'x3'), ('isolationForest', 'TABLE'))",4622
-"(4.104, 4.107]",4.103888949563325,4.1069210036396155,2,"(('bin_equal_frequency_2', 'x6'), ('isolationForest', 'TABLE'))",4480
-"(4.107, 4.11]",4.106921544858972,4.1099531863932555,2,"(('isolationForest', 'TABLE'), ('IQR', 'x4'))",4037
-"(4.11, 4.113]",4.109955365449859,4.112986385192444,2,"(('bin_equal_width_2', 'x5'), ('isolationForest', 'TABLE'))",4224
-"(4.113, 4.116]",4.1129895585236556,4.116018072048289,2,"(('bin_equal_frequency_2', 'x1'), ('isolationForest', 'TABLE'))",4368
-"(4.116, 4.119]",4.116020410227279,4.119052517272551,2,"(('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'))",4789
-"(4.119, 4.122]",4.119053546903547,4.122085397628988,2,"(('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",3897
-"(4.122, 4.125]",4.122086279001796,4.1251188872372495,2,"(('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",3397
-"(4.125, 4.128]",4.125119972657076,4.128152111239758,2,"(('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",2804
-"(4.128, 4.131]",4.128152529180223,4.131183991722237,2,"(('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",2423
-"(4.131, 4.134]",4.131185344076978,4.134217351756577,3,"(('bin_equal_frequency_2', 'x1'), ('norm_log', 'x5'), ('isolationForest', 'TABLE'))",2109
-"(4.134, 4.137]",4.134219433068632,4.137250283005711,2,"(('bin_equal_frequency_2', 'x2'), ('isolationForest', 'TABLE'))",2132
-"(4.137, 4.14]",4.137251158423672,4.140284074446317,2,"(('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'))",1949
-"(4.14, 4.143]",4.140284751407679,4.143314332383042,3,"(('bin_equal_frequency_2', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",1650
-"(4.143, 4.146]",4.143318606918598,4.146349764644129,2,"(('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'))",1508
-"(4.146, 4.149]",4.146352067230719,4.1493820702254745,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'))",1129
-"(4.149, 4.152]",4.149384967004554,4.152411841319728,3,"(('bin_equal_frequency_2', 'x2'), ('isolationForest', 'TABLE'), ('IQR', 'x3'))",919
-"(4.152, 4.155]",4.15241700027231,4.155445834637241,3,"(('bin_equal_frequency_2', 'x1'), ('zscore_clip_3', 'x5'), ('isolationForest', 'TABLE'))",912
-"(4.155, 4.158]",4.155449414946818,4.158477959518349,3,"(('bin_equal_frequency_2', 'x2'), ('zscore_filter_3', 'x5'), ('isolationForest', 'TABLE'))",695
-"(4.158, 4.162]",4.158486294370038,4.161513366661705,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",604
-"(4.162, 4.165]",4.161524575237168,4.164545025049785,3,"(('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",505
-"(4.165, 4.168]",4.164553449284923,4.16757503697282,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'))",366
-"(4.168, 4.171]",4.167586862637673,4.170599924299013,3,"(('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",269
-"(4.171, 4.174]",4.170634037663611,4.173613577373036,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",321
-"(4.174, 4.177]",4.173647192362607,4.1766536377819765,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'))",270
-"(4.177, 4.18]",4.1766860770551535,4.179618064448013,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x6'), ('isolationForest', 'TABLE'))",167
-"(4.18, 4.183]",4.179719877502257,4.182742799294438,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",181
-"(4.183, 4.186]",4.182753684779921,4.185746184239228,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",146
-"(4.186, 4.189]",4.185792462429566,4.188799466778761,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",175
-"(4.189, 4.192]",4.188837119416856,4.191789862082199,3,"(('bin_equal_frequency_5', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",143
-"(4.192, 4.195]",4.191859348750075,4.194868979838198,3,"(('isolationForest', 'TABLE'), ('bin_equal_width_5', 'x6'), ('IQR', 'x6'))",111
-"(4.195, 4.198]",4.1948845433842905,4.197909994435162,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",122
-"(4.198, 4.201]",4.1979247787740945,4.2009380695106024,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",92
-"(4.201, 4.204]",4.200953346190657,4.2039114209727675,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",48
-"(4.204, 4.207]",4.204063034784936,4.206960928763375,3,"(('bin_equal_width_5', 'x6'), ('IQR', 'x6'), ('isolationForest', 'TABLE'))",77
-"(4.207, 4.21]",4.207179969029396,4.209989840752346,3,"(('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",66
-"(4.21, 4.213]",4.210108439321016,4.213072678925372,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",50
-"(4.213, 4.216]",4.213081537189121,4.216097927605318,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",37
-"(4.216, 4.219]",4.216122995524625,4.219024060544545,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_10', 'x5'), ('isolationForest', 'TABLE'))",26
-"(4.219, 4.222]",4.219217118353026,4.222112172526024,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x3'), ('IQR', 'x2'), ('isolationForest', 'TABLE'))",30
-"(4.222, 4.225]",4.222211130435556,4.225202450653216,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",30
-"(4.225, 4.228]",4.225350574391291,4.228117811451545,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",17
-"(4.228, 4.231]",4.228690265419711,4.231252277866469,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",20
-"(4.231, 4.234]",4.231408678675907,4.234271485499436,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x2'))",27
-"(4.234, 4.237]",4.234312037289406,4.237312703610865,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",53
-"(4.237, 4.24]",4.237389512291602,4.240212400772679,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_5', 'x2'))",22
-"(4.24, 4.243]",4.240377729962719,4.243273171841915,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x3'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",19
-"(4.243, 4.246]",4.243727797809756,4.246414235011292,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",10
-"(4.246, 4.249]",4.246652899409308,4.249324422860553,3,"(('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",33
-"(4.249, 4.253]",4.2495035611679715,4.251531470823782,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x5'))",9
-"(4.253, 4.256]",4.252718882939705,4.255384135669095,4,"(('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x3'))",6
-"(4.256, 4.259]",4.256150002065431,4.257504114232585,4,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('bin_equal_width_5', 'x1'), ('isolationForest', 'TABLE'))",4
-"(4.259, 4.262]",4.258657926502588,4.258657926502588,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",1
-"(4.262, 4.265]",4.2620678143939426,4.264229665462468,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('zscore_filter_3', 'x5'))",8
-"(4.265, 4.268]",4.265187366538776,4.267641003922751,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('IQR', 'x5'), ('isolationForest', 'TABLE'))",8
-"(4.268, 4.271]",4.268554643199421,4.270469981841697,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x3'), ('isolationForest', 'TABLE'))",6
-"(4.271, 4.274]",4.27111492471258,4.27147783892333,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x3'), ('zscore_filter_3', 'x5'), ('isolationForest', 'TABLE'))",2
-"(4.274, 4.277]",4.274782681045611,4.276333345241125,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",5
-"(4.277, 4.28]",4.278039793961925,4.279661960533959,4,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_5', 'x2'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",3
-"(4.28, 4.283]",4.280334594133275,4.282248189123145,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x5'), ('isolationForest', 'TABLE'))",3
-"(4.283, 4.286]",4.2835699162563605,4.285395062372637,4,"(('bin_equal_frequency_2', 'x2'), ('zscore_filter_3', 'x5'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",3
-"(4.286, 4.289]",4.288292871356173,4.288292871356173,27,"(('bin_equal_width_2', 'x1'), ('winsorize', 'x6'), ('bin_equal_width_5', 'x6'), ('norm_min_max', 'x6'), ('bin_equal_width_5', 'x2'), ('zscore_filter_3', 'x5'), ('norm_min_max', 'x3'), ('winsorize', 'x4'), ('norm_log', 'x1'), ('bin_equal_frequency_2', 'x3'), ('IQR', 'x4'), ('drop_duplicates', 'TABLE'), ('norm_min_max', 'x2'), ('bin_equal_frequency_5', 'x4'), ('bin_equal_width_2', 'x5'), ('winsorize', 'x3'), ('norm_log', 'x5'), ('zscore_clip_3', 'x2'), ('winsorize', 'x5'), ('zscore_filter_3', 'x6'), ('zscore_clip_3', 'x1'), ('zscore_filter_3', 'x4'), ('zscore_clip_3', 'x3'), ('IQR', 'x3'), ('winsorize', 'x2'), ('winsorize', 'x1'), ('isolationForest', 'TABLE'))",1
-"(4.289, 4.292]",4.290916784544815,4.291057479807615,22,"(('norm_min_max', 'x5'), ('norm_log', 'x2'), ('IQR', 'x4'), ('zscore_filter_3', 'x3'), ('zscore_filter_3', 'x1'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_width_5', 'x3'), ('bin_equal_frequency_5', 'x4'), ('winsorize', 'x3'), ('bin_equal_width_10', 'x6'), ('zscore_clip_3', 'x5'), ('norm_log', 'x1'), ('norm_min_max', 'x4'), ('zscore_filter_3', 'x6'), ('bin_equal_frequency_5', 'x1'), ('zscore_clip_3', 'x4'), ('norm_log', 'x3'), ('zscore_filter_3', 'x2'), ('winsorize', 'x4'), ('bin_equal_frequency_5', 'x2'), ('IQR', 'x6'), ('isolationForest', 'TABLE'))",2
-"(4.292, 4.295]",4.292394119818712,4.292394119818712,4,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",1
-"(4.298, 4.301]",4.298099186874903,4.298099186874903,28,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_5', 'x3'), ('bin_equal_width_10', 'x1'), ('norm_min_max', 'x1'), ('zscore_filter_3', 'x5'), ('zscore_clip_3', 'x4'), ('bin_equal_width_2', 'x6'), ('norm_min_max', 'x6'), ('norm_min_max', 'x3'), ('zscore_clip_3', 'x1'), ('bin_equal_frequency_2', 'x2'), ('zscore_filter_3', 'x3'), ('bin_equal_width_2', 'x4'), ('winsorize', 'x1'), ('isolationForest', 'TABLE'), ('IQR', 'x2'), ('drop_duplicates', 'TABLE'), ('IQR', 'x3'), ('norm_log', 'x4'), ('winsorize', 'x2'), ('winsorize', 'x3'), ('norm_log', 'x2'), ('winsorize', 'x6'), ('IQR', 'x1'), ('zscore_clip_3', 'x6'), ('winsorize', 'x4'), ('IQR', 'x5'), ('IQR', 'x4'))",1
+"(3.872, 3.874]",3.874340684094417,3.874340684094417,20,"(('bin_equal_width_2', 'x5'), ('bin_equal_width_10', 'x6'), ('winsorize', 'x2'), ('bin_equal_width_5', 'x2'), ('norm_min_max', 'x5'), ('bin_equal_frequency_2', 'x1'), ('bin_equal_width_5', 'x3'), ('bin_equal_width_10', 'x4'), ('winsorize', 'x1'), ('IQR', 'x2'), ('norm_log', 'x4'), ('zscore_filter_3', 'x1'), ('IQR', 'x4'), ('norm_log', 'x6'), ('norm_min_max', 'x3'), ('zscore_filter_3', 'x2'), ('IQR', 'x3'), ('zscore_clip_3', 'x5'), ('zscore_filter_3', 'x6'), ('IQR', 'x6'))",1
+"(3.882, 3.885]",3.883078335133267,3.884287680858357,14,"(('bin_equal_frequency_10', 'x6'), ('zscore_clip_3', 'x5'), ('winsorize', 'x1'), ('IQR', 'x5'), ('bin_equal_width_2', 'x3'), ('bin_equal_width_5', 'x1'), ('bin_equal_width_2', 'x5'), ('norm_log', 'x5'), ('winsorize', 'x4'), ('bin_equal_width_5', 'x2'), ('bin_equal_frequency_2', 'x4'), ('zscore_filter_3', 'x3'), ('drop_duplicates', 'TABLE'), ('IQR', 'x4'))",2
+"(3.885, 3.888]",3.885504952777759,3.887300446735698,4,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",12
+"(3.888, 3.891]",3.8879544351051543,3.8906425433296494,3,"(('zscore_clip_3', 'x5'), ('IQR', 'x2'), ('IQR', 'x5'))",30
+"(3.891, 3.893]",3.8907158751783744,3.8933393636282974,3,"(('bin_equal_frequency_2', 'x4'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",103
+"(3.893, 3.896]",3.8933814765312293,3.895984491160159,3,"(('bin_equal_width_5', 'x1'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",148
+"(3.896, 3.899]",3.8960947205980307,3.898783287797672,2,"(('zscore_clip_3', 'x5'), ('IQR', 'x5'))",320
+"(3.899, 3.902]",3.898807590502372,3.9015121378590294,3,"(('bin_equal_frequency_2', 'x1'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",309
+"(3.902, 3.904]",3.9015221300556724,3.9041659640109554,3,"(('bin_equal_frequency_2', 'x3'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",116
+"(3.904, 3.907]",3.9042516987004774,3.9069083338426496,3,"(('bin_equal_frequency_5', 'x6'), ('zscore_clip_3', 'x5'), ('IQR', 'x5'))",152
+"(3.907, 3.91]",3.9070323476674096,3.909670266472107,3,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('bin_equal_width_2', 'x5'))",264
+"(3.91, 3.912]",3.9096810968846487,3.9123865183479962,3,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'), ('bin_equal_width_2', 'x3'))",855
+"(3.912, 3.915]",3.912392721440222,3.915110213718783,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_10', 'x6'))",2281
+"(3.915, 3.918]",3.9151110922005046,3.9178271592939296,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_width_2', 'x5'))",4989
+"(3.918, 3.921]",3.9178291529918745,3.920546329370035,2,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_5', 'x2'))",10142
+"(3.921, 3.923]",3.9205474889787304,3.9232644486624224,1,"(('bin_equal_frequency_2', 'x4'),)",19019
+"(3.923, 3.926]",3.923265161288718,3.925982419511781,1,"(('bin_equal_width_5', 'x1'),)",27102
+"(3.926, 3.929]",3.925982640631453,3.9287003590000014,0,(),35011
+"(3.929, 3.931]",3.9287007609088604,3.9314180594582258,1,"(('bin_equal_frequency_2', 'x1'),)",36278
+"(3.931, 3.934]",3.931418609511586,3.934136414337633,1,"(('bin_equal_frequency_2', 'x3'),)",28385
+"(3.934, 3.937]",3.9341367573920847,3.936853780777599,2,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'))",15995
+"(3.937, 3.94]",3.9368548329517634,3.939569531544058,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_5', 'x6'))",6821
+"(3.94, 3.942]",3.9395724371868397,3.942290210989369,2,"(('bin_equal_frequency_2', 'x4'), ('IQR', 'x6'))",5828
+"(3.942, 3.945]",3.942291241216311,3.945007681942249,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_width_5', 'x6'))",6684
+"(3.945, 3.948]",3.94500843712633,3.9477263157055527,1,"(('IQR', 'x6'),)",11085
+"(3.948, 3.95]",3.9477267230379116,3.9504437523731415,1,"(('bin_equal_width_5', 'x6'),)",12018
+"(3.95, 3.953]",3.950444352537408,3.9531622085032145,1,"(('zscore_filter_3', 'x5'),)",9933
+"(3.953, 3.956]",3.9531625270663104,3.9558782748028314,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_5', 'x6'))",5358
+"(3.956, 3.959]",3.955880512995365,3.958597772981488,2,"(('bin_equal_frequency_5', 'x6'), ('zscore_filter_3', 'x5'))",3346
+"(3.959, 3.961]",3.9585992739498312,3.961315947298033,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x2'))",1638
+"(3.961, 3.964]",3.9613163867111725,3.964030246479888,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_2', 'x6'))",1764
+"(3.964, 3.967]",3.964035471933343,3.9667497346608256,2,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x1'))",3174
+"(3.967, 3.969]",3.9667530323285405,3.9694687965739837,2,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_width_2', 'x6'))",4597
+"(3.969, 3.972]",3.9694704530901648,3.9721869681797752,1,"(('bin_equal_frequency_2', 'x6'),)",6695
+"(3.972, 3.975]",3.972188336613687,3.9749050877561487,2,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'))",6313
+"(3.975, 3.978]",3.9749065402615162,3.97762329486289,1,"(('bin_equal_width_2', 'x6'),)",5338
+"(3.978, 3.98]",3.97762499286405,3.980341983226574,2,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_2', 'x6'))",3149
+"(3.98, 3.983]",3.980343917932325,3.9830569374338856,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('zscore_clip_3', 'x2'))",1335
+"(3.983, 3.986]",3.9830696911100487,3.985774813855345,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_10', 'x6'), ('IQR', 'x4'))",926
+"(3.986, 3.988]",3.985778462734713,3.988495738972061,2,"(('bin_equal_frequency_10', 'x6'), ('IQR', 'x4'))",1919
+"(3.988, 3.991]",3.9884972276695425,3.991212146033563,2,"(('norm_log', 'x6'), ('bin_equal_width_2', 'x6'))",2421
+"(3.991, 3.994]",3.9912153018128276,3.9939318800427053,2,"(('bin_equal_width_2', 'x6'), ('IQR', 'x5'))",3317
+"(3.994, 3.997]",3.9939323978480497,3.996649835229814,2,"(('bin_equal_frequency_2', 'x5'), ('IQR', 'x4'))",5604
+"(3.997, 3.999]",3.996651275430798,3.9993672950125054,1,"(('IQR', 'x4'),)",7830
+"(3.999, 4.002]",3.9993685845021694,4.002085261546526,2,"(('bin_equal_frequency_2', 'x3'), ('IQR', 'x4'))",6254
+"(4.002, 4.005]",4.002086451455867,4.004803333525782,2,"(('bin_equal_frequency_2', 'x1'), ('IQR', 'x4'))",4770
+"(4.005, 4.008]",4.004805887157756,4.007520589959126,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_10', 'x6'), ('IQR', 'x4'))",1949
+"(4.008, 4.01]",4.007522388948905,4.010238652290605,2,"(('zscore_clip_3', 'x5'), ('isolationForest', 'TABLE'))",1269
+"(4.01, 4.013]",4.0102435058591075,4.012957401105941,2,"(('IQR', 'x4'), ('bin_equal_frequency_2', 'x6'))",1227
+"(4.013, 4.016]",4.012962091622237,4.015675350319549,2,"(('bin_equal_width_5', 'x6'), ('IQR', 'x4'))",1472
+"(4.016, 4.018]",4.015676685377052,4.01839051598577,2,"(('bin_equal_width_2', 'x6'), ('IQR', 'x4'))",1713
+"(4.018, 4.021]",4.018394281819393,4.02110768079832,2,"(('zscore_filter_3', 'x5'), ('IQR', 'x4'))",1714
+"(4.021, 4.024]",4.021116749526712,4.02382555223628,3,"(('bin_equal_frequency_2', 'x1'), ('zscore_filter_3', 'x5'), ('IQR', 'x4'))",1113
+"(4.024, 4.027]",4.023833436107273,4.0265335793007715,3,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x2'), ('IQR', 'x4'))",693
+"(4.027, 4.029]",4.026551453384211,4.029265328652098,3,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_width_2', 'x3'), ('IQR', 'x4'))",674
+"(4.029, 4.032]",4.029269786566019,4.0319827847515235,2,"(('bin_equal_frequency_2', 'x6'), ('IQR', 'x4'))",1071
+"(4.032, 4.035]",4.031986306193855,4.034700237642711,2,"(('bin_equal_frequency_10', 'x1'), ('isolationForest', 'TABLE'))",1293
+"(4.035, 4.037]",4.0347032695104375,4.037417871219809,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('IQR', 'x4'))",1042
+"(4.037, 4.04]",4.037423333638351,4.040134512824679,2,"(('bin_equal_width_5', 'x3'), ('isolationForest', 'TABLE'))",1144
+"(4.04, 4.043]",4.0401433101962745,4.0428559103753035,3,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x3'))",997
+"(4.043, 4.046]",4.0428605390411985,4.045569050392705,2,"(('bin_equal_width_10', 'x2'), ('isolationForest', 'TABLE'))",1557
+"(4.046, 4.048]",4.0455747043123615,4.0482903915753745,3,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_width_10', 'x2'))",1472
+"(4.048, 4.051]",4.04829310087171,4.051008884032221,2,"(('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'))",1726
+"(4.051, 4.054]",4.051010351631593,4.053724708430046,2,"(('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",1772
+"(4.054, 4.056]",4.0537279451799435,4.056445594708746,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_5', 'x1'), ('isolationForest', 'TABLE'))",1616
+"(4.056, 4.059]",4.056446399911387,4.059163680524229,2,"(('zscore_filter_3', 'x2'), ('isolationForest', 'TABLE'))",1880
+"(4.059, 4.062]",4.059164151704456,4.061878979260641,2,"(('bin_equal_width_5', 'x2'), ('isolationForest', 'TABLE'))",2391
+"(4.062, 4.065]",4.061883173825322,4.064598537500787,2,"(('bin_equal_width_2', 'x1'), ('isolationForest', 'TABLE'))",2582
+"(4.065, 4.067]",4.064603378117909,4.067317520952946,2,"(('bin_equal_width_10', 'x3'), ('isolationForest', 'TABLE'))",2615
+"(4.067, 4.07]",4.067318183471267,4.070034584581611,2,"(('winsorize', 'x3'), ('isolationForest', 'TABLE'))",2576
+"(4.07, 4.073]",4.070036117873812,4.072752500044496,2,"(('bin_equal_width_2', 'x3'), ('isolationForest', 'TABLE'))",3088
+"(4.073, 4.075]",4.072755038840163,4.0754706864535795,2,"(('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x3'))",2179
+"(4.075, 4.078]",4.0754719123423016,4.078189732262938,2,"(('bin_equal_width_5', 'x6'), ('IQR', 'x6'))",2963
+"(4.078, 4.081]",4.078190420916141,4.080907332667659,2,"(('winsorize', 'x1'), ('isolationForest', 'TABLE'))",3041
+"(4.081, 4.084]",4.0809083954880725,4.083623484138803,1,"(('isolationForest', 'TABLE'),)",3363
+"(4.084, 4.086]",4.083629880519055,4.086335961644343,2,"(('norm_log', 'x3'), ('isolationForest', 'TABLE'))",2712
+"(4.086, 4.089]",4.086344002773574,4.089061641114311,2,"(('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x3'))",2772
+"(4.089, 4.092]",4.089062026409894,4.091779305400674,2,"(('bin_equal_width_10', 'x5'), ('isolationForest', 'TABLE'))",2958
+"(4.092, 4.094]",4.091779716291498,4.094496737322414,2,"(('norm_log', 'x6'), ('isolationForest', 'TABLE'))",2541
+"(4.094, 4.097]",4.0944995377656035,4.09721555175048,2,"(('norm_log', 'x5'), ('isolationForest', 'TABLE'))",2746
+"(4.097, 4.1]",4.097216135107076,4.0999333505426545,2,"(('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",3370
+"(4.1, 4.103]",4.099933921862741,4.102650288361557,2,"(('bin_equal_frequency_2', 'x3'), ('isolationForest', 'TABLE'))",3423
+"(4.103, 4.105]",4.102653063245776,4.10536945473946,2,"(('bin_equal_frequency_2', 'x6'), ('isolationForest', 'TABLE'))",3433
+"(4.105, 4.108]",4.105370376966491,4.108087451557163,2,"(('norm_log', 'x2'), ('isolationForest', 'TABLE'))",3125
+"(4.108, 4.111]",4.108088110466129,4.1108055330607005,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_10', 'x6'), ('isolationForest', 'TABLE'))",2972
+"(4.111, 4.114]",4.11080797997975,4.113523609589158,2,"(('bin_equal_width_2', 'x5'), ('isolationForest', 'TABLE'))",3429
+"(4.114, 4.116]",4.113527203267269,4.116241598245195,2,"(('bin_equal_frequency_2', 'x1'), ('isolationForest', 'TABLE'))",3599
+"(4.116, 4.119]",4.116241690337397,4.118958903134454,2,"(('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'))",3740
+"(4.119, 4.122]",4.11896108038749,4.121677291537971,2,"(('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",2934
+"(4.122, 4.124]",4.1216781783563565,4.124393908108736,2,"(('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",2708
+"(4.124, 4.127]",4.124398683153627,4.127111901951739,2,"(('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",2300
+"(4.127, 4.13]",4.1271137489819285,4.129830452633055,2,"(('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",2011
+"(4.13, 4.133]",4.129832106853586,4.132549128224244,3,"(('bin_equal_frequency_2', 'x2'), ('norm_log', 'x5'), ('isolationForest', 'TABLE'))",1862
+"(4.133, 4.135]",4.1325543286250035,4.135263317158513,2,"(('bin_equal_frequency_2', 'x2'), ('isolationForest', 'TABLE'))",1837
+"(4.135, 4.138]",4.135271928342872,4.13798526762924,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x5'), ('isolationForest', 'TABLE'))",1693
+"(4.138, 4.141]",4.137986115252654,4.140700547069656,2,"(('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'))",1671
+"(4.141, 4.143]",4.140703928392215,4.143415545246356,3,"(('bin_equal_frequency_2', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",1378
+"(4.143, 4.146]",4.143431070719374,4.1461308617348465,2,"(('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'))",1308
+"(4.146, 4.149]",4.146140799235005,4.148846939747914,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'))",1025
+"(4.149, 4.152]",4.148858391780612,4.151572240860824,3,"(('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",736
+"(4.152, 4.154]",4.151580192244187,4.154289537674795,3,"(('bin_equal_frequency_2', 'x2'), ('norm_log', 'x1'), ('isolationForest', 'TABLE'))",801
+"(4.154, 4.157]",4.154297718443113,4.1570045473344805,3,"(('bin_equal_frequency_2', 'x1'), ('zscore_clip_3', 'x5'), ('isolationForest', 'TABLE'))",653
+"(4.157, 4.16]",4.157014167781024,4.15972480683307,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'))",552
+"(4.16, 4.162]",4.159733979429697,4.162447065157294,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",435
+"(4.162, 4.165]",4.162464174762832,4.165158076898775,3,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_10', 'x1'), ('isolationForest', 'TABLE'))",445
+"(4.165, 4.168]",4.1651682355953925,4.167875224057616,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'))",272
+"(4.168, 4.171]",4.167893022223195,4.170599924299013,3,"(('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",232
+"(4.171, 4.173]",4.170634037663611,4.173291404352957,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",299
+"(4.173, 4.176]",4.173329733264798,4.1760271350471765,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x4'), ('isolationForest', 'TABLE'))",206
+"(4.176, 4.179]",4.1760393395012745,4.178754370397179,3,"(('bin_equal_width_2', 'x1'), ('IQR', 'x4'), ('isolationForest', 'TABLE'))",201
+"(4.179, 4.181]",4.178823556659664,4.181466731627789,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('norm_log', 'x3'), ('isolationForest', 'TABLE'))",131
+"(4.181, 4.184]",4.18150787736625,4.184146591423448,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",159
+"(4.184, 4.187]",4.184192743857459,4.186828497653418,3,"(('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",121
+"(4.187, 4.19]",4.186913174710041,4.189621066303595,3,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",170
+"(4.19, 4.192]",4.189627367422226,4.192344466816625,3,"(('bin_equal_frequency_5', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",122
+"(4.192, 4.195]",4.1923458565202525,4.195012134999276,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_5', 'x6'), ('isolationForest', 'TABLE'))",91
+"(4.195, 4.198]",4.195111067876182,4.197757192139733,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_5', 'x3'), ('isolationForest', 'TABLE'))",108
+"(4.198, 4.2]",4.197790299223344,4.200487264823682,3,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",94
+"(4.2, 4.203]",4.200652492583993,4.20320793669109,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x2'), ('winsorize', 'x6'), ('isolationForest', 'TABLE'))",39
+"(4.203, 4.206]",4.2032465898583204,4.205818516651253,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('norm_log', 'x5'), ('isolationForest', 'TABLE'))",56
+"(4.206, 4.209]",4.205935677017425,4.208530950845732,3,"(('bin_equal_width_5', 'x6'), ('IQR', 'x6'), ('isolationForest', 'TABLE'))",60
+"(4.209, 4.211]",4.208787306742665,4.211362928427624,3,"(('bin_equal_width_5', 'x6'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",67
+"(4.211, 4.214]",4.2114279113918025,4.214024157172359,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",35
+"(4.214, 4.217]",4.214267957866692,4.216781209276824,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",29
+"(4.217, 4.22]",4.2169651785877935,4.219514096394223,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_10', 'x5'), ('isolationForest', 'TABLE'))",25
+"(4.22, 4.222]",4.2195943234644195,4.222112172526024,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x6'))",22
+"(4.222, 4.225]",4.2222825182614345,4.224853993572273,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'))",29
+"(4.225, 4.228]",4.225044731193827,4.227575412207074,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_5', 'x2'), ('isolationForest', 'TABLE'))",16
+"(4.228, 4.23]",4.227944551763396,4.2300427533704905,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",11
+"(4.23, 4.233]",4.2304920175214145,4.233055500369604,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'x2'))",24
+"(4.233, 4.236]",4.233457349768633,4.235669294781097,3,"(('bin_equal_frequency_2', 'x6'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",32
+"(4.236, 4.239]",4.235900264852962,4.238498058514999,3,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",43
+"(4.239, 4.241]",4.238702499778336,4.241263466089434,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_5', 'x2'))",18
+"(4.241, 4.244]",4.241611817881325,4.243727797809756,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x3'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",13
+"(4.244, 4.247]",4.2444362518959275,4.246652899409308,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x6'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",15
+"(4.247, 4.249]",4.2469090815285675,4.249263270238749,3,"(('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",31
+"(4.249, 4.252]",4.2495035611679715,4.252131373447201,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x5'))",16
+"(4.252, 4.255]",4.252718882939705,4.252718882939705,4,"(('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x3'))",1
+"(4.255, 4.258]",4.255384135669095,4.257504114232585,4,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('bin_equal_width_5', 'x1'), ('isolationForest', 'TABLE'))",4
+"(4.258, 4.26]",4.257933082167047,4.259473993553058,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",5
+"(4.26, 4.263]",4.2620678143939426,4.262687195673406,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'), ('zscore_filter_3', 'x5'))",4
+"(4.263, 4.266]",4.263373062282847,4.265545030740663,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('zscore_filter_3', 'x5'), ('isolationForest', 'TABLE'))",8
+"(4.266, 4.268]",4.265947680465592,4.265947680465592,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('IQR', 'x5'), ('isolationForest', 'TABLE'))",1
+"(4.268, 4.271]",4.268554643199421,4.270469981841697,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x3'), ('isolationForest', 'TABLE'))",5
+"(4.271, 4.274]",4.27147783892333,4.273070666727968,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x3'), ('zscore_filter_3', 'x5'), ('isolationForest', 'TABLE'))",2
+"(4.274, 4.277]",4.274782681045611,4.275514812737773,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_10', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",4
+"(4.277, 4.279]",4.2789776101790125,4.2789776101790125,15,"(('bin_equal_frequency_2', 'x4'), ('bin_equal_frequency_2', 'x5'), ('norm_min_max', 'x4'), ('norm_min_max', 'x6'), ('bin_equal_width_2', 'x6'), ('zscore_filter_3', 'x1'), ('winsorize', 'x4'), ('bin_equal_frequency_2', 'x3'), ('bin_equal_width_2', 'x2'), ('drop_duplicates', 'TABLE'), ('norm_log', 'x3'), ('zscore_filter_3', 'x3'), ('isolationForest', 'TABLE'), ('zscore_clip_3', 'x2'), ('norm_min_max', 'x1'))",1
+"(4.279, 4.282]",4.279496992918446,4.2819234443453595,4,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x5'), ('isolationForest', 'TABLE'))",6
+"(4.282, 4.285]",4.284552609869726,4.284552609869726,24,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_10', 'x1'), ('norm_min_max', 'x1'), ('IQR', 'x2'), ('bin_equal_width_5', 'x3'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x2'), ('IQR', 'x5'), ('bin_equal_frequency_5', 'x2'), ('norm_log', 'x3'), ('norm_min_max', 'x6'), ('zscore_clip_3', 'x1'), ('zscore_clip_3', 'x3'), ('zscore_clip_3', 'x4'), ('bin_equal_frequency_10', 'x4'), ('norm_log', 'x5'), ('winsorize', 'x4'), ('norm_min_max', 'x4'), ('zscore_clip_3', 'x5'), ('drop_duplicates', 'TABLE'), ('IQR', 'x6'), ('zscore_filter_3', 'x2'), ('isolationForest', 'TABLE'), ('winsorize', 'x1'))",1
+"(4.285, 4.287]",4.2847847796163725,4.287267659106648,4,"(('bin_equal_frequency_2', 'x2'), ('zscore_filter_3', 'x5'), ('bin_equal_frequency_5', 'x5'), ('isolationForest', 'TABLE'))",3
+"(4.29, 4.293]",4.290488186725163,4.292394119818712,4,"(('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x2'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",3
+"(4.296, 4.298]",4.297145412284534,4.297145412284534,15,"(('bin_equal_frequency_2', 'x2'), ('zscore_filter_3', 'x5'), ('bin_equal_frequency_5', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'x6'), ('zscore_filter_3', 'x4'), ('norm_log', 'x1'), ('norm_log', 'x3'), ('bin_equal_frequency_5', 'x5'), ('drop_duplicates', 'TABLE'), ('bin_equal_width_2', 'x3'), ('winsorize', 'x1'), ('IQR', 'x6'), ('zscore_filter_3', 'x3'), ('winsorize', 'x5'))",1
+"(4.298, 4.301]",4.300164516354037,4.300164516354037,26,"(('bin_equal_width_2', 'x2'), ('bin_equal_width_5', 'x6'), ('bin_equal_width_10', 'x1'), ('zscore_filter_3', 'x5'), ('zscore_clip_3', 'x4'), ('norm_log', 'x2'), ('zscore_filter_3', 'x1'), ('winsorize', 'x6'), ('bin_equal_frequency_5', 'x3'), ('drop_duplicates', 'TABLE'), ('norm_min_max', 'x4'), ('bin_equal_width_5', 'x5'), ('zscore_clip_3', 'x2'), ('zscore_clip_3', 'x3'), ('bin_equal_frequency_2', 'x4'), ('norm_min_max', 'x1'), ('norm_min_max', 'x5'), ('winsorize', 'x4'), ('zscore_clip_3', 'x6'), ('winsorize', 'x2'), ('IQR', 'x6'), ('norm_log', 'x6'), ('isolationForest', 'TABLE'), ('norm_min_max', 'x3'), ('IQR', 'x3'), ('winsorize', 'x5'))",1
 "(4.301, 4.304]",4.303307337838507,4.303307337838507,4,"(('bin_equal_frequency_2', 'x2'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_width_2', 'x6'), ('isolationForest', 'TABLE'))",1
-"(4.328, 4.331]",4.328455141918887,4.328455141918887,26,"(('bin_equal_width_2', 'x3'), ('bin_equal_width_5', 'x6'), ('winsorize', 'x1'), ('bin_equal_width_10', 'x1'), ('IQR', 'x3'), ('norm_log', 'x4'), ('bin_equal_frequency_10', 'x4'), ('norm_min_max', 'x5'), ('zscore_filter_3', 'x5'), ('bin_equal_frequency_2', 'x5'), ('bin_equal_frequency_2', 'x2'), ('IQR', 'x6'), ('norm_log', 'x2'), ('zscore_clip_3', 'x4'), ('norm_log', 'x6'), ('IQR', 'x5'), ('norm_log', 'x3'), ('zscore_filter_3', 'x6'), ('isolationForest', 'TABLE'), ('zscore_filter_3', 'x3'), ('zscore_clip_3', 'x2'), ('winsorize', 'x3'), ('winsorize', 'x5'), ('IQR', 'x4'), ('zscore_clip_3', 'x1'), ('winsorize', 'x2'))",1
-"(4.353, 4.356]",4.353941758499268,4.354597250184012,24,"(('bin_equal_width_2', 'x6'), ('winsorize', 'x1'), ('bin_equal_width_10', 'x3'), ('norm_min_max', 'x2'), ('norm_min_max', 'x5'), ('IQR', 'x3'), ('bin_equal_frequency_5', 'x2'), ('winsorize', 'x5'), ('IQR', 'x5'), ('norm_log', 'x3'), ('IQR', 'x4'), ('bin_equal_frequency_5', 'x1'), ('zscore_clip_3', 'x4'), ('bin_equal_width_2', 'x5'), ('isolationForest', 'TABLE'), ('zscore_filter_3', 'x5'), ('norm_min_max', 'x4'), ('drop_duplicates', 'TABLE'), ('zscore_filter_3', 'x3'), ('zscore_clip_3', 'x2'), ('IQR', 'x6'), ('zscore_clip_3', 'x6'), ('norm_min_max', 'x6'), ('winsorize', 'x6'))",2
-"(4.489, 4.492]",4.489894009282917,4.490747513329369,4,"(('bin_equal_width_2', 'x6'), ('bin_equal_width_10', 'x1'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",2
-"(4.55, 4.553]",4.552147499900759,4.552147499900759,4,"(('bin_equal_width_2', 'x6'), ('norm_log', 'x1'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",1
+"(4.307, 4.309]",4.308247102263005,4.308247102263005,25,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_10', 'x1'), ('bin_equal_width_10', 'x5'), ('norm_min_max', 'x4'), ('winsorize', 'x5'), ('zscore_filter_3', 'x3'), ('bin_equal_frequency_10', 'x4'), ('bin_equal_frequency_2', 'x2'), ('winsorize', 'x4'), ('zscore_clip_3', 'x4'), ('winsorize', 'x6'), ('zscore_clip_3', 'x6'), ('zscore_clip_3', 'x2'), ('IQR', 'x1'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_10', 'x6'), ('IQR', 'x2'), ('winsorize', 'x3'), ('zscore_filter_3', 'x1'), ('IQR', 'x6'), ('winsorize', 'x1'), ('norm_min_max', 'x3'), ('norm_log', 'x1'), ('IQR', 'x4'), ('norm_log', 'x6'))",1
+"(4.309, 4.312]",4.310917440016483,4.310917440016483,21,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_frequency_5', 'x6'), ('winsorize', 'x3'), ('IQR', 'x5'), ('zscore_filter_3', 'x1'), ('bin_equal_frequency_5', 'x2'), ('bin_equal_frequency_2', 'x3'), ('bin_equal_frequency_2', 'x4'), ('zscore_filter_3', 'x5'), ('zscore_clip_3', 'x4'), ('winsorize', 'x5'), ('norm_min_max', 'x2'), ('winsorize', 'x1'), ('isolationForest', 'TABLE'), ('norm_min_max', 'x3'), ('bin_equal_width_5', 'x5'), ('zscore_clip_3', 'x3'), ('norm_min_max', 'x5'), ('winsorize', 'x2'), ('norm_log', 'x1'), ('IQR', 'x3'))",1
+"(4.312, 4.315]",4.313337065150491,4.313337065150491,28,"(('bin_equal_width_5', 'x1'), ('bin_equal_width_5', 'x6'), ('zscore_clip_3', 'x5'), ('bin_equal_width_5', 'x5'), ('norm_min_max', 'x3'), ('winsorize', 'x1'), ('IQR', 'x5'), ('norm_log', 'x5'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_width_5', 'x4'), ('drop_duplicates', 'TABLE'), ('IQR', 'x6'), ('IQR', 'x1'), ('zscore_clip_3', 'x2'), ('IQR', 'x2'), ('zscore_clip_3', 'x4'), ('IQR', 'x3'), ('winsorize', 'x5'), ('zscore_filter_3', 'x3'), ('bin_equal_frequency_5', 'x3'), ('norm_min_max', 'x1'), ('norm_log', 'x4'), ('norm_min_max', 'x2'), ('winsorize', 'x2'), ('norm_log', 'x6'), ('zscore_clip_3', 'x6'), ('winsorize', 'x3'), ('isolationForest', 'TABLE'))",1
+"(4.315, 4.317]",4.316306523513605,4.316306523513605,23,"(('bin_equal_frequency_2', 'x1'), ('norm_min_max', 'x2'), ('zscore_filter_3', 'x5'), ('zscore_clip_3', 'x3'), ('bin_equal_frequency_10', 'x3'), ('norm_log', 'x4'), ('bin_equal_frequency_5', 'x2'), ('IQR', 'x3'), ('winsorize', 'x5'), ('bin_equal_width_2', 'x6'), ('bin_equal_frequency_10', 'x5'), ('norm_min_max', 'x1'), ('IQR', 'x4'), ('zscore_filter_3', 'x6'), ('zscore_filter_3', 'x4'), ('bin_equal_width_2', 'x4'), ('drop_duplicates', 'TABLE'), ('norm_min_max', 'x6'), ('IQR', 'x2'), ('isolationForest', 'TABLE'), ('IQR', 'x6'), ('IQR', 'x1'), ('winsorize', 'x1'))",1
+"(4.32, 4.323]",4.321721448156087,4.321721448156087,26,"(('bin_equal_frequency_2', 'x3'), ('bin_equal_width_2', 'x5'), ('bin_equal_width_5', 'x6'), ('winsorize', 'x1'), ('bin_equal_frequency_5', 'x2'), ('bin_equal_frequency_10', 'x4'), ('norm_log', 'x3'), ('bin_equal_width_2', 'x1'), ('winsorize', 'x6'), ('norm_min_max', 'x5'), ('norm_min_max', 'x2'), ('zscore_filter_3', 'x4'), ('norm_min_max', 'x4'), ('IQR', 'x3'), ('IQR', 'x5'), ('norm_min_max', 'x1'), ('norm_log', 'x6'), ('zscore_filter_3', 'x3'), ('isolationForest', 'TABLE'), ('IQR', 'x1'), ('zscore_clip_3', 'x6'), ('IQR', 'x4'), ('winsorize', 'x3'), ('zscore_filter_3', 'x5'), ('IQR', 'x6'), ('winsorize', 'x5'))",1
+"(4.328, 4.331]",4.329983259013482,4.329983259013482,28,"(('bin_equal_frequency_2', 'x1'), ('bin_equal_width_5', 'x6'), ('IQR', 'x5'), ('IQR', 'x6'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_10', 'x2'), ('bin_equal_frequency_10', 'x3'), ('norm_min_max', 'x6'), ('IQR', 'x2'), ('bin_equal_width_5', 'x4'), ('zscore_clip_3', 'x2'), ('zscore_filter_3', 'x3'), ('drop_duplicates', 'TABLE'), ('norm_log', 'x2'), ('bin_equal_frequency_5', 'x5'), ('winsorize', 'x1'), ('winsorize', 'x6'), ('zscore_clip_3', 'x1'), ('zscore_clip_3', 'x6'), ('norm_min_max', 'x5'), ('zscore_filter_3', 'x4'), ('zscore_filter_3', 'x5'), ('norm_min_max', 'x3'), ('norm_log', 'x4'), ('winsorize', 'x2'), ('norm_log', 'x1'), ('winsorize', 'x4'), ('IQR', 'x3'))",1
+"(4.353, 4.355]",4.355034601543091,4.355034601543091,24,"(('bin_equal_frequency_5', 'x1'), ('zscore_filter_3', 'x5'), ('bin_equal_frequency_10', 'x5'), ('zscore_clip_3', 'x3'), ('winsorize', 'x2'), ('zscore_filter_3', 'x1'), ('bin_equal_width_2', 'x4'), ('norm_log', 'x2'), ('zscore_filter_3', 'x2'), ('IQR', 'x2'), ('bin_equal_frequency_2', 'x2'), ('bin_equal_width_2', 'x6'), ('norm_log', 'x4'), ('isolationForest', 'TABLE'), ('norm_log', 'x3'), ('bin_equal_frequency_2', 'x3'), ('norm_min_max', 'x5'), ('IQR', 'x1'), ('IQR', 'x5'), ('winsorize', 'x6'), ('drop_duplicates', 'TABLE'), ('winsorize', 'x1'), ('norm_min_max', 'x6'), ('IQR', 'x3'))",1
+"(4.489, 4.491]",4.489894009282917,4.490747513329369,4,"(('bin_equal_width_2', 'x6'), ('bin_equal_width_10', 'x1'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",2
+"(4.551, 4.554]",4.552147499900759,4.552147499900759,4,"(('bin_equal_width_2', 'x6'), ('norm_log', 'x1'), ('isolationForest', 'TABLE'), ('IQR', 'x6'))",1
