@@ -1,0 +1,361 @@
+bucket_range,min_ate_in_bin,max_ate_in_bin,min_length,best_sequence,count
+"(11167.112, 11338.453]",11338.452677012887,11338.452677012887,19,"(('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'bedrooms'), ('winsorize', 'sqft_lot'), ('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_5', 'grade'), ('bin_equal_width_5', 'condition'), ('bin_equal_frequency_2', 'view'), ('zscore_filter_3', 'view'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living15'), ('winsorize', 'sqft_above'), ('winsorize', 'sqft_living'), ('isolationForest', 'TABLE'), ('bin_equal_width_2', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_renovated'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_width_2', 'floors'), ('winsorize', 'bathrooms'), ('norm_min_max', 'sqft_living'))",1
+"(18192.089, 18363.43]",18194.92001052387,18338.58687488336,17,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'grade'), ('bin_equal_width_10', 'bathrooms'), ('zscore_filter_3', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_5', 'yr_renovated'), ('bin_equal_width_2', 'sqft_above'), ('zscore_filter_3', 'view'), ('bin_equal_width_5', 'sqft_lot'), ('bin_equal_width_5', 'grade'), ('norm_min_max', 'grade'), ('bin_equal_frequency_2', 'yr_built'), ('norm_min_max', 'sqft_living'), ('winsorize', 'sqft_living15'), ('bin_equal_width_5', 'sqft_basement'), ('norm_min_max', 'bedrooms'))",3
+"(18534.771, 18706.112]",18614.39700258989,18614.39700258989,27,"(('bin_equal_width_5', 'sqft_living15'), ('norm_log', 'sqft_lot15'), ('IQR', 'sqft_lot'), ('IQR', 'bathrooms'), ('zscore_clip_3', 'floors'), ('bin_equal_frequency_5', 'grade'), ('bin_equal_frequency_2', 'sqft_living'), ('norm_min_max', 'grade'), ('bin_equal_frequency_5', 'yr_built'), ('norm_min_max', 'sqft_lot'), ('zscore_clip_3', 'sqft_living15'), ('zscore_clip_3', 'yr_built'), ('bin_equal_frequency_5', 'sqft_lot'), ('bin_equal_width_2', 'bedrooms'), ('bin_equal_frequency_10', 'yr_renovated'), ('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_5', 'sqft_lot15'), ('winsorize', 'sqft_living15'), ('winsorize', 'yr_renovated'), ('bin_equal_frequency_2', 'sqft_basement'), ('bin_equal_width_10', 'floors'), ('bin_equal_frequency_5', 'condition'), ('norm_log', 'condition'), ('IQR', 'sqft_basement'), ('zscore_clip_3', 'view'), ('IQR', 'floors'), ('winsorize', 'view'))",1
+"(19220.134, 19391.475]",19347.36109492369,19347.36109492369,19,"(('bin_equal_width_5', 'sqft_above'), ('norm_log', 'bathrooms'), ('winsorize', 'grade'), ('bin_equal_width_5', 'bathrooms'), ('bin_equal_frequency_5', 'condition'), ('norm_log', 'sqft_living'), ('norm_log', 'yr_renovated'), ('IQR', 'floors'), ('bin_equal_width_10', 'yr_renovated'), ('winsorize', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_width_5', 'sqft_living15'), ('bin_equal_width_5', 'view'), ('bin_equal_width_10', 'floors'), ('bin_equal_frequency_2', 'sqft_lot15'), ('zscore_clip_3', 'sqft_living'), ('norm_log', 'sqft_lot'), ('bin_equal_width_10', 'sqft_living'), ('norm_min_max', 'view'))",1
+"(19562.816, 19734.157]",19599.314834684134,19599.314834684134,26,"(('bin_equal_width_2', 'sqft_living'), ('IQR', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('zscore_clip_3', 'floors'), ('bin_equal_width_5', 'view'), ('bin_equal_width_5', 'bedrooms'), ('bin_equal_frequency_5', 'condition'), ('zscore_filter_3', 'yr_renovated'), ('bin_equal_width_10', 'grade'), ('zscore_filter_3', 'sqft_living'), ('norm_min_max', 'sqft_living'), ('zscore_filter_3', 'sqft_lot'), ('bin_equal_frequency_5', 'floors'), ('bin_equal_frequency_2', 'sqft_above'), ('norm_min_max', 'sqft_basement'), ('zscore_clip_3', 'sqft_lot15'), ('norm_min_max', 'yr_renovated'), ('bin_equal_frequency_10', 'bathrooms'), ('zscore_clip_3', 'sqft_basement'), ('bin_equal_frequency_2', 'sqft_lot15'), ('norm_min_max', 'sqft_lot15'), ('norm_log', 'bathrooms'), ('IQR', 'sqft_lot15'), ('norm_log', 'sqft_lot'), ('zscore_clip_3', 'sqft_living15'), ('isolationForest', 'TABLE'))",1
+"(19734.157, 19905.498]",19823.577428099874,19823.577428099874,23,"(('bin_equal_frequency_2', 'sqft_living15'), ('norm_log', 'condition'), ('norm_log', 'sqft_lot15'), ('bin_equal_width_10', 'bedrooms'), ('norm_log', 'sqft_lot'), ('zscore_clip_3', 'sqft_lot'), ('zscore_clip_3', 'sqft_basement'), ('zscore_filter_3', 'view'), ('bin_equal_width_5', 'view'), ('bin_equal_width_2', 'sqft_lot'), ('zscore_clip_3', 'bedrooms'), ('norm_log', 'floors'), ('bin_equal_width_2', 'sqft_above'), ('zscore_clip_3', 'condition'), ('bin_equal_frequency_2', 'yr_renovated'), ('winsorize', 'sqft_lot'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_width_5', 'bathrooms'), ('bin_equal_frequency_10', 'yr_built'), ('IQR', 'bedrooms'), ('zscore_filter_3', 'sqft_living'), ('zscore_filter_3', 'sqft_above'), ('IQR', 'sqft_basement'))",1
+"(20076.839, 20248.18]",20085.560542926192,20085.560542926192,18,"(('bin_equal_width_2', 'floors'), ('IQR', 'sqft_lot'), ('norm_log', 'sqft_lot'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_width_10', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'), ('norm_log', 'yr_built'), ('zscore_filter_3', 'sqft_basement'), ('norm_min_max', 'sqft_lot15'), ('zscore_clip_3', 'yr_built'), ('zscore_clip_3', 'bathrooms'), ('bin_equal_width_10', 'grade'), ('zscore_filter_3', 'view'), ('IQR', 'yr_renovated'), ('IQR', 'bedrooms'), ('zscore_clip_3', 'sqft_living'), ('norm_log', 'sqft_living15'))",1
+"(20933.543, 21104.884]",20945.150614385027,20945.150614385027,26,"(('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'sqft_lot'), ('zscore_filter_3', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_lot'), ('norm_log', 'sqft_lot15'), ('bin_equal_width_10', 'bedrooms'), ('IQR', 'yr_built'), ('bin_equal_frequency_5', 'sqft_basement'), ('zscore_clip_3', 'yr_renovated'), ('bin_equal_frequency_5', 'view'), ('bin_equal_width_5', 'yr_built'), ('IQR', 'view'), ('norm_min_max', 'condition'), ('bin_equal_frequency_10', 'condition'), ('bin_equal_frequency_2', 'sqft_lot15'), ('winsorize', 'bathrooms'), ('bin_equal_width_10', 'grade'), ('zscore_clip_3', 'condition'), ('bin_equal_frequency_10', 'bathrooms'), ('bin_equal_frequency_5', 'yr_renovated'), ('zscore_filter_3', 'sqft_lot'), ('winsorize', 'sqft_above'), ('zscore_clip_3', 'yr_built'), ('norm_log', 'sqft_living'), ('IQR', 'sqft_lot15'), ('zscore_filter_3', 'sqft_living15'))",1
+"(21618.907, 21790.248]",21679.23919890524,21679.23919890524,13,"(('bin_equal_frequency_10', 'sqft_living'), ('norm_log', 'sqft_lot'), ('zscore_filter_3', 'floors'), ('bin_equal_frequency_10', 'sqft_lot15'), ('bin_equal_frequency_10', 'yr_renovated'), ('bin_equal_frequency_10', 'sqft_basement'), ('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_width_10', 'sqft_lot'), ('norm_min_max', 'sqft_above'), ('bin_equal_width_5', 'floors'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_5', 'condition'), ('drop_duplicates', 'TABLE'))",1
+"(22132.93, 22304.271]",22190.088323714153,22190.088323714153,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",1
+"(22646.952, 22818.293]",22654.04418701504,22807.1065693954,13,"(('IQR', 'bedrooms'), ('zscore_filter_3', 'sqft_living15'), ('bin_equal_frequency_5', 'sqft_living15'), ('zscore_filter_3', 'condition'), ('bin_equal_frequency_5', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'bathrooms'), ('IQR', 'sqft_above'), ('IQR', 'sqft_lot'), ('zscore_filter_3', 'view'), ('norm_log', 'view'), ('winsorize', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))",4
+"(22989.634, 23160.975]",23058.62483268918,23150.190020931885,26,"(('IQR', 'grade'), ('zscore_filter_3', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_living15'), ('norm_min_max', 'sqft_lot'), ('winsorize', 'grade'), ('bin_equal_frequency_5', 'view'), ('bin_equal_width_5', 'yr_built'), ('bin_equal_width_2', 'sqft_lot'), ('zscore_clip_3', 'sqft_lot'), ('norm_min_max', 'yr_built'), ('bin_equal_width_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('norm_min_max', 'bathrooms'), ('zscore_clip_3', 'sqft_lot15'), ('zscore_filter_3', 'sqft_above'), ('norm_min_max', 'grade'), ('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_2', 'sqft_living'), ('norm_log', 'condition'), ('bin_equal_width_10', 'grade'), ('zscore_clip_3', 'bedrooms'), ('zscore_filter_3', 'floors'), ('bin_equal_frequency_5', 'bedrooms'), ('isolationForest', 'TABLE'), ('zscore_filter_3', 'condition'), ('IQR', 'bedrooms'))",2
+"(23160.975, 23332.316]",23263.00304663321,23314.00313109625,17,"(('zscore_filter_3', 'bathrooms'), ('IQR', 'sqft_basement'), ('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_10', 'yr_built'), ('zscore_filter_3', 'yr_renovated'), ('bin_equal_frequency_5', 'condition'), ('zscore_clip_3', 'sqft_above'), ('bin_equal_width_10', 'floors'), ('norm_min_max', 'yr_renovated'), ('bin_equal_width_2', 'sqft_living15'), ('zscore_clip_3', 'sqft_lot'), ('isolationForest', 'TABLE'), ('bin_equal_width_5', 'yr_renovated'), ('zscore_filter_3', 'floors'), ('IQR', 'sqft_lot'), ('bin_equal_width_5', 'grade'), ('bin_equal_frequency_2', 'sqft_above'))",3
+"(23503.657, 23674.998]",23564.73164087173,23564.73164087173,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",1
+"(23674.998, 23846.339]",23716.378162196837,23770.360423565086,9,"(('IQR', 'sqft_lot'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_10', 'view'), ('bin_equal_width_10', 'sqft_lot15'), ('norm_log', 'yr_renovated'), ('norm_log', 'sqft_living15'), ('bin_equal_width_2', 'sqft_basement'), ('norm_min_max', 'floors'))",2
+"(23846.339, 24017.68]",23911.73092470877,23999.879790166393,22,"(('bin_equal_width_10', 'sqft_basement'), ('zscore_filter_3', 'sqft_basement'), ('bin_equal_frequency_2', 'sqft_lot15'), ('norm_min_max', 'floors'), ('bin_equal_width_10', 'yr_built'), ('zscore_clip_3', 'floors'), ('zscore_clip_3', 'view'), ('zscore_filter_3', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('zscore_clip_3', 'sqft_lot15'), ('bin_equal_frequency_5', 'view'), ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'bathrooms'), ('norm_log', 'sqft_lot'), ('norm_min_max', 'yr_renovated'), ('bin_equal_width_2', 'grade'), ('bin_equal_width_2', 'yr_renovated'), ('bin_equal_frequency_5', 'bedrooms'), ('norm_min_max', 'sqft_living'), ('zscore_filter_3', 'yr_built'), ('IQR', 'sqft_living15'), ('bin_equal_width_10', 'floors'))",3
+"(24360.361, 24531.702]",24434.761808637413,24475.27510970086,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'))",3
+"(24531.702, 24703.043]",24616.747872009873,24616.747872009873,23,"(('norm_min_max', 'grade'), ('IQR', 'sqft_basement'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_lot15'), ('IQR', 'yr_built'), ('bin_equal_frequency_10', 'grade'), ('norm_log', 'sqft_basement'), ('winsorize', 'yr_renovated'), ('bin_equal_width_2', 'sqft_living'), ('bin_equal_frequency_5', 'view'), ('zscore_filter_3', 'sqft_living'), ('winsorize', 'view'), ('norm_log', 'sqft_living'), ('norm_min_max', 'view'), ('IQR', 'sqft_living15'), ('zscore_filter_3', 'sqft_living15'), ('zscore_clip_3', 'bedrooms'), ('IQR', 'bedrooms'), ('bin_equal_width_2', 'sqft_basement'), ('zscore_filter_3', 'condition'), ('zscore_filter_3', 'view'), ('bin_equal_width_2', 'sqft_above'), ('norm_log', 'yr_built'))",1
+"(24703.043, 24874.384]",24859.86738533061,24859.86738533061,14,"(('bin_equal_width_5', 'sqft_living15'), ('zscore_clip_3', 'yr_built'), ('IQR', 'grade'), ('IQR', 'sqft_living'), ('winsorize', 'sqft_living15'), ('isolationForest', 'TABLE'), ('bin_equal_width_10', 'sqft_lot'), ('norm_log', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'bedrooms'), ('bin_equal_width_5', 'sqft_basement'), ('zscore_filter_3', 'view'), ('bin_equal_width_5', 'view'), ('zscore_filter_3', 'grade'))",1
+"(24874.384, 25045.725]",24925.956613558927,24932.70237641869,22,"(('bin_equal_width_10', 'sqft_lot15'), ('winsorize', 'sqft_living'), ('zscore_filter_3', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_10', 'yr_built'), ('zscore_filter_3', 'view'), ('bin_equal_frequency_5', 'floors'), ('zscore_clip_3', 'sqft_lot15'), ('zscore_clip_3', 'grade'), ('IQR', 'condition'), ('bin_equal_width_2', 'view'), ('winsorize', 'yr_built'), ('bin_equal_width_10', 'condition'), ('bin_equal_frequency_2', 'grade'), ('norm_min_max', 'sqft_lot'), ('norm_log', 'sqft_living'), ('winsorize', 'sqft_lot15'), ('bin_equal_width_2', 'bedrooms'), ('winsorize', 'yr_renovated'), ('isolationForest', 'TABLE'), ('IQR', 'sqft_basement'), ('norm_log', 'floors'))",2
+"(25217.066, 25388.407]",25269.071780200262,25385.377486795187,19,"(('bin_equal_frequency_10', 'sqft_above'), ('zscore_filter_3', 'yr_built'), ('zscore_filter_3', 'sqft_living'), ('bin_equal_frequency_10', 'yr_built'), ('bin_equal_frequency_5', 'sqft_lot'), ('IQR', 'sqft_living15'), ('IQR', 'sqft_lot15'), ('bin_equal_width_2', 'bathrooms'), ('zscore_clip_3', 'grade'), ('norm_log', 'yr_renovated'), ('zscore_clip_3', 'sqft_above'), ('bin_equal_width_5', 'floors'), ('norm_log', 'condition'), ('zscore_filter_3', 'sqft_basement'), ('winsorize', 'yr_built'), ('zscore_filter_3', 'sqft_lot'), ('norm_min_max', 'view'), ('bin_equal_frequency_5', 'sqft_lot15'), ('norm_min_max', 'grade'))",2
+"(25388.407, 25559.748]",25473.77239008341,25473.77239008341,15,"(('bin_equal_frequency_5', 'sqft_lot15'), ('IQR', 'sqft_living'), ('IQR', 'sqft_basement'), ('bin_equal_frequency_5', 'bathrooms'), ('IQR', 'view'), ('bin_equal_frequency_10', 'grade'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_frequency_5', 'floors'), ('zscore_filter_3', 'floors'), ('norm_log', 'sqft_lot'), ('norm_log', 'condition'), ('bin_equal_width_2', 'sqft_above'), ('bin_equal_frequency_5', 'bedrooms'), ('bin_equal_frequency_5', 'yr_renovated'))",1
+"(25731.089, 25902.429]",25754.427918780595,25901.56590503105,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_living'))",6
+"(25902.429, 26073.77]",25921.706310020527,26032.52910776192,3,"(('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_basement'))",3
+"(26073.77, 26245.111]",26105.423730462324,26216.567749145208,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))",4
+"(26245.111, 26416.452]",26252.657384139486,26374.756424274063,3,"(('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))",3
+"(26416.452, 26587.793]",26427.76438689255,26566.775215129368,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('zscore_clip_3', 'grade'))",5
+"(26587.793, 26759.134]",26599.036575373728,26693.61355978431,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'sqft_basement'))",3
+"(26759.134, 26930.475]",26761.42972380959,26905.11341257312,3,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_basement'))",3
+"(26930.475, 27101.816]",26979.47377498413,27022.388857463142,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'))",3
+"(27273.157, 27444.498]",27320.524544048356,27438.050442916225,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_living'))",6
+"(27444.498, 27615.839]",27517.365427595796,27517.365427595796,3,"(('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_2', 'sqft_basement'))",1
+"(27615.839, 27787.179]",27636.648056524806,27786.221316283336,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_2', 'sqft_basement'))",5
+"(27787.179, 27958.52]",27854.13265492342,27857.650606134674,3,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'bedrooms'))",2
+"(27958.52, 28129.861]",27961.670343792997,28100.877992376336,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('norm_log', 'sqft_lot'))",7
+"(28129.861, 28301.202]",28136.651920749922,28299.624319251976,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))",6
+"(28301.202, 28472.543]",28338.92970422306,28470.748635970405,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",5
+"(28472.543, 28643.884]",28474.447034404497,28637.359753441182,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_2', 'sqft_living15'))",7
+"(28643.884, 28815.225]",28656.906088515883,28812.189102698583,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",3
+"(28815.225, 28986.566]",28846.774209245224,28975.274277049117,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))",9
+"(28986.566, 29157.907]",29002.39363833517,29142.24023986509,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_living'))",11
+"(29157.907, 29329.248]",29162.117318579578,29307.077801564243,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_2', 'sqft_lot15'), ('isolationForest', 'TABLE'))",10
+"(29329.248, 29500.588]",29338.196964049712,29493.944980421104,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_10', 'yr_built'))",6
+"(29500.588, 29671.929]",29508.083244576934,29663.73048519087,3,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",10
+"(29671.929, 29843.27]",29675.873787371558,29822.79387815518,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",17
+"(29843.27, 30014.611]",29852.110549685196,29990.132946838043,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('zscore_clip_3', 'view'))",8
+"(30014.611, 30185.952]",30025.944092527498,30179.64300570509,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'))",12
+"(30185.952, 30357.293]",30187.75972664461,30357.07341163361,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('zscore_clip_3', 'grade'))",12
+"(30357.293, 30528.634]",30366.162647982128,30523.939219827764,3,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",18
+"(30528.634, 30699.975]",30536.549704712583,30659.683903251775,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",11
+"(30699.975, 30871.316]",30705.054818378878,30869.484472553246,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_10', 'sqft_lot'))",20
+"(30871.316, 31042.657]",30884.514283576515,31038.367337205913,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))",42
+"(31042.657, 31213.997]",31044.72470219154,31199.97280517593,3,"(('bin_equal_frequency_2', 'bedrooms'), ('isolationForest', 'TABLE'), ('bin_equal_width_5', 'grade'))",19
+"(31213.997, 31385.338]",31214.01902102295,31378.410763619933,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'), ('isolationForest', 'TABLE'))",17
+"(31385.338, 31556.679]",31386.69977533247,31555.452718991553,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living'))",17
+"(31556.679, 31728.02]",31559.071461508633,31723.41448677238,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'))",25
+"(31728.02, 31899.361]",31747.3354966981,31898.856515498715,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'))",19
+"(31899.361, 32070.702]",31903.276864453335,32039.227527348325,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('zscore_clip_3', 'yr_built'))",19
+"(32070.702, 32242.043]",32085.77070012642,32235.638404225174,3,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'), ('IQR', 'yr_built'))",18
+"(32242.043, 32413.384]",32250.685700516566,32410.84399283398,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",44
+"(32413.384, 32584.725]",32423.818250839715,32566.118148246547,2,"(('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",48
+"(32584.725, 32756.066]",32608.743421336636,32747.18624497624,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_living'))",28
+"(32756.066, 32927.407]",32757.15314490348,32924.10278789792,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'sqft_lot15'), ('isolationForest', 'TABLE'))",35
+"(32927.407, 33098.747]",32930.93725884601,33096.57061016653,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",35
+"(33098.747, 33270.088]",33101.9035721845,33261.25549938349,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",37
+"(33270.088, 33441.429]",33271.843708281405,33441.230991393095,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",46
+"(33441.429, 33612.77]",33453.899740220164,33610.12729663518,2,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",62
+"(33612.77, 33784.111]",33615.455901609035,33784.0137463361,3,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'))",41
+"(33784.111, 33955.452]",33787.76430089353,33953.30479427613,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_above'))",42
+"(33955.452, 34126.793]",33955.49149617925,34124.049715808476,3,"(('bin_equal_frequency_2', 'bedrooms'), ('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'sqft_lot15'))",47
+"(34126.793, 34298.134]",34134.1409024325,34296.34914708184,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",46
+"(34298.134, 34469.475]",34306.40324965492,34458.6044727838,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))",57
+"(34469.475, 34640.816]",34471.4797973847,34638.144604792935,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'))",70
+"(34640.816, 34812.156]",34642.04223971465,34810.39425009978,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'yr_built'))",61
+"(34812.156, 34983.497]",34812.81200059573,34980.52962557366,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_living'))",64
+"(34983.497, 35154.838]",34984.01635507122,35151.710669128166,2,"(('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_10', 'yr_built'))",94
+"(35154.838, 35326.179]",35158.83722840436,35325.83784814377,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_lot'))",56
+"(35326.179, 35497.52]",35331.088328868966,35487.96762767248,2,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'))",92
+"(35497.52, 35668.861]",35497.80393128481,35666.46673066914,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_above'))",79
+"(35668.861, 35840.202]",35669.78603531828,35838.62022323161,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_living'))",104
+"(35840.202, 36011.543]",35842.74350522901,36010.68131707935,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('zscore_clip_3', 'grade'))",87
+"(36011.543, 36182.884]",36018.08869961416,36182.80853641685,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_basement'))",96
+"(36182.884, 36354.225]",36183.02460729913,36348.79617678712,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('isolationForest', 'TABLE'))",126
+"(36354.225, 36525.565]",36355.00451707933,36525.00849582814,2,"(('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'))",121
+"(36525.565, 36696.906]",36526.03117147274,36695.943054112606,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'))",121
+"(36696.906, 36868.247]",36697.29039728083,36867.926099152304,2,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_living'))",152
+"(36868.247, 37039.588]",36869.2985714674,37037.31935265008,2,"(('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'sqft_basement'))",161
+"(37039.588, 37210.929]",37040.106873992365,37208.80888006417,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('norm_log', 'sqft_living'))",203
+"(37210.929, 37382.27]",37213.24923253257,37381.69144922891,2,"(('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))",171
+"(37382.27, 37553.611]",37382.47155556362,37552.89970442606,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('norm_log', 'sqft_living'))",152
+"(37553.611, 37724.952]",37554.855119917775,37724.086185096065,2,"(('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'bedrooms'))",156
+"(37724.952, 37896.293]",37724.97140449181,37894.71499383822,3,"(('bin_equal_frequency_2', 'bathrooms'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))",168
+"(37896.293, 38067.634]",37896.787829268724,38066.66057517007,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_living'))",197
+"(38067.634, 38238.975]",38068.454105777666,38237.736399307614,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_living'))",239
+"(38238.975, 38410.315]",38239.54966394848,38407.00353412423,2,"(('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'sqft_basement'))",250
+"(38410.315, 38581.656]",38410.82602884853,38580.800791145884,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_2', 'sqft_basement'))",211
+"(38581.656, 38752.997]",38584.477619983256,38752.657765251584,3,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_living'))",232
+"(38752.997, 38924.338]",38753.75745308027,38923.74325387506,2,"(('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_frequency_10', 'sqft_living'))",342
+"(38924.338, 39095.679]",38924.91100969724,39094.69112222828,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_10', 'sqft_living'))",348
+"(39095.679, 39267.02]",39096.64361780463,39266.471546810004,2,"(('bin_equal_frequency_5', 'yr_built'), ('norm_log', 'sqft_living'))",414
+"(39267.02, 39438.361]",39267.34918498434,39437.96895666933,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_5', 'sqft_above'))",305
+"(39438.361, 39609.702]",39438.52372596972,39608.6595559353,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'yr_built'))",251
+"(39609.702, 39781.043]",39611.08815064281,39780.94174296266,2,"(('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_10', 'sqft_living15'))",345
+"(39781.043, 39952.384]",39781.13708659168,39952.119019953534,2,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_5', 'sqft_living15'))",336
+"(39952.384, 40123.724]",39952.96630043816,40122.08996027056,2,"(('zscore_filter_3', 'yr_built'), ('bin_equal_frequency_10', 'sqft_living'))",355
+"(40123.724, 40295.065]",40123.910136163235,40294.96313809138,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'))",367
+"(40295.065, 40466.406]",40295.54864813294,40466.33886379306,2,"(('bin_equal_frequency_2', 'yr_built'), ('norm_log', 'sqft_living'))",407
+"(40466.406, 40637.747]",40466.5866737155,40637.0193561255,2,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_10', 'sqft_lot15'))",449
+"(40637.747, 40809.088]",40637.804815634154,40808.71039185114,2,"(('bin_equal_frequency_5', 'sqft_living'), ('IQR', 'sqft_lot'))",518
+"(40809.088, 40980.429]",40809.25478081219,40979.76752279699,2,"(('bin_equal_frequency_10', 'sqft_living'), ('zscore_clip_3', 'sqft_living15'))",545
+"(40980.429, 41151.77]",40980.56515101716,41151.15786600765,2,"(('bin_equal_frequency_5', 'sqft_living'), ('zscore_clip_3', 'sqft_basement'))",660
+"(41151.77, 41323.111]",41152.16756980866,41322.74771979891,2,"(('bin_equal_frequency_5', 'sqft_lot'), ('bin_equal_frequency_10', 'sqft_living'))",618
+"(41323.111, 41494.452]",41323.30425505433,41494.3615140263,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_living'))",678
+"(41494.452, 41665.793]",41494.63732119277,41665.736949977465,2,"(('bin_equal_frequency_5', 'sqft_living'), ('IQR', 'sqft_basement'))",771
+"(41665.793, 41837.134]",41666.68913026154,41837.10834379308,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_5', 'sqft_living'))",713
+"(41837.134, 42008.474]",41837.14512217976,42008.22224929277,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'yr_built'))",939
+"(42008.474, 42179.815]",42008.667736109695,42179.615676764515,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living'))",871
+"(42179.815, 42351.156]",42179.99613067135,42350.84396143537,1,"(('bin_equal_frequency_10', 'sqft_living'),)",1108
+"(42351.156, 42522.497]",42351.160670398735,42522.24977531005,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_lot'))",814
+"(42522.497, 42693.838]",42522.795339037664,42692.64326754492,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_5', 'sqft_living'))",758
+"(42693.838, 42865.179]",42693.959879074246,42864.8752129979,2,"(('bin_equal_frequency_5', 'sqft_lot15'), ('norm_log', 'sqft_living'))",658
+"(42865.179, 43036.52]",42865.36104485858,43036.14366255724,2,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_10', 'sqft_living15'))",634
+"(43036.52, 43207.861]",43036.6474361415,43207.637914350256,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'yr_built'))",653
+"(43207.861, 43379.202]",43207.891193514515,43378.98234472796,2,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_frequency_10', 'yr_built'))",862
+"(43379.202, 43550.543]",43379.384947298095,43550.50173761975,2,"(('bin_equal_frequency_10', 'sqft_living'), ('norm_log', 'sqft_basement'))",764
+"(43550.543, 43721.883]",43550.81801215932,43721.21416176669,2,"(('bin_equal_frequency_5', 'sqft_above'), ('IQR', 'sqft_basement'))",865
+"(43721.883, 43893.224]",43722.57128094917,43893.02485409379,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))",917
+"(43893.224, 44064.565]",43893.35822326923,44064.51176898554,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'sqft_basement'))",887
+"(44064.565, 44235.906]",44064.76451840345,44235.46799279982,2,"(('bin_equal_frequency_5', 'sqft_living'), ('zscore_clip_3', 'sqft_living15'))",906
+"(44235.906, 44407.247]",44235.98720584158,44407.02768136468,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'yr_built'))",985
+"(44407.247, 44578.588]",44407.36840354954,44578.53319076984,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('norm_log', 'sqft_living'))",1061
+"(44578.588, 44749.929]",44578.59158827929,44749.78289618017,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_above'))",1234
+"(44749.929, 44921.27]",44750.02095946949,44921.26702770963,2,"(('bin_equal_frequency_2', 'bedrooms'), ('isolationForest', 'TABLE'))",1336
+"(44921.27, 45092.611]",44921.276080649346,45092.5554291876,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'yr_built'))",1708
+"(45092.611, 45263.952]",45092.618374593556,45263.1809257986,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_frequency_5', 'sqft_living'))",1517
+"(45263.952, 45435.292]",45263.96063140035,45434.757912785746,1,"(('bin_equal_frequency_5', 'sqft_living'),)",1538
+"(45435.292, 45606.633]",45435.31790094421,45606.602785829455,2,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_10', 'sqft_above'))",1812
+"(45606.633, 45777.974]",45606.64290665183,45777.962547299685,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('zscore_filter_3', 'sqft_living'))",1535
+"(45777.974, 45949.315]",45778.006848271936,45949.31261325441,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'yr_built'))",1385
+"(45949.315, 46120.656]",45949.331338513875,46120.04883411713,2,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_2', 'bedrooms'))",1514
+"(46120.656, 46291.997]",46120.736880559474,46291.835073038936,2,"(('bin_equal_frequency_5', 'sqft_living'), ('zscore_clip_3', 'sqft_lot'))",1466
+"(46291.997, 46463.338]",46292.10394304129,46463.26142478734,2,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_frequency_2', 'sqft_lot15'))",1603
+"(46463.338, 46634.679]",46463.3500434747,46634.58554536849,2,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_frequency_5', 'yr_built'))",1685
+"(46634.679, 46806.02]",46634.81768792495,46806.01557603618,2,"(('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_lot15'))",1704
+"(46806.02, 46977.361]",46806.302711162716,46977.12905409932,2,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_5', 'yr_built'))",1743
+"(46977.361, 47148.702]",46977.39133956842,47148.51058098953,2,"(('bin_equal_frequency_2', 'bedrooms'), ('norm_log', 'sqft_living'))",2008
+"(47148.702, 47320.042]",47148.88601757493,47319.948054626584,2,"(('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_lot'))",1976
+"(47320.042, 47491.383]",47320.25400692411,47491.369025664404,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_10', 'sqft_living15'))",2050
+"(47491.383, 47662.724]",47491.38516943331,47662.68751423806,2,"(('bin_equal_frequency_2', 'sqft_lot15'), ('IQR', 'grade'))",2158
+"(47662.724, 47834.065]",47662.993725743145,47834.061125740525,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_frequency_5', 'yr_built'))",2299
+"(47834.065, 48005.406]",47834.16223750822,48005.23452065594,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('isolationForest', 'TABLE'))",2479
+"(48005.406, 48176.747]",48005.489481891505,48176.739925963804,2,"(('bin_equal_frequency_2', 'bathrooms'), ('norm_log', 'sqft_living'))",2379
+"(48176.747, 48348.088]",48176.77577629825,48347.98267560266,2,"(('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_5', 'sqft_lot15'))",2422
+"(48348.088, 48519.429]",48348.10662175063,48519.3975540027,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_above'))",2361
+"(48519.429, 48690.77]",48519.6042802874,48690.75712042907,1,"(('norm_log', 'sqft_living'),)",2748
+"(48690.77, 48862.111]",48690.90306300856,48861.9995950032,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_lot15'))",2721
+"(48862.111, 49033.451]",48862.11161544919,49033.42801665049,2,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'))",2747
+"(49033.451, 49204.792]",49033.893857883755,49204.65557135083,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_5', 'sqft_living15'))",2826
+"(49204.792, 49376.133]",49204.892962685786,49376.029421800515,2,"(('bin_equal_frequency_2', 'bedrooms'), ('zscore_clip_3', 'yr_built'))",2853
+"(49376.133, 49547.474]",49376.19285468309,49547.30480759108,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'))",2982
+"(49547.474, 49718.815]",49547.47461428493,49718.58925194561,2,"(('bin_equal_frequency_2', 'bedrooms'), ('IQR', 'sqft_living'))",3447
+"(49718.815, 49890.156]",49718.87837709012,49889.79616120644,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_living15'))",3347
+"(49890.156, 50061.497]",49890.19192864001,50061.44503412396,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_above'))",3340
+"(50061.497, 50232.838]",50061.67500955332,50232.77340491713,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_living15'))",3987
+"(50232.838, 50404.179]",50232.872070775484,50404.164198986255,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_above'))",3832
+"(50404.179, 50575.52]",50404.24197118357,50575.512795792194,1,"(('bin_equal_frequency_5', 'sqft_above'),)",4147
+"(50575.52, 50746.86]",50575.57203562092,50746.832331055775,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_2', 'sqft_lot15'))",4367
+"(50746.86, 50918.201]",50746.88592077419,50918.16069428253,1,"(('bin_equal_frequency_5', 'yr_built'),)",4645
+"(50918.201, 51089.542]",50918.238993117586,51089.451351929456,2,"(('bin_equal_frequency_2', 'bedrooms'), ('norm_log', 'sqft_basement'))",4569
+"(51089.542, 51260.883]",51089.55702732853,51260.7769404538,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'sqft_lot'))",4621
+"(51260.883, 51432.224]",51260.96175702475,51432.16722675564,2,"(('bin_equal_frequency_2', 'bathrooms'), ('isolationForest', 'TABLE'))",4914
+"(51432.224, 51603.565]",51432.236338731105,51603.52982343361,1,"(('bin_equal_frequency_2', 'sqft_lot15'),)",4869
+"(51603.565, 51774.906]",51603.67955742031,51774.88776329835,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'yr_built'))",4928
+"(51774.906, 51946.247]",51774.97949969303,51946.24634516798,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_2', 'grade'))",5422
+"(51946.247, 52117.588]",51946.26652639173,52117.58273574896,2,"(('bin_equal_frequency_2', 'bedrooms'), ('zscore_clip_3', 'sqft_living'))",5706
+"(52117.588, 52288.929]",52117.59593019576,52288.91380422935,2,"(('bin_equal_frequency_2', 'bedrooms'), ('norm_log', 'grade'))",6261
+"(52288.929, 52460.27]",52288.95104276389,52460.24719853746,1,"(('IQR', 'sqft_living'),)",6522
+"(52460.27, 52631.61]",52460.43292579148,52631.58037145808,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_5', 'sqft_lot'))",6158
+"(52631.61, 52802.951]",52631.6914856825,52802.86559532024,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_lot'))",6692
+"(52802.951, 52974.292]",52802.98521442991,52974.20175403077,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_2', 'sqft_basement'))",6405
+"(52974.292, 53145.633]",52974.293384840246,53145.6173703447,1,"(('isolationForest', 'TABLE'),)",6989
+"(53145.633, 53316.974]",53145.64656026475,53316.89549634233,1,"(('bin_equal_frequency_2', 'bedrooms'),)",7917
+"(53316.974, 53488.315]",53317.00032910908,53488.242798754945,2,"(('bin_equal_frequency_2', 'bathrooms'), ('IQR', 'sqft_lot15'))",7384
+"(53488.315, 53659.656]",53488.32384539582,53659.64938790444,1,"(('bin_equal_frequency_10', 'sqft_above'),)",6609
+"(53659.656, 53830.997]",53659.66817925125,53830.987978026445,1,"(('bin_equal_frequency_2', 'yr_built'),)",6486
+"(53830.997, 54002.338]",53831.081790464,54002.29657945223,1,"(('bin_equal_frequency_10', 'yr_built'),)",6180
+"(54002.338, 54173.679]",54002.34115857538,54173.66011559032,2,"(('bin_equal_frequency_2', 'bedrooms'), ('norm_log', 'bathrooms'))",5772
+"(54173.679, 54345.019]",54173.70663832529,54345.00811321288,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'yr_built'))",5773
+"(54345.019, 54516.36]",54345.124213965144,54516.35469864309,2,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_5', 'sqft_lot15'))",5579
+"(54516.36, 54687.701]",54516.39729890181,54687.63680578116,1,"(('IQR', 'sqft_lot'),)",5883
+"(54687.701, 54859.042]",54687.77141214628,54858.99036206305,1,"(('IQR', 'sqft_basement'),)",6146
+"(54859.042, 55030.383]",54859.15236229543,55030.351322810166,2,"(('bin_equal_frequency_2', 'bedrooms'), ('zscore_clip_3', 'sqft_above'))",5859
+"(55030.383, 55201.724]",55030.41616750555,55201.69414183672,2,"(('bin_equal_frequency_2', 'bedrooms'), ('bin_equal_width_10', 'bathrooms'))",5594
+"(55201.724, 55373.065]",55201.78587720543,55373.05093521252,2,"(('bin_equal_frequency_2', 'bathrooms'), ('IQR', 'bedrooms'))",5612
+"(55373.065, 55544.406]",55373.07796362415,55544.39125288278,2,"(('bin_equal_frequency_2', 'bathrooms'), ('zscore_filter_3', 'view'))",5965
+"(55544.406, 55715.747]",55544.42862052261,55715.678259364446,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_lot15'))",5871
+"(55715.747, 55887.088]",55715.75042975973,55887.054040384246,1,"(('IQR', 'bedrooms'),)",6893
+"(55887.088, 56058.429]",55887.158784555824,56058.394197553396,2,"(('bin_equal_frequency_2', 'condition'), ('IQR', 'bedrooms'))",6870
+"(56058.429, 56229.769]",56058.44194900803,56229.75923842937,2,"(('bin_equal_frequency_2', 'bathrooms'), ('winsorize', 'sqft_living'))",6665
+"(56229.769, 56401.11]",56229.77826457657,56400.962208636105,1,"(('zscore_clip_3', 'sqft_living'),)",7346
+"(56401.11, 56572.451]",56401.160268830135,56572.43681181129,1,"(('zscore_filter_3', 'view'),)",7910
+"(56572.451, 56743.792]",56572.53645361774,56743.76376817562,1,"(('bin_equal_frequency_5', 'sqft_lot15'),)",8047
+"(56743.792, 56915.133]",56743.82969442522,56915.12727264594,1,"(('zscore_filter_3', 'sqft_living'),)",8084
+"(56915.133, 57086.474]",56915.17859940417,57086.473732294515,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_5', 'sqft_living15'))",8394
+"(57086.474, 57257.815]",57086.480608096346,57257.78134960774,1,"(('bin_equal_frequency_2', 'sqft_living'),)",7968
+"(57257.815, 57429.156]",57257.828674174845,57429.1119519081,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'sqft_living'))",7730
+"(57429.156, 57600.497]",57429.16643950716,57600.46581072477,1,"(('bin_equal_frequency_2', 'sqft_above'),)",8419
+"(57600.497, 57771.838]",57600.511511352845,57771.83650980145,2,"(('bin_equal_frequency_2', 'condition'), ('zscore_clip_3', 'yr_built'))",7783
+"(57771.838, 57943.178]",57771.8432821054,57943.15472440887,1,"(('zscore_clip_3', 'bedrooms'),)",8804
+"(57943.178, 58114.519]",57943.21250282321,58114.51198614016,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_10', 'sqft_living15'))",9399
+"(58114.519, 58285.86]",58114.589536141604,58285.82594094053,1,"(('bin_equal_frequency_2', 'sqft_living15'),)",9796
+"(58285.86, 58457.201]",58285.87167970091,58457.18354549259,2,"(('bin_equal_frequency_2', 'bathrooms'), ('winsorize', 'bedrooms'))",9582
+"(58457.201, 58628.542]",58457.20284706261,58628.540504890494,1,"(('bin_equal_frequency_5', 'sqft_living15'),)",12435
+"(58628.542, 58799.883]",58628.548450924456,58799.87635214068,1,"(('bin_equal_width_2', 'bedrooms'),)",11091
+"(58799.883, 58971.224]",58799.912615490146,58971.21235417109,1,"(('bin_equal_frequency_10', 'sqft_living15'),)",8918
+"(58971.224, 59142.565]",58971.26481908746,59142.537919685245,1,"(('norm_log', 'sqft_above'),)",8523
+"(59142.565, 59313.906]",59142.609761383384,59313.877856034786,1,"(('bin_equal_frequency_2', 'sqft_lot'),)",8400
+"(59313.906, 59485.247]",59313.94391014654,59485.20398395881,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_frequency_10', 'sqft_lot'))",8736
+"(59485.247, 59656.587]",59485.27832370438,59656.581003202125,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'sqft_above'))",7636
+"(59656.587, 59827.928]",59656.612449596636,59827.927163772285,1,"(('bin_equal_frequency_2', 'bathrooms'),)",9360
+"(59827.928, 59999.269]",59827.97066205717,59999.25076021999,1,"(('zscore_filter_3', 'sqft_above'),)",9640
+"(59999.269, 60170.61]",59999.316125070676,60170.58003908396,1,"(('bin_equal_width_5', 'sqft_basement'),)",9527
+"(60170.61, 60341.951]",60170.703301139176,60341.93587018363,1,"(('zscore_clip_3', 'grade'),)",9193
+"(60341.951, 60513.292]",60341.960697858594,60513.23900849465,1,"(('bin_equal_width_2', 'sqft_living15'),)",8729
+"(60513.292, 60684.633]",60513.294688860886,60684.61942743603,1,"(('bin_equal_frequency_5', 'sqft_lot'),)",10142
+"(60684.633, 60855.974]",60684.651828151196,60855.91034255829,1,"(('bin_equal_width_2', 'sqft_basement'),)",10228
+"(60855.974, 61027.315]",60855.97923049703,61027.25812432077,1,"(('bin_equal_frequency_10', 'sqft_lot'),)",10276
+"(61027.315, 61198.656]",61027.36887225695,61198.61842652317,1,"(('bin_equal_frequency_2', 'grade'),)",10105
+"(61198.656, 61369.997]",61198.667194605805,61369.9772280734,1,"(('bin_equal_frequency_2', 'condition'),)",9037
+"(61369.997, 61541.337]",61370.05295775365,61541.2620768277,1,"(('bin_equal_width_10', 'sqft_living'),)",8439
+"(61541.337, 61712.678]",61541.41792904213,61712.67526852898,0,(),9346
+"(61712.678, 61884.019]",61712.74575175531,61883.97284989152,1,"(('bin_equal_width_10', 'sqft_lot'),)",5622
+"(61884.019, 62055.36]",61884.072862070985,62055.347593064944,1,"(('bin_equal_width_2', 'sqft_lot'),)",4328
+"(62055.36, 62226.701]",62055.38861452788,62226.68061751872,1,"(('bin_equal_width_2', 'bathrooms'),)",4239
+"(62226.701, 62398.042]",62226.898379303515,62397.89274169528,1,"(('zscore_clip_3', 'sqft_lot'),)",2937
+"(62398.042, 62569.383]",62398.11361923255,62569.37716361415,2,"(('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_10', 'sqft_living'))",2204
+"(62569.383, 62740.724]",62569.39455180615,62740.68357613066,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_10', 'yr_built'))",1765
+"(62740.724, 62912.065]",62740.72613020241,62911.06542821694,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_10', 'bathrooms'))",1874
+"(62912.065, 63083.406]",62912.157675012015,63082.4334682161,1,"(('bin_equal_width_10', 'yr_built'),)",1605
+"(63083.406, 63254.746]",63083.737070334144,63254.491209455766,1,"(('bin_equal_width_10', 'bathrooms'),)",1531
+"(63254.746, 63426.087]",63255.005510467105,63426.00799052417,2,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_10', 'sqft_above'))",1163
+"(63426.087, 63597.428]",63426.16681137122,63597.41515252646,2,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_10', 'sqft_living'))",1054
+"(63597.428, 63768.769]",63597.552931751125,63768.75857466366,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_width_2', 'yr_built'))",921
+"(63768.769, 63940.11]",63768.79043519404,63939.88516785973,2,"(('bin_equal_frequency_2', 'sqft_lot'), ('zscore_filter_3', 'yr_renovated'))",932
+"(63940.11, 64111.451]",63940.42151259072,64111.27556242049,2,"(('bin_equal_frequency_5', 'sqft_lot15'), ('bin_equal_width_5', 'grade'))",954
+"(64111.451, 64282.792]",64111.48062119633,64282.65343314991,2,"(('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_5', 'grade'))",883
+"(64282.792, 64454.133]",64282.85443473613,64453.899590495974,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'floors'))",926
+"(64454.133, 64625.474]",64454.555912641576,64625.46904623415,2,"(('bin_equal_width_2', 'floors'), ('IQR', 'sqft_above'))",801
+"(64625.474, 64796.815]",64625.707638923195,64796.76859294437,2,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_2', 'yr_built'))",860
+"(64796.815, 64968.155]",64796.90256914613,64968.025428434834,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'yr_built'))",884
+"(64968.155, 65139.496]",64968.5710224472,65139.35129533056,2,"(('bin_equal_width_2', 'floors'), ('IQR', 'bathrooms'))",830
+"(65139.496, 65310.837]",65139.65058428736,65310.39808328258,2,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_5', 'sqft_basement'))",864
+"(65310.837, 65482.178]",65311.04209794104,65482.13299714029,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('zscore_filter_3', 'yr_renovated'))",907
+"(65482.178, 65653.519]",65482.220889304765,65653.50663878582,2,"(('bin_equal_frequency_2', 'grade'), ('zscore_filter_3', 'yr_renovated'))",1081
+"(65653.519, 65824.86]",65653.54606829584,65824.83600451308,2,"(('bin_equal_frequency_5', 'sqft_lot'), ('zscore_filter_3', 'yr_renovated'))",936
+"(65824.86, 65996.201]",65824.87463334575,65995.87282801513,2,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_width_2', 'floors'))",888
+"(65996.201, 66167.542]",65996.24726152048,66167.36417215795,2,"(('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'))",930
+"(66167.542, 66338.883]",66167.59302424826,66338.19206574524,2,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_5', 'sqft_basement'))",985
+"(66338.883, 66510.224]",66339.20782510098,66509.94247340225,2,"(('bin_equal_frequency_2', 'bathrooms'), ('zscore_filter_3', 'yr_renovated'))",849
+"(66510.224, 66681.565]",66510.2387685366,66681.06109301187,2,"(('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_width_2', 'floors'))",782
+"(66681.565, 66852.905]",66681.61895285,66852.74546881951,2,"(('bin_equal_frequency_2', 'condition'), ('zscore_filter_3', 'yr_renovated'))",962
+"(66852.905, 67024.246]",66853.15831403283,67023.99315883883,1,"(('zscore_filter_3', 'yr_renovated'),)",1055
+"(67024.246, 67195.587]",67024.98728359677,67194.56689421274,2,"(('bin_equal_width_2', 'floors'), ('zscore_clip_3', 'bathrooms'))",957
+"(67195.587, 67366.928]",67196.23810540326,67366.68438577838,2,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_width_2', 'yr_built'))",795
+"(67366.928, 67538.269]",67367.067092799,67538.08456565253,2,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_5', 'grade'))",740
+"(67538.269, 67709.61]",67538.92938561179,67709.56986741733,2,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_5', 'grade'))",814
+"(67709.61, 67880.951]",67709.78626284655,67880.52620936371,2,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'sqft_living15'))",768
+"(67880.951, 68052.292]",67881.04867620103,68052.13601551478,2,"(('bin_equal_width_2', 'floors'), ('norm_log', 'sqft_basement'))",627
+"(68052.292, 68223.633]",68052.34035925195,68223.03042597917,2,"(('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_5', 'sqft_basement'))",551
+"(68223.633, 68394.974]",68223.88033307262,68394.66079159942,2,"(('bin_equal_width_2', 'bathrooms'), ('bin_equal_width_2', 'floors'))",601
+"(68394.974, 68566.314]",68396.69663110934,68566.30206087104,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'yr_built'))",600
+"(68566.314, 68737.655]",68567.08142688719,68737.32927315764,2,"(('bin_equal_width_2', 'bathrooms'), ('bin_equal_width_2', 'yr_built'))",624
+"(68737.655, 68908.996]",68737.67693241406,68908.81478659902,2,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'bathrooms'))",519
+"(68908.996, 69080.337]",68909.67206621915,69079.85026417114,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'floors'))",631
+"(69080.337, 69251.678]",69081.12530332804,69251.11182168126,1,"(('bin_equal_width_2', 'yr_built'),)",913
+"(69251.678, 69423.019]",69251.78711209726,69422.79137161036,2,"(('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_width_5', 'grade'))",768
+"(69423.019, 69594.36]",69423.55895904638,69594.08866231889,1,"(('bin_equal_width_2', 'floors'),)",782
+"(69594.36, 69765.701]",69594.62111513596,69765.46873085201,2,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_5', 'grade'))",528
+"(69765.701, 69937.042]",69765.76958895207,69935.80860864418,2,"(('bin_equal_frequency_10', 'sqft_lot'), ('bin_equal_width_5', 'grade'))",499
+"(69937.042, 70108.383]",69937.24609225709,70107.22476335149,2,"(('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_width_5', 'grade'))",337
+"(70108.383, 70279.723]",70108.60228929389,70279.14035881683,2,"(('bin_equal_width_5', 'grade'), ('zscore_clip_3', 'view'))",226
+"(70279.723, 70451.064]",70279.75739409588,70450.82966380683,2,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_width_2', 'floors'))",418
+"(70451.064, 70622.405]",70451.2340792343,70619.5554742245,2,"(('bin_equal_width_5', 'grade'), ('norm_log', 'floors'))",406
+"(70622.405, 70793.746]",70625.18237109855,70792.81248111976,2,"(('bin_equal_width_5', 'grade'), ('bin_equal_width_5', 'yr_built'))",260
+"(70793.746, 70965.087]",70793.84295028634,70964.98528139666,2,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_5', 'grade'))",315
+"(70965.087, 71136.428]",70965.15506503452,71135.93792370614,2,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_10', 'yr_built'))",339
+"(71136.428, 71307.769]",71136.57556303311,71306.78134514019,1,"(('bin_equal_width_5', 'grade'),)",500
+"(71307.769, 71479.11]",71308.83761386108,71478.99037813675,2,"(('bin_equal_width_2', 'sqft_above'), ('bin_equal_width_5', 'grade'))",492
+"(71479.11, 71650.451]",71479.28624324035,71647.28397122677,2,"(('bin_equal_width_5', 'grade'), ('bin_equal_width_5', 'sqft_living'))",263
+"(71650.451, 71821.792]",71650.6433109073,71820.85312891752,2,"(('bin_equal_width_2', 'sqft_lot'), ('bin_equal_width_5', 'grade'))",182
+"(71821.792, 71993.133]",71823.9475902943,71993.13157815207,2,"(('bin_equal_width_2', 'view'), ('bin_equal_width_5', 'grade'))",203
+"(71993.133, 72164.473]",71993.14348110463,72162.9423339903,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",105
+"(72164.473, 72335.814]",72169.91395454295,72332.59007191937,2,"(('IQR', 'sqft_above'), ('bin_equal_width_5', 'grade'))",104
+"(72335.814, 72507.155]",72336.35658492241,72496.55831938796,2,"(('bin_equal_width_2', 'bathrooms'), ('bin_equal_width_5', 'grade'))",95
+"(72507.155, 72678.496]",72510.52543990873,72675.8885244152,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_5', 'grade'), ('bin_equal_width_10', 'bathrooms'))",41
+"(72678.496, 72849.837]",72689.84730574023,72844.76482877322,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'sqft_basement'))",33
+"(72849.837, 73021.178]",72861.87377026211,73020.92476446088,2,"(('bin_equal_width_5', 'grade'), ('bin_equal_width_10', 'bathrooms'))",43
+"(73021.178, 73192.519]",73035.25289526151,73172.87284249277,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",29
+"(73192.519, 73363.86]",73198.47042281844,73345.92943633371,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_width_2', 'floors'), ('zscore_filter_3', 'yr_renovated'))",23
+"(73363.86, 73535.201]",73369.99260510132,73520.96198480576,3,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",18
+"(73535.201, 73706.542]",73558.43243096583,73701.9305660557,3,"(('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_width_2', 'floors'), ('zscore_filter_3', 'yr_renovated'))",15
+"(73706.542, 73877.882]",73707.82269374665,73876.42918641737,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",25
+"(73877.882, 74049.223]",73879.16991645284,74036.05948857404,3,"(('bin_equal_width_2', 'bedrooms'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",11
+"(74049.223, 74220.564]",74066.7553937789,74198.23919104971,3,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",12
+"(74220.564, 74391.905]",74221.08879733272,74387.51718791563,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'floors'), ('zscore_filter_3', 'yr_renovated'))",20
+"(74391.905, 74563.246]",74392.84325322136,74555.80563418753,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",22
+"(74563.246, 74734.587]",74567.02750962263,74728.2357275933,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_2', 'sqft_living'), ('bin_equal_width_5', 'grade'))",18
+"(74734.587, 74905.928]",74735.53734322183,74903.92896105908,3,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",27
+"(74905.928, 75077.269]",74907.30410923436,75073.69411784795,2,"(('bin_equal_width_2', 'floors'), ('zscore_filter_3', 'yr_renovated'))",52
+"(75077.269, 75248.61]",75082.02154764067,75247.80101070157,3,"(('bin_equal_frequency_5', 'sqft_lot'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",22
+"(75248.61, 75419.951]",75249.7896687095,75413.85092790797,3,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_5', 'grade'))",12
+"(75419.951, 75591.292]",75469.360328082,75588.94737982377,3,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_2', 'sqft_living'), ('bin_equal_width_5', 'grade'))",7
+"(75591.292, 75762.632]",75624.36481576785,75759.1624917686,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('winsorize', 'sqft_above'))",16
+"(75762.632, 75933.973]",75779.27764460421,75918.15120749362,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",19
+"(75933.973, 76105.314]",75989.10019516014,76101.58785310388,3,"(('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",15
+"(76105.314, 76276.655]",76107.29534895346,76268.08240855485,3,"(('bin_equal_frequency_2', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",20
+"(76276.655, 76447.996]",76281.28310456069,76447.12829906575,3,"(('bin_equal_frequency_5', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",19
+"(76447.996, 76619.337]",76450.83949194348,76616.97264047852,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",23
+"(76619.337, 76790.678]",76619.98872792907,76770.85707032774,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'sqft_above'))",26
+"(76790.678, 76962.019]",76795.91258380376,76954.92793018976,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",15
+"(76962.019, 77133.36]",76969.64414786233,77124.33140477352,3,"(('bin_equal_frequency_2', 'bathrooms'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",13
+"(77133.36, 77304.701]",77139.84507430182,77299.80754384957,2,"(('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",51
+"(77304.701, 77476.041]",77311.58970242203,77464.61946036282,2,"(('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",45
+"(77476.041, 77647.382]",77478.93730651529,77644.80209224485,3,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_5', 'grade'), ('bin_equal_width_5', 'sqft_basement'))",31
+"(77647.382, 77818.723]",77650.25213284197,77781.95377768844,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",16
+"(77818.723, 77990.064]",77821.40132793412,77974.27378416061,3,"(('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_2', 'sqft_above'), ('bin_equal_width_5', 'grade'))",10
+"(77990.064, 78161.405]",78000.4169079496,78159.45507262368,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_5', 'grade'), ('bin_equal_width_5', 'sqft_basement'))",12
+"(78161.405, 78332.746]",78166.76901155291,78321.21766832843,3,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_2', 'sqft_above'), ('bin_equal_width_5', 'grade'))",13
+"(78332.746, 78504.087]",78350.33315817371,78500.69788576709,2,"(('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",38
+"(78504.087, 78675.428]",78505.194086832,78649.43568883708,3,"(('bin_equal_frequency_10', 'sqft_living15'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",11
+"(78675.428, 78846.769]",78675.49660674669,78839.59892636072,3,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_frequency_5', 'sqft_living'), ('bin_equal_width_5', 'grade'))",13
+"(78846.769, 79018.11]",78852.75432738103,79012.68156690989,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_width_5', 'grade'))",5
+"(79018.11, 79189.45]",79033.31667083688,79178.21352024935,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('zscore_clip_3', 'bedrooms'))",7
+"(79189.45, 79360.791]",79237.56362203881,79348.16042411141,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_width_5', 'grade'))",8
+"(79360.791, 79532.132]",79382.54485644586,79520.7904942222,3,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_width_5', 'grade'))",6
+"(79532.132, 79703.473]",79575.67142925411,79683.33040797338,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'grade'))",6
+"(79703.473, 79874.814]",79729.93395561259,79844.62166218832,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'grade'), ('bin_equal_width_10', 'sqft_lot15'))",4
+"(79874.814, 80046.155]",79915.91328479722,80039.29175503552,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'sqft_living15'), ('bin_equal_width_2', 'yr_built'))",7
+"(80046.155, 80217.496]",80066.72174670547,80149.71939225122,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_width_5', 'grade'))",7
+"(80217.496, 80388.837]",80232.59646682814,80356.36119090766,2,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'grade'))",28
+"(80388.837, 80560.178]",80399.14016767032,80553.98298523575,3,"(('bin_equal_frequency_2', 'sqft_above'), ('bin_equal_width_5', 'grade'), ('norm_log', 'sqft_living'))",12
+"(80560.178, 80731.519]",80563.64115564991,80713.4574833276,3,"(('bin_equal_frequency_2', 'condition'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",12
+"(80731.519, 80902.86]",80754.7946437368,80817.28132282675,3,"(('bin_equal_width_2', 'bathrooms'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",5
+"(80902.86, 81074.2]",80929.3759241309,81073.64580640628,3,"(('bin_equal_frequency_2', 'grade'), ('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",3
+"(81074.2, 81245.541]",81076.4243994829,81214.6593946775,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'sqft_basement'))",5
+"(81245.541, 81416.882]",81269.2639484629,81328.67899179144,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_width_2', 'yr_built'))",5
+"(81416.882, 81588.223]",81422.36583593674,81578.9706412775,3,"(('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_5', 'grade'), ('norm_log', 'sqft_living'))",3
+"(81588.223, 81759.564]",81589.52207211684,81748.85620695737,3,"(('bin_equal_frequency_2', 'sqft_living'), ('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_5', 'grade'))",8
+"(81759.564, 81930.905]",81829.77570320375,81922.24237797968,3,"(('bin_equal_frequency_10', 'sqft_above'), ('bin_equal_width_2', 'sqft_basement'), ('bin_equal_width_5', 'grade'))",5
+"(81930.905, 82102.246]",81945.98083203193,82101.14408361039,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'sqft_lot15'), ('bin_equal_width_2', 'yr_built'))",10
+"(82102.246, 82273.587]",82104.33087599103,82266.68916187214,2,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'))",25
+"(82273.587, 82444.928]",82297.09889592556,82378.60805584001,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'bathrooms'))",4
+"(82444.928, 82616.269]",82455.36705950752,82493.50606146757,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_10', 'sqft_basement'))",2
+"(82616.269, 82787.609]",82633.75981803797,82784.58155377326,3,"(('bin_equal_frequency_5', 'sqft_above'), ('bin_equal_width_5', 'grade'), ('zscore_clip_3', 'sqft_living'))",3
+"(82958.95, 83130.291]",82976.99367086915,82976.99367086915,3,"(('bin_equal_width_2', 'floors'), ('norm_log', 'yr_built'), ('bin_equal_width_2', 'yr_built'))",1
+"(83130.291, 83301.632]",83136.34521576948,83136.34521576948,3,"(('bin_equal_width_2', 'sqft_basement'), ('bin_equal_width_5', 'grade'), ('zscore_clip_3', 'sqft_above'))",1
+"(86214.428, 86385.768]",86346.31633815914,86346.31633815914,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",1
+"(86728.45, 86899.791]",86844.31749507703,86844.31749507703,3,"(('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'), ('zscore_filter_3', 'yr_renovated'))",1
+"(91183.314, 91354.655]",91222.93369303609,91222.93369303609,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('zscore_filter_3', 'yr_renovated'))",1
+"(92040.018, 92211.359]",92140.09174453077,92140.09174453077,3,"(('bin_equal_width_2', 'floors'), ('bin_equal_width_2', 'yr_built'), ('bin_equal_width_5', 'grade'))",1
