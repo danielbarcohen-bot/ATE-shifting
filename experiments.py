@@ -756,7 +756,8 @@ EXPERIMENTS = {
         "sequence_length": 2,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
     "EXP27_lal": {
         "df": df_lalonde_loaded,

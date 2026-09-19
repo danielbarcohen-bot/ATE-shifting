@@ -447,7 +447,7 @@ def prepare_inference_matrix(df: pd.DataFrame, common_causes: List[str]) -> pd.D
     if len(categorical_causes) == 0:
         return df[common_causes]
 
-    X_encoded = pd.get_dummies(df[common_causes], columns=categorical_causes, drop_first=True, dtype=int)
+    X_encoded = pd.get_dummies(df[common_causes], columns=categorical_causes, drop_first=False, dtype=int)
     return X_encoded
 
 

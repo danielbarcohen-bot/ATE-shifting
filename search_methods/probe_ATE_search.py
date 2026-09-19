@@ -11,7 +11,7 @@ from utils import apply_data_preparations_seq, calculate_ate_linear_regression_l
 
 class ProbManager:
     def __init__(self,
-                 operations, #not fill just ops, format [(op,col)]
+                 operations,  # not fill just ops, format [(op,col)]
                  columns,
                  op_probs=None,
                  F_elements=None,
@@ -25,11 +25,11 @@ class ProbManager:
         self.col_types = col_types or {}
         self.legal_ops_by_type = legal_ops_by_type or {}
         self.legal_fill_by_type = legal_fill_by_type or {}
-        fill_ops = get_fill_options(fill_columns,col_types,self.legal_fill_by_type)
-        operations = [(op,col) for op in operations for col in columns if op in legal_ops_by_type[col_types[col]]]
+        fill_ops = get_fill_options(fill_columns, col_types, self.legal_fill_by_type)
+        operations = [(op, col) for op in operations for col in columns if op in legal_ops_by_type[col_types[col]]]
         operations += [(op, 'TABLE') for op in whole_df_ops]
         if F_elements is not None:
-            operations = list(filter(lambda op_col: op_col[0] + "#" + op_col[1] in F_elements ,operations))
+            operations = list(filter(lambda op_col: op_col[0] + "#" + op_col[1] in F_elements, operations))
         self.fill_columns = fill_columns or []
         self._initialize_weights(
             operations,
@@ -42,8 +42,8 @@ class ProbManager:
         return sum(self.costs[(func_name, col)] for func_name, col in sequence)
 
     def _initialize_weights(self,
-                            operations: List[Tuple[str,str]],
-                            fill_ops: List[Tuple[str,str]],
+                            operations: List[Tuple[str, str]],
+                            fill_ops: List[Tuple[str, str]],
                             columns: List[str],
                             op_probs: Optional[Dict[str, float]] = None
                             ) -> None:
@@ -63,7 +63,7 @@ class ProbManager:
                 # Each element of this operation gets equal share of op's probability
                 prob = op_probs[op] / num_op_elements
 
-            self.probs[(op,col)] = prob
+            self.probs[(op, col)] = prob
 
         # Step 3: Normalize so all elements (fills included) sum to 1, then derive costs
         total = sum(self.probs.values())
@@ -71,12 +71,9 @@ class ProbManager:
         for f_elem in self.probs:
             self.costs[f_elem] = self._calculate_cost(f_elem)
 
-
     def _parse_element(self, f_elem: str) -> tuple:
         op, col = f_elem.split("#", 1)  # split on first # only
         return op, col
-
-
 
     def _calculate_cost(self, rule_name: str):
         return int(math.ceil(-math.log2(self.probs[rule_name])))
@@ -84,32 +81,28 @@ class ProbManager:
     def get_sequence_probability(self, sequence):
         probability = 1
         for func_name, col in sequence:
-            probability *= self.probs[(func_name,col)]
+            probability *= self.probs[(func_name, col)]
         return probability
 
     def update_weights(self, probe_sequence, alpha=0.2):
         rule_counts = {}
         for op, col in probe_sequence:
-            rule_name = f"{op}#{col}"
-            rule_counts[rule_name] = rule_counts.get(rule_name, 0) + 1
+            rule_counts[(op, col)] = rule_counts.get((op, col), 0) + 1
 
-        # Create empirical distribution
         empirical = {r: 0.0 for r in self.probs.keys()}
         total = sum(rule_counts.values())
-        for rule_name, count in rule_counts.items():
-            empirical[rule_name] = count / total
+        for rule_key, count in rule_counts.items():
+            empirical[rule_key] = count / total
 
-        # Interpolate and renormalize
         new_probs = {}
-        for rule_name in self.probs.keys():
-            new_probs[rule_name] = (1.0 - alpha) * self.probs[rule_name] + alpha * empirical.get(rule_name, 0.0)
+        for rule_key in self.probs.keys():
+            new_probs[rule_key] = (1.0 - alpha) * self.probs[rule_key] + alpha * empirical.get(rule_key, 0.0)
 
-        # Renormalize to ensure sum = 1
         total = sum(new_probs.values())
         self.probs = {k: v / total for k, v in new_probs.items()}
 
-        for rule_name in self.probs.keys():
-            self.costs[rule_name] = self._calculate_cost(rule_name)
+        for rule_key in self.probs.keys():
+            self.costs[rule_key] = self._calculate_cost(rule_key)
 
 
 class DuplicateDetector(ABC):
@@ -224,8 +217,6 @@ class ProbeATESearch:
         else:
             print(f"START ATE IS: {calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)}")
 
-
-
         bank, init_distance, best_init = self._init_bank(df_, common_causes, target_ate, prob_manager)
         print(bank)
         print(init_distance)
@@ -274,9 +265,9 @@ class ProbeATESearch:
                     curr_df = apply_data_preparations_seq(df_, new_seq, transformations_dict)
 
                     if curr_df.isna().any().any():
-                        if not self._duplicate_detector.add_if_new(curr_df, common_causes):
-                            continue
-                        bank[cost].append(new_seq)
+                        # if not self._duplicate_detector.add_if_new(curr_df, common_causes):
+                        #     continue
+                        # bank[cost].append(new_seq)
                         continue
 
                     new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
@@ -290,7 +281,8 @@ class ProbeATESearch:
                     # Found solution within tolerance
                     if current_error < epsilon:
                         self._print_solution(new_seq,
-                                             calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes) if not self.fill_columns else 'N/A',
+                                             calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome',
+                                                                                   common_causes) if not self.fill_columns else 'N/A',
                                              new_ate, prob_manager,
                                              curr_df, common_causes, checked, start_time,
                                              distances_at_time_from_target)
@@ -333,7 +325,8 @@ class ProbeATESearch:
             baseline_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
             return {0: [()]}, abs(baseline_ate - target_ate), ()  # init with the empty sequence
 
-        fill_methods = [(seq, prob_manager.get_sequence_cost(seq)) for seq in get_fill_combinations(df_, self.col_types, self.fill_by_type)]
+        fill_methods = [(seq, prob_manager.get_sequence_cost(seq)) for seq in
+                        get_fill_combinations(df_, self.col_types, self.fill_by_type)]
         fill_methods.sort(key=lambda x: x[1])
         print(f"{len(fill_methods)} options to fill missing")
         bank = {}

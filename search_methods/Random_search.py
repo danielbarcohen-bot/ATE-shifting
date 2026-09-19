@@ -16,19 +16,19 @@ class RandomSearch:
                whole_table_ops: List[str],
                sequence_length: int,
                legal_ops_by_type,
-               sequence_to_extend = None
+               sequence_to_extend=None
                ):
         col_types = df.attrs.get('col_types', None)
         actions = [
-            (col, transformation)
-            for col in common_causes
-            for transformation in transformations_dict.keys()
-            if transformation in legal_ops_by_type[col_types[col]]
-        ] + [('TABLE',op) for op in whole_table_ops]
+                      (col, transformation)
+                      for col in common_causes
+                      for transformation in transformations_dict.keys()
+                      if transformation in legal_ops_by_type[col_types[col]]
+                  ] + [('TABLE', op) for op in whole_table_ops]
         random.shuffle(actions)
         sequence = () if sequence_to_extend is None else sequence_to_extend
         seen_transformation_classes_per_col = defaultdict(list)
-        for (op,col) in sequence:
+        for (op, col) in sequence:
             if col == 'TABLE' or op.startswith('fill_'):
                 continue
             trans_class = op.split("_")[0]
@@ -42,10 +42,9 @@ class RandomSearch:
             found_action = False
             while not found_action and len(actions) > 0:
                 col, transformation = actions.pop()
-                if transformation == "isolationForest" and any(f_n == "isolationForest" for f_n, c in sequence):
-                    continue
-                if transformation == "drop_duplicates" and any(f_n == "drop_duplicates" for f_n, c in sequence):
-                    continue
+                for whole_df_op in whole_table_ops:
+                    if any(f_n == whole_df_op for f_n, c in sequence):
+                        continue
 
                 trans_class = transformation.split("_")[0]
                 if trans_class not in seen_transformation_classes_per_col[col]:
@@ -55,5 +54,3 @@ class RandomSearch:
         curr_df = apply_data_preparations_seq(df, sequence, transformations_dict)
         new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
         return sequence, new_ate
-
-

@@ -208,7 +208,7 @@ class OperationSpaceExperiment:
         return result
 
 
-def run_F_experiment(search_algorithm: ATESearch, df: pd.DataFrame,
+def run_F_experiment(search_algorithm, df: pd.DataFrame,
                      common_causes: List[str], target_ate: float, epsilon: float, transformations_dict: Dict,
                      solution_sequence: Tuple,
                      whole_df_ops: List[str] = None, i: int = 15, seed: int = None) -> Dict:

@@ -23,7 +23,8 @@ if __name__ == "__main__":
             target_ate=config["target_ate"],
             epsilon=config["epsilon"],
             sequence_length=config["sequence_length"],
-            legal_ops_by_type=config["legal_ops_by_type"]
+            legal_ops_by_type=config["legal_ops_by_type"],
+            whole_df_ops=config['whole_df_ops']
         )
         experiment.run_random()
     if args.mode in ["probe_probs_no_restart", "probe_probs_with_restart", "greedy", "brute_prob", "probe_brute", "probe_probs_no_restart_no_hash", "probe_probs_with_restart_no_hash"]:
@@ -35,7 +36,9 @@ if __name__ == "__main__":
             epsilon=config["epsilon"],
             max_sequence_length=config["max_length"],
             op_probs=config["op_probs"],
-            whole_df_ops=config.get("whole_df_ops", None)
+            whole_df_ops=config.get("whole_df_ops", None),
+            legal_ops_by_type=config.get("legal_ops_by_type", None),
+            fill_by_type=config.get("legal_fill_by_type", None)
         )
         if args.mode == "probe_probs_no_restart":
             experiment.run_probe_no_restart()
@@ -80,7 +83,8 @@ if __name__ == "__main__":
             epsilon=config["epsilon"],
             max_length=config["max_length"],
             whole_df_ops=config.get("whole_df_ops", None),
-            legal_ops_by_type=config.get("legal_ops_by_type", None)
+            legal_ops_by_type=config.get("legal_ops_by_type", None),
+            fill_by_type=config.get("legal_fill_by_type", None)
         )
         # Call the correct run method
         if args.mode == "brute":
