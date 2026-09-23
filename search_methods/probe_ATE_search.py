@@ -264,11 +264,12 @@ class ProbeATESearch:
                     checked += 1
                     curr_df = apply_data_preparations_seq(df_, new_seq, transformations_dict)
 
-                    if curr_df.isna().any().any():
-                        # if not self._duplicate_detector.add_if_new(curr_df, common_causes):
-                        #     continue
-                        # bank[cost].append(new_seq)
-                        continue
+                    # Doesn't happen, shame to waste time on even checking an assert.
+                    # if curr_df.isna().any().any():
+                    #     # if not self._duplicate_detector.add_if_new(curr_df, common_causes):
+                    #     #     continue
+                    #     # bank[cost].append(new_seq)
+                    #     continue
 
                     new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
                     current_error = abs(new_ate - target_ate)
