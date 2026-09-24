@@ -218,9 +218,6 @@ class ProbeATESearch:
             print(f"START ATE IS: {calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)}")
 
         bank, init_distance, best_init = self._init_bank(df_, common_causes, target_ate, prob_manager)
-        print(bank)
-        print(init_distance)
-        print(best_init)
         if init_distance < epsilon:
             print(f"FOUND SOLUTION WITH NO NEED OF DATA PREP\nsequence is: {best_init}", flush=True)
             return best_init
@@ -379,5 +376,4 @@ sequence is: {solution_seq}
         print(f"checked:\n{checked}", flush=True)
 
     def moves_under_cost(self, cost: int, prob_manager: 'ProbManager') -> List[str]:
-        return [move for move in prob_manager.probs.keys()
-                if prob_manager.costs[move] <= cost]
+        return [f for (f,fcost) in prob_manager.costs.items() if fcost <= cost and not f[0].startswith('fill_')]
