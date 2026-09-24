@@ -85,9 +85,8 @@ def add_random_walks(df: pd.DataFrame,
                      seq_ates_writer,
                      seen_sequences: list,
                      legal_ops_by_type, num_iterations=2000):
-    start_time = time.time()
+
     # 1. Only the sequences are kept in memory (for dedup); new (sequence, ATE) pairs go to seq_ates_writer
-    # fill_len = len(list(filter(lambda y: y[0].startswith('fill'), next(filter(lambda x: x[0][0].startswith('fill_'), seen_sequences)))))
     min_gen_len = max(len(list(filter(lambda x: not x[0].startswith('fill_') , seq))) for seq in seen_sequences)
 
     initial_count = len(seen_sequences)
@@ -96,9 +95,7 @@ def add_random_walks(df: pd.DataFrame,
 
     # 2. Loop through requested iterations
     for i in range(num_iterations):
-        if time.time() - start_time > 1800:  # max 30 minutes of generating
-            break
-        sequence_length = np.random.randint(min_gen_len, 25)
+        sequence_length = np.random.randint(min_gen_len, 25 if min_gen_len < 25 else min_gen_len + 1)
         to_extend = random.choice(seen_sequences)
         if len(to_extend) == sequence_length:
             sequence_length += 1
