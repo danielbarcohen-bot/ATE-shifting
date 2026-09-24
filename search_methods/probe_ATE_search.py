@@ -169,7 +169,8 @@ class EqualityDuplicateDetector(DuplicateDetector):
 
 
 class ProbeATESearch:
-    def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True):
+    def __init__(self, use_restart=True, op_probs=None, is_brute=False, use_hash=True,
+                 seq_ates_writer=None):
         self.use_restart = use_restart
         self.op_probs = op_probs
         self.is_brute = is_brute
@@ -179,6 +180,7 @@ class ProbeATESearch:
         self.whole_df_ops = None
         self.fill_by_type = None
         self.fill_columns = None
+        self.seq_ates_writer = seq_ates_writer
 
     def _create_duplicate_detector(self, is_brute: bool, use_hash: bool) -> DuplicateDetector:
         """Factory method to create the appropriate duplicate detector."""
@@ -271,6 +273,9 @@ class ProbeATESearch:
 
                     new_ate = calculate_ate_linear_regression_lstsq(curr_df, 'treatment', 'outcome', common_causes)
                     current_error = abs(new_ate - target_ate)
+
+                    if self.seq_ates_writer is not None:
+                        self.seq_ates_writer.writerow((new_seq, new_ate))
 
                     # Track progress
                     if current_error < smallest_distance_from_target:
