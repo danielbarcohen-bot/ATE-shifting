@@ -237,7 +237,8 @@ class ProbeATESearch:
                 break
 
             should_restart = False
-            bank[cost] = []
+            if cost not in bank:
+                bank[cost] = []
 
             for move in self.moves_under_cost(cost, prob_manager):
                 if should_restart:
