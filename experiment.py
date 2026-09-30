@@ -5,7 +5,7 @@ import pandas as pd
 
 from F_size_experiments import run_F_experiment
 from prompts import SYSTEM_PROMPT_CLAUDE, create_compact_steering_prompt, create_few_shots_prompt, \
-    FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK
+    FEW_SHOT_EXAMPLE_LALONDE, DO_NOT_THINK, FEW_SHOT_EXAMPLE_IHDP
 from search_methods.LLM_search import LLMSearch
 from search_methods.Random_search import RandomSearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
@@ -82,7 +82,7 @@ class Experiment:
         curr_ate = calculate_ate_linear_regression_lstsq(self.df, 'treatment', 'outcome', self.common_causes, )
         prompt = create_compact_steering_prompt(self.df, curr_ate, self.target_ate, self.epsilon, 'treatment',
                                                 'outcome', create_few_shots_prompt(
-                [FEW_SHOT_EXAMPLE_TWINS, FEW_SHOT_EXAMPLE_LALONDE]))
+                [FEW_SHOT_EXAMPLE_IHDP, FEW_SHOT_EXAMPLE_LALONDE]))
         if not with_COT:
             prompt = prompt + DO_NOT_THINK
         return LLMSearch(SYSTEM_PROMPT_CLAUDE, prompt).search(df=self.df, common_causes=self.common_causes,
