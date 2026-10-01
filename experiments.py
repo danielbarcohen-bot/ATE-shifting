@@ -747,30 +747,31 @@ EXPERIMENTS = {
     ################################### SCALABILITY EVALUATIONS ##############################
     ##########################################################################################
     "EXP27": {
-        "df": df_twins_loaded,
-        "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": 0.06,#-0.06,
-        "epsilon": 0.06,
-        "max_length": 5,
-        "sequence_length": 2,
-        "op_probs": prob_dict,
-        "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
-        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
-    },
-    "EXP27_lal": {
         "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
         "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
         "target_ate": -500,
         "epsilon": 500,
         "max_length": 10,
-        'sequence_length': 2,
+        "sequence_length": 2,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
+    "EXP27_lal_zero": {
+        "df": df_lalonde_loaded,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": 0,
+        "epsilon": 50,
+        "max_length": 10,
+        "sequence_length": 2,
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+        },
     "EXP28": {
         "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
@@ -781,7 +782,8 @@ EXPERIMENTS = {
         "sequence_length": 3,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
     "EXP35": {
         "df": df_walmart,
@@ -793,7 +795,8 @@ EXPERIMENTS = {
         "sequence_length": 5,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
     "EXP35_high": {
         "df": df_walmart,
@@ -805,19 +808,21 @@ EXPERIMENTS = {
         "sequence_length": 4,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
-    **{f"EXP29.{k}": {  # TWINS CHECK - k% of the data
+    **{f"EXP29.{k}": {  # LALONDE CHECK - k% of the data
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": df_twins_loaded.sample(frac=0.1 * k),
+        "df": df_lalonde_loaded.sample(frac=0.1 * k),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": -0.06,
-        "epsilon": 0.06,
-        "max_length": 5,
+        "common_causes": df_lalonde.columns.difference(["treatment", "outcome"]).tolist(),
+        "target_ate": -500,
+        "epsilon": 500,
+        "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     }
         for k in range(1, 10)
     },
@@ -832,7 +837,8 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     }
         for k in range(1, 10)
     },
@@ -847,23 +853,25 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     }
         for k in range(1, 10)
     },
-    **{f"EXP31.{k}": {  # TWINS CHECK - k random confunder
+    **{f"EXP31.{k}": {  # LALONDE CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
         "transformations_dict": largest_data_transformations,
         "common_causes": (cols := random.sample(
-            df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(), k=k)),
-        "df": df_twins_loaded[cols + ["treatment", "outcome"]],
-        "target_ate": -0.06,
-        "epsilon": 0.06,
-        "max_length": 5,
+            df_lalonde.columns.difference(["treatment", "outcome"]).tolist(), k=k)),
+        "df": df_lalonde_loaded[cols + ["treatment", "outcome"]],
+        "target_ate": -500,
+        "epsilon": 500,
+        "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
-    } for k in range(3, len(df_twins.columns.difference(["treatment", "outcome"]).tolist()), 3)
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+    } for k in range(3, len(df_lalonde.columns.difference(["treatment", "outcome"]).tolist()), 3)
     },
     **{f"EXP32.{k}": {  # ACS CHECK - k random confunder
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
@@ -876,7 +884,8 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
 
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist()), 3)
     },
@@ -891,23 +900,24 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
 
     } for k in range(3, len(df_acs.columns.difference(["treatment", "outcome"], sort=False).tolist()), 3)
     },
-    **{f"EXP33.{k}": {  # TWINS CHECK - duplication of df
+    **{f"EXP33.{k}": {  # LALONDE CHECK - duplication of df
         # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
-        "df": pd.concat([df_twins_loaded.assign(replica_id=i)
+        "df": pd.concat([df_lalonde_loaded.assign(replica_id=i)
                          for i in range(k)], ignore_index=True),
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome", "replica_id"],
-                                                            sort=False).tolist(),
-        "target_ate": -0.06,
-        "epsilon": 0.06,
-        "max_length": 5,
+        "common_causes": df_lalonde.columns.difference(["treatment", "outcome", "replica_id"]).tolist(),
+        "target_ate": -500,
+        "epsilon": 500,
+        "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
 
     } for k in range(1, 6)
     },
@@ -922,7 +932,8 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
 
     } for k in range(1, 6)
     },
@@ -937,10 +948,14 @@ EXPERIMENTS = {
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
 
     } for k in range(1, 6)
     },
+    ##########################
+    ### F SIZE EXPERIMENTS ###
+    ##########################
     **{f"EXP39.{k}": {  # F size - twins uniform
         "df": df_twins_loaded,
         "transformations_dict": largest_data_transformations,
