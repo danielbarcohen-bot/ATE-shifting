@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
 from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
-from experiments import large_data_transformations, largest_data_transformations
+from experiments import largest_data_transformations
 from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq
 
 

@@ -33,7 +33,8 @@ class Experiment:
         return BruteForceATESearch().search(df=self.df, common_causes=self.common_causes, target_ate=self.target_ate,
                                             epsilon=self.epsilon,
                                             transformations_dict=self.transformations_dict,
-                                            whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type)
+                                            whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type,
+                                                        fill_by_type=self.fill_by_type)
 
     def run_prune(self):
         return ProbeATESearch(use_restart=False).search(df=self.df, common_causes=self.common_causes,
@@ -194,7 +195,8 @@ class ProbabilitiesExperiment(Experiment):
                                                          epsilon=self.epsilon,
                                                          transformations_dict=self.transformations_dict,
                                                          whole_df_ops=self.whole_df_ops,
-                                                         legal_ops_by_type=self.legal_ops_by_type)
+                                                         legal_ops_by_type=self.legal_ops_by_type,
+                                                        fill_by_type=self.fill_by_type)
 
 
 class FExperiment(Experiment):
@@ -202,7 +204,7 @@ class FExperiment(Experiment):
                  target_ate: float, epsilon: float, max_sequence_length: int, op_probs: dict[str, float], i: int,
                  solution_sequence, seed, whole_df_ops: list[str] = None):
         super().__init__(df, transformations_dict, common_causes, target_ate, epsilon, max_sequence_length,
-                         whole_df_ops=whole_df_ops) #TODO: add also the legal_ops_by_type
+                         whole_df_ops=whole_df_ops)
         self.op_probs = op_probs
         self.i = i
         self.solution_sequence = solution_sequence

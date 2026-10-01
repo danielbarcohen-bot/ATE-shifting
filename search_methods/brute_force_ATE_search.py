@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 from search_methods.probe_ATE_search import ProbManager
-from utils import apply_data_preparations_seq,  \
-    calculate_ate_linear_regression_lstsq, get_moves_and_moveBit
+from utils import apply_data_preparations_seq, \
+    calculate_ate_linear_regression_lstsq, get_moves_and_moveBit, get_fill_combinations
 
 
 class BruteForceATESearch:
@@ -17,7 +17,8 @@ class BruteForceATESearch:
         self.op_probs = op_probs
 
     def search(self, df: pd.DataFrame, common_causes: List[str], target_ate: float, epsilon: float,
-               transformations_dict: dict[str, Callable], time_out_sec: int = 14400, whole_df_ops: List[str] = None, legal_ops_by_type=None):
+               transformations_dict: dict[str, Callable], time_out_sec: int = 14400,
+               whole_df_ops: List[str] = None, legal_ops_by_type=None, fill_by_type=None):
         col_types = df.attrs.get('col_types', None)
 
         df_ = df.copy()
@@ -25,11 +26,17 @@ class BruteForceATESearch:
         func_prefixes = {func_name: func_name.split("_")[0] for func_name in transformations_dict.keys()}
 
         needs_fill = df.isnull().values.any()
-        base_line_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome',
-                                                            common_causes) if not needs_fill else 'N/A'
-        print(f"base_line_ate: {base_line_ate}")
-        Q = deque([()])
         try_count = 0
+        if needs_fill:
+            fill_methods = get_fill_combinations(df, col_types, fill_by_type)
+            print(f"{len(fill_methods)} options to fill missing")
+            base_line_ate = 'N/A'
+            Q = deque(tuple(seq) for seq in fill_methods)  # every search path starts with a fill sequence
+            try_count += len(fill_methods)
+        else:
+            base_line_ate = calculate_ate_linear_regression_lstsq(df_, 'treatment', 'outcome', common_causes)
+            Q = deque([()])
+        print(f"base_line_ate: {base_line_ate}")
         solution_seq = None
         seq_ates = []
         reached_goal_sequences = []  # for prob mode
