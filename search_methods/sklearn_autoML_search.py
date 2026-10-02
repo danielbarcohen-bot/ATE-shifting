@@ -1,185 +1,143 @@
 import time
 
 import numpy as np
-import pandas as pd
-from sklearn.compose import ColumnTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import RandomizedSearchCV, train_test_split
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer
+from sklearn.utils import check_random_state
 
-from data_loader import LalondeDataLoader, TwinsDataLoader, ACSDataLoader, IHDPDataLoader, WalmartDataLoader
-from experiments import largest_data_transformations
-from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq
-
-
-def make_sklearn_transformer(series_func, name="unknown"):
-    def wrapper(X, name=None):  # name as kwarg, ignored in transform
-        if isinstance(X, np.ndarray):
-            X = pd.DataFrame(X)
-        X_transformed = pd.DataFrame(index=X.index)
-        for col in X.columns:
-            # X_transformed[col] = series_func(X[col])
-            X_transformed = series_func(X, col)
-        return X_transformed.values
-
-    return FunctionTransformer(wrapper, validate=False, kw_args={"name": name})
+from data_loader import LalondeDataLoader, WalmartDataLoader, ACSDataLoader
+from experiments import largest_data_transformations, whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE
+from utils import calculate_ate_linear_regression_lstsq, apply_data_preparations_seq, get_fill_combinations
 
 
-def ate_epsilon_hinge_score(estimator, X, y, *, treatment_col, outcome_col, common_causes, target_ate, epsilon):
-    prep = estimator.named_steps["prep"]
+class DataPrepTransformer(BaseEstimator, TransformerMixin):
+    """Applies a full (op, col) sequence via the same function the other searchers use."""
 
-    X_trans = prep.transform(X)
+    def __init__(self, sequence=(), transformations_dict=None, features=None, treatment="treatment"):
+        self.sequence = sequence
+        self.transformations_dict = transformations_dict
+        self.features = features
+        self.treatment = treatment
 
-    df_trans = pd.DataFrame(
-        X_trans[:, :len(common_causes)],
-        columns=common_causes,
-        index=X.index
-    )
-    df_trans[treatment_col] = X_trans[:, len(common_causes)]  # treatment is last
-    df_trans[outcome_col] = y.values
+    def fit(self, X, y=None):
+        return self
 
-    ate_hat = calculate_ate_linear_regression_lstsq(
-        df_trans, treatment_col, outcome_col, common_causes
-    )
+    def apply(self, X):  # X must be the FULL df (incl. outcome)
+        return apply_data_preparations_seq(X.copy(), self.sequence, self.transformations_dict)
 
-    excess = abs(ate_hat - target_ate) - epsilon
-    return -max(0.0, excess)
+    def transform(self, X):
+        return self.apply(X)[list(self.features) + [self.treatment]].values
 
 
-def print_sklearn_data_prep(df: pd.DataFrame, treatment: str, outcome: str, common_causes: list[str], data_transformations, scorer=None):
-    # ----------------------------
-    # 1. Dataset
-    # ----------------------------
+class LegalSequenceSampler:
+    """Sampler for RandomizedSearchCV (needs only an rvs method). Emits only legal sequences."""
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        df.drop(outcome, axis=1), df[outcome], test_size=0.25,
-        random_state=42
-    )
+    def __init__(self, common_causes, col_types, legal_ops_by_type, transformations_dict,
+                 whole_df_ops, fill_methods, p_whole=0.5):
+        self.whole_df_ops = whole_df_ops or []
+        self.fill_methods = [tuple(s) for s in fill_methods]
+        self.p_whole = p_whole
+        base_ops = [op for op in transformations_dict
+                    if op not in self.whole_df_ops and not op.startswith("fill_")]
+        self.col_ops = {}
+        for col in common_causes:
+            col_type = col_types.get(col) if col_types else None
+            if col_type is None:
+                self.col_ops[col] = list(base_ops)
+            else:
+                self.col_ops[col] = [op for op in base_ops if op in legal_ops_by_type.get(col_type, [])]
 
-    # -------------------------
-    # 2. Column pipelines
-    # -------------------------
-    preprocessor = ColumnTransformer([
-        ("covariates", FunctionTransformer(lambda X: X, validate=False), common_causes),
-        (treatment, "passthrough", [treatment])
-    ])
-    pipeline = Pipeline([
-        ("prep", preprocessor),
-        ("model", LinearRegression())
-    ])
+    def _one(self, rng):
+        seq = list(self.fill_methods[rng.randint(len(self.fill_methods))]) if self.fill_methods else []
+        for col, ops in self.col_ops.items():
+            i = rng.randint(len(ops) + 1)  # last index = no op on this column
+            if i < len(ops):
+                seq.append((ops[i], col))  # one op per column => prefix rule holds automatically
+        for op in self.whole_df_ops:  # each whole-df op at most once
+            if rng.rand() < self.p_whole:
+                seq.append((op, "TABLE"))
+        return tuple(seq)
 
-    # -------------------------
-    # 3. Build AutoML search space
-    # -------------------------
-
-    transform_candidates = [
-        make_sklearn_transformer(fn, name=name)
-        for name, fn in data_transformations.items()
-    ]
-    # Add identity (no-op)
-    transform_candidates.append(FunctionTransformer(lambda X: X, validate=False))
-
-    param_space = {
-        "prep__covariates": transform_candidates
-    }
-
-    # -------------------------
-    # 4. AutoML search
-    # -------------------------
-    if scorer is None:
-        scorer = "r2"
-    automl = RandomizedSearchCV(
-        estimator=pipeline,
-        param_distributions=param_space,
-        n_iter=len(transform_candidates),
-        cv=5,
-        scoring=scorer,
-        random_state=0,
-        n_jobs=-1
-    )
-    automl.fit(X_train, y_train)
-
-    # -------------------------
-    # 5. Inspect chosen transformations per column
-    # -------------------------
-    best_pipeline = automl.best_estimator_
-    chosen_transformer = best_pipeline.named_steps["prep"].named_transformers_["covariates"]
-
-    if chosen_transformer.kw_args is None:
-        print("AutoML chose identity (no preprocessing)")
-    else:
-        print(chosen_transformer.kw_args)
-        chosen_seq = tuple((chosen_transformer.kw_args["name"], item) for item in common_causes)
-        print(chosen_seq)
-        transformed_df = apply_data_preparations_seq(df.copy(), chosen_seq, data_transformations)
-        print(
-            f"\nNEW ATE IS: {calculate_ate_linear_regression_lstsq(transformed_df, treatment, outcome, common_causes)}\n")
-
-    print(f"Test {"r2" if scorer == "r2" else "ATE scorer"}:", round(automl.score(X_test, y_test), 4))
+    def rvs(self, size=None, random_state=None):
+        rng = check_random_state(random_state)
+        if size is None:
+            return self._one(rng)
+        return [self._one(rng) for _ in range(size)]
 
 
 def make_ate_scorer(epsilon, target_ate, treatment_col, outcome_col, common_causes):
     def scorer(estimator, X, y):
-        return ate_epsilon_hinge_score(
-            estimator,
-            X,
-            y,
-            treatment_col=treatment_col,
-            outcome_col=outcome_col,
-            common_causes=common_causes,
-            target_ate=target_ate,
-            epsilon=epsilon,
-        )
+        df_t = estimator.named_steps["prep"].apply(X)
+        ate = calculate_ate_linear_regression_lstsq(df_t, treatment_col, outcome_col, common_causes)
+        return -max(0.0, abs(ate - target_ate) - epsilon)  # 0 == inside the target range
 
     return scorer
 
 
-def run_experiment(df, target_ATE, epsilon, data_transformations):
+def print_sklearn_data_prep(df, treatment, outcome, common_causes, data_transformations,
+                            whole_df_ops, legal_ops_by_type, fill_by_type,
+                            scorer=None, n_iter=100):
+    col_types = df.attrs.get('col_types', None)
+    fill_methods = get_fill_combinations(df, col_types, fill_by_type) if df.isnull().values.any() else []
+
+    sampler = LegalSequenceSampler(common_causes, col_types, legal_ops_by_type,
+                                   data_transformations, whole_df_ops, fill_methods)
+    pipeline = Pipeline([
+        ("prep", DataPrepTransformer(transformations_dict=data_transformations,
+                                     features=common_causes, treatment=treatment)),
+        ("model", LinearRegression()),
+    ])
+
+    if scorer is None:
+        scoring, cv = "r2", 5
+    else:
+        scoring = scorer
+        idx = np.arange(len(df))
+        cv = [(idx, idx)]  # score the ATE on the WHOLE df, same as the other searchers
+
+    automl = RandomizedSearchCV(
+        estimator=pipeline,
+        param_distributions={"prep__sequence": sampler},
+        n_iter=n_iter,
+        cv=cv,
+        scoring=scoring,
+        random_state=0,
+        n_jobs=-1,
+        error_score=-np.inf,
+    )
+    automl.fit(df, df[outcome])  # full df in: ops may need the outcome column
+
+    chosen_seq = automl.best_params_["prep__sequence"]
+    print("chosen sequence:", chosen_seq)
+    transformed_df = apply_data_preparations_seq(df.copy(), chosen_seq, data_transformations)
+    print(f"\nNEW ATE IS: {calculate_ate_linear_regression_lstsq(transformed_df, treatment, outcome, common_causes)}\n")
+
+
+def run_experiment(df, target_ATE, epsilon, data_transformations, whole_df_ops, legal_ops_by_type, fill_by_type):
     common_causes = df.columns.difference(['treatment', 'outcome']).tolist()
-    scorer = make_ate_scorer(epsilon=epsilon, target_ate=target_ATE, treatment_col="treatment", outcome_col="outcome",
-                             common_causes=common_causes)
+    scorer = make_ate_scorer(epsilon=epsilon, target_ate=target_ATE, treatment_col="treatment",
+                             outcome_col="outcome", common_causes=common_causes)
+    args = (df, 'treatment', 'outcome', common_causes, data_transformations,
+            whole_df_ops, legal_ops_by_type, fill_by_type)
+
     start = time.time()
     print(f"RUNNING EXPERIMENT with R2. target ATE: {target_ATE}, epsilon: {epsilon}")
-    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, data_transformations)
+    print_sklearn_data_prep(*args)
     print("took: ", time.time() - start)
 
     start = time.time()
     print(f"\nRUNNING EXPERIMENT with ATE scorer.")
-    print_sklearn_data_prep(df, 'treatment', 'outcome', common_causes, data_transformations, scorer)
+    print_sklearn_data_prep(*args, scorer=scorer)
     print("took: ", time.time() - start)
     print("~" * 150)
 
 
 if __name__ == "__main__":
-    # data_transformations = large_data_transformations
     data_transformations = largest_data_transformations
 
-    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.0019, 0.000001, data_transformations)
-    # run_experiment(LalondeDataLoader().load_data().dropna(), 1871, 10, data_transformations)
-    # run_experiment(ACSDataLoader().load_data().dropna(), 16500, 100, data_transformations)
-    # run_experiment(IHDPDataLoader().load_data().dropna(), 4.5, 0.5, data_transformations)
-
-    # run_experiment(TwinsDataLoader().load_data().dropna(), -0.06, 0.06, data_transformations)
-    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.18, 0.06, data_transformations)
-    #
-    # run_experiment(LalondeDataLoader().load_data().dropna(), 0, 500, data_transformations)
-    # run_experiment(LalondeDataLoader().load_data().dropna(), 3342, 500, data_transformations)
-    #
-    # run_experiment(ACSDataLoader().load_data().dropna(), 5774, 250, data_transformations)
-    # run_experiment(ACSDataLoader().load_data().dropna(), 11774, 250, data_transformations)
-    #
-    # run_experiment(IHDPDataLoader().load_data().dropna(), 3.62, 0.04, data_transformations)
-    # run_experiment(IHDPDataLoader().load_data().dropna(), 4.22, 0.04, data_transformations)
-
-
-
-    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.036, 0.012, data_transformations)
-    # run_experiment(TwinsDataLoader().load_data().dropna(), 0.084, 0.012, data_transformations)
-    # run_experiment(ACSDataLoader().load_data().dropna(), 2990, 286.5, data_transformations)
-    # run_experiment(ACSDataLoader().load_data().dropna(), 14558, 286.5, data_transformations)
-    run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations)
-    # run_experiment(WalmartDataLoader().load_data(), 113001, 2533, data_transformations)
-
-    # run_experiment(TwinsDataLoader().load_data().dropna(), -0.06, 0.06, data_transformations)
-    # run_experiment(ACSDataLoader().load_data().dropna(), 18774, 1000, data_transformations)
+    # run_experiment(LalondeDataLoader().load_data(), 0, 50, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
+    # run_experiment(LalondeDataLoader().load_data(), -500, 500, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
+    # run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
+    run_experiment(ACSDataLoader().load_data(), 18774, 1000, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)

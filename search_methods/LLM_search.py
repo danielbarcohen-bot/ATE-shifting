@@ -27,8 +27,6 @@ class Claude:
 
     def ask(self, prompt: str, system: str = "You are a helpful assistant.", max_tokens: int = 1024) -> str:
         """The primary method to interact with the model."""
-        print(f"system prompt: {system}")
-        print(f"prompt: {prompt}")
         try:
             response = self.client.messages.create(
                 model=self.model_id,

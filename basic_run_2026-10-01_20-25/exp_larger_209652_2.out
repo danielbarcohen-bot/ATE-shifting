@@ -1,0 +1,18 @@
+Starting EXP27, type=brute, run 3/3 (Task 2)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+base_line_ate: 1671.1304157874747
+***
+FINISHED
+ATE before: 1671.1304157874747
+ATE now is: -816.1695426578963
+sequence is: (('bin_equal_frequency_2', 'age'), ('drop_duplicates', 'TABLE'), ('bin_equal_frequency_2', 'education'), ('isolationForest', 'TABLE'))
+***
+Execution time: 908.4724333286285 seconds
+popped 30521 from Q
+checked 505228 combinations

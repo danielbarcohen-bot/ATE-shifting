@@ -1,0 +1,16 @@
+Starting EXP35, type=brute, run 3/3 (Task 47)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+base_line_ate: 61567.67406853471
+
+
+*** TIMED OUT!! ***
+
+Execution time: 14401.343719244003 seconds
+popped 870340 from Q
+checked 137492890 combinations

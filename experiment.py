@@ -10,8 +10,9 @@ from search_methods.LLM_search import LLMSearch
 from search_methods.Random_search import RandomSearch
 from search_methods.brute_force_ATE_search import BruteForceATESearch
 from search_methods.greedy_ATE_search import GreedyATESearch
-from search_methods.probe_ATE_search import ProbeATESearch
+from search_methods.probe_ATE_search import ProbeATESearch, ProbManager
 from utils import calculate_ate_linear_regression_lstsq
+from experiments import whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE, prob_dict
 
 
 class Experiment:
@@ -56,7 +57,7 @@ class Experiment:
                                        epsilon=self.epsilon,
                                        transformations_dict=self.transformations_dict,
                                        whole_df_ops=self.whole_df_ops, legal_ops_by_type=self.legal_ops_by_type,
-                                                        fill_by_type=self.fill_by_type)
+                                                        fill_by_type=self.fill_by_type) #TODO: if send op_probs and ignore it can print the "not adjusted" prob better
 
     def run_probe_no_hash(self):
         return ProbeATESearch(use_hash=False).search(df=self.df, common_causes=self.common_causes,
@@ -107,13 +108,22 @@ class RandomExperiment:
         self.whole_df_ops = whole_df_ops
 
     def run_random(self):
+        def get_prob(df, sequence, trans_dict, op_probs, common_causes):
+            pm = ProbManager(list(trans_dict.keys()),
+                             common_causes, op_probs, None, whole_df_ops, LEGAL_OPS_BY_TYPE,
+                             legal_fill_by_type=LEGAL_FILL_BY_TYPE, col_types=df.attrs.get('col_types', None),
+                             fill_columns=[col for col in df.columns if df[col].isna().any()])
+            return pm.get_sequence_probability(sequence)
         ates = []
+        probs = []
         for _ in range(10):
             seq, ate = RandomSearch().search(df=self.df, transformations_dict=self.transformations_dict,
                                              common_causes=self.common_causes, sequence_length=self.sequence_length,
                                              legal_ops_by_type=self.legal_ops_by_type, whole_table_ops=self.whole_df_ops)
             print(seq)
             ates.append(ate)#.item())
+            probs.append(get_prob(self.df, seq, self.transformations_dict, prob_dict, self.common_causes))
+
             if abs(ate - self.target_ate) < self.epsilon:
                 print(f"found solution, ATE is {ate}, sequence is \n{seq}")
         print(f"ATEs are {sorted(ates)}")
@@ -121,6 +131,7 @@ class RandomExperiment:
         print(f"distances from target:\n{distances}")
         print(f"avg distance from target:\n{sum(distances) / len(distances)}")
         print(f"avg ATE is {np.mean(ates)}")
+        print(f"avg prob is {np.mean(probs)}")
 
 
 class ProbabilitiesExperiment(Experiment):

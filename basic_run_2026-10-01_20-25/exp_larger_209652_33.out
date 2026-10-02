@@ -1,0 +1,23 @@
+Starting EXP28, type=probe_brute, run 1/3 (Task 33)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8774.433204759567
+***
+FINISHED
+ATE before: 8774.433204759567
+ATE now is: 18347.48521611017
+sequence is: (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'TABLE'))
+***
+Execution time: 8153.956 sec
+distances from ATE (with time):
+[(9999.566795240433, 0), (3723.43918322649, 0.33813905715942383), (3723.4391832145047, 2.8436412811279297), (2592.8944329332426, 3.5342705249786377), (2086.071306508289, 35.73728322982788), (1992.9098164185707, 245.95620489120483), (1733.6203181320016, 292.66708636283875), (1720.9634639995784, 392.6801755428314), (1410.2984298839547, 395.51326966285706), (1068.0397304178805, 3501.2977237701416), (426.51478388983014, 8153.538158655167)]
+probability of this sequence is: 4.179958004583426e-07
+uncertainty:
+{'ate': 18347.48521611017, 'ci': (17208.932648144964, 19486.037784075375)}
+checked:
+5565
