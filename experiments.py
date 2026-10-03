@@ -962,29 +962,29 @@ EXPERIMENTS = {
         "common_causes": df_lalonde_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
         "target_ate": 0,
         "epsilon": 50,
-        "max_length": 5,
+        "max_length": 50,
         "sequence_length": 2,
         "op_probs": prob_dict,
         "i": k,
         'seed': 39,
-        "solution_sequence": (('bin_equal_frequency_2', 'wt'), ('norm_log', 'gestat10')),
+        "solution_sequence": (('zscore_clip_3', 'age'), ('bin_equal_frequency_10', 'age'), ('drop_duplicates', 'TABLE'), ('bin_equal_frequency_2', 'education'), ('isolationForest', 'TABLE')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
-    **{f"EXP40.{k}": {  # F size - twins probs with restart
-        "df": df_twins_loaded,
+    **{f"EXP40.{k}": {  # F size - lalonde probs with restart
+        "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": -0.06,
-        "epsilon": 0.06,
-        "max_length": 5,
+        "common_causes": df_lalonde_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 0,
+        "epsilon": 50,
+        "max_length": 50,
         "sequence_length": 2,
         "op_probs": prob_dict,
         "i": k,
         'seed': 40,
-        "solution_sequence": (('IQR', 'gestat10'), ('bin_equal_frequency_2', 'wt')),
+        "solution_sequence": (('IQR', 'education'), ('zscore_filter_3', 'age'), ('bin_equal_frequency_5', 'age'), ('drop_duplicates', 'TABLE'), ('bin_equal_frequency_2', 'education'), ('isolationForest', 'TABLE')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
@@ -1001,8 +1001,7 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         'seed': 41,
-        "solution_sequence": (('bin_equal_width_2', 'education'), ('isolationForest', 'Age'),
-                              ('bin_equal_frequency_2', 'Age')),
+        "solution_sequence": (('norm_log', 'education'), ('bin_equal_width_2', 'education'), ('isolationForest', 'TABLE')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
@@ -1019,8 +1018,7 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         'seed': 42,
-        "solution_sequence": (('norm_log', 'education'), ('bin_equal_width_5', 'education'),
-                              ('isolationForest', 'Age')),
+        "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'TABLE')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
@@ -1037,8 +1035,7 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         'seed': 43,
-        "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'),
-                              ('isolationForest', 'Age')),
+        "solution_sequence": (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'TABLE')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
@@ -1055,9 +1052,7 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         'seed': 44,
-        "solution_sequence": (('bin_equal_width_2', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'),
-                              ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_living15'),
-                              ('bin_equal_frequency_2', 'sqft_lot15')),
+        "solution_sequence": (('bin_equal_width_5', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_2', 'yr_built'), ('bin_equal_frequency_2', 'sqft_lot15'), ('bin_equal_frequency_2', 'grade'), ('bin_equal_frequency_2', 'bedrooms')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
@@ -1074,32 +1069,30 @@ EXPERIMENTS = {
         "op_probs": prob_dict,
         "i": k,
         'seed': 45,
-        "solution_sequence": (('norm_log', 'grade'), ('IQR', 'sqft_basement'), ('IQR', 'sqft_lot'),
-                              ('bin_equal_frequency_5', 'yr_built'), ('IQR', 'bedrooms'),
-                              ('bin_equal_frequency_10', 'sqft_living'), ('bin_equal_frequency_5', 'sqft_lot15')),
+        "solution_sequence": (('zscore_clip_3', 'sqft_basement'), ('bin_equal_frequency_10', 'sqft_living'), ('IQR', 'sqft_basement'), ('IQR', 'bedrooms'), ('bin_equal_width_5', 'sqft_living15'), ('bin_equal_frequency_5', 'yr_built')),
         "whole_df_ops": whole_df_ops,
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE
 
     } for k in range(1, 16)
     },
-    # MAY NOT NEED TO RUN AGAIN
-    **{f"EXP46.{k}": {  # F size - walmart probs with\out restart | more probable solution sequence
-        "df": df_walmart,
-        "transformations_dict": largest_data_transformations,
-        "common_causes": df_walmart.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": 10133.08,
-        "epsilon": 2533,
-        "max_length": 10,
-        "sequence_length": 5,
-        "op_probs": prob_dict,
-        "i": k,
-        'seed': 46,
-        "solution_sequence": (('norm_log', 'sqft_lot'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'),
-                              ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'),
-                              ('zscore_filter_3', 'sqft_lot15')),
-        "whole_df_ops": whole_df_ops,
-        "legal_ops_by_type": LEGAL_OPS_BY_TYPE
-
-    } for k in range(1, 16)
-    },
+    # # MAY NOT NEED TO RUN AGAIN
+    # **{f"EXP46.{k}": {  # F size - walmart probs with\out restart | more probable solution sequence
+    #     "df": df_walmart,
+    #     "transformations_dict": largest_data_transformations,
+    #     "common_causes": df_walmart.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+    #     "target_ate": 10133.08,
+    #     "epsilon": 2533,
+    #     "max_length": 10,
+    #     "sequence_length": 5,
+    #     "op_probs": prob_dict,
+    #     "i": k,
+    #     'seed': 46,
+    #     "solution_sequence": (('norm_log', 'sqft_lot'), ('IQR', 'bedrooms'), ('bin_equal_frequency_10', 'sqft_living'),
+    #                           ('IQR', 'sqft_lot'), ('bin_equal_frequency_5', 'yr_built'),
+    #                           ('zscore_filter_3', 'sqft_lot15')),
+    #     "whole_df_ops": whole_df_ops,
+    #     "legal_ops_by_type": LEGAL_OPS_BY_TYPE
+    #
+    # } for k in range(1, 16)
+    # },
 }
