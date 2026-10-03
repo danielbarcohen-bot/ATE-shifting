@@ -5,8 +5,8 @@ from typing import List, Dict, Tuple
 
 import pandas as pd
 
-from experiments import LEGAL_OPS_BY_TYPE
-from search_methods.probe_ATE_search import ProbeATESearch
+from experiments import LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE
+from search_methods.probe_ATE_search import ProbeATESearch, ProbManager
 
 
 class OperationSpaceExperiment:
@@ -55,22 +55,38 @@ class OperationSpaceExperiment:
         # G = F \ F_solution
         self.G = self._get_G()
 
+    # def _build_F(self) -> List[str]:
+    #     """Build F: column-specific pairs like {norm#x, norm#y, ...} + whole-df ops {isolationForest}"""
+    #     F = []
+    #     # Add column-specific operations
+    #     for op in self.transformations_dict.keys():
+    #         if op not in self.whole_df_ops:
+    #             for col in self.common_causes:
+    #                 col_type = self.col_types.get(col) if self.col_types else None
+    #                 if col_type is not None and op not in LEGAL_OPS_BY_TYPE.get(col_type, []):
+    #                     continue  # illegal combo (e.g. normalize on a binary col) — skip
+    #                 F.append(f"{op}#{col}")
+    #     # Add whole-df operations (appear once, no column suffix)
+    #     for op in self.whole_df_ops:
+    #         if op in self.transformations_dict:
+    #             F.append(f"{op}#TABLE")
+    #     return F
+
     def _build_F(self) -> List[str]:
-        """Build F: column-specific pairs like {norm#x, norm#y, ...} + whole-df ops {isolationForest}"""
-        F = []
-        # Add column-specific operations
-        for op in self.transformations_dict.keys():
-            if op not in self.whole_df_ops:
-                for col in self.common_causes:
-                    col_type = self.col_types.get(col) if self.col_types else None
-                    if col_type is not None and op not in LEGAL_OPS_BY_TYPE.get(col_type, []):
-                        continue  # illegal combo (e.g. normalize on a binary col) — skip
-                    F.append(f"{op}#{col}")
-        # Add whole-df operations (appear once, no column suffix)
-        for op in self.whole_df_ops:
-            if op in self.transformations_dict:
-                F.append(f"{op}#TABLE")
-        return F
+        """F = exactly the (op, col) elements ProbManager builds when F_elements is None (fills excluded)."""
+        fill_columns = [c for c in self.df.columns if self.df[c].isna().any()]
+        pm = ProbManager(
+            list(self.transformations_dict.keys()),
+            self.common_causes,
+            op_probs=None,          # keys don't depend on op_probs
+            F_elements=None,
+            whole_df_ops=self.whole_df_ops,
+            legal_ops_by_type=LEGAL_OPS_BY_TYPE,
+            legal_fill_by_type=LEGAL_FILL_BY_TYPE,
+            col_types=self.df.attrs.get('col_types', None),   # same default the search uses
+            fill_columns=fill_columns,
+        )
+        return [f"{op}#{col}" for (op, col) in pm.probs ]#if not op.startswith("fill_")]
 
     def _extract_F_solution(self) -> set:
         """Extract F elements used in solution sequence"""
@@ -193,7 +209,8 @@ class OperationSpaceExperiment:
             time_out_sec=self.time_out_sec,
             F_elements=F_subset,
             whole_df_ops=self.whole_df_ops,
-            legal_ops_by_type=LEGAL_OPS_BY_TYPE
+            legal_ops_by_type=LEGAL_OPS_BY_TYPE,
+            fill_by_type = LEGAL_FILL_BY_TYPE
         )
         # If search completes without exception, it found the solution
         result['found_solution'] = True

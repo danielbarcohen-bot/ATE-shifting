@@ -956,12 +956,12 @@ EXPERIMENTS = {
     ##########################
     ### F SIZE EXPERIMENTS ###
     ##########################
-    **{f"EXP39.{k}": {  # F size - twins uniform
-        "df": df_twins_loaded,
+    **{f"EXP39.{k}": {  # F size - lalonde uniform
+        "df": df_lalonde_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": -0.06,
-        "epsilon": 0.06,
+        "common_causes": df_lalonde_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 0,
+        "epsilon": 50,
         "max_length": 5,
         "sequence_length": 2,
         "op_probs": prob_dict,
