@@ -1,0 +1,201 @@
+============================================================
+ 🚀 STARTING EXPERIMENT: EXP35
+============================================================
+
+⚙️ Running mode: llm_zero_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=47384.58618 | Runtime: 7.78s
+  Run 2/10: ATE=48896.71071 | Runtime: 7.63s
+  Run 3/10: ATE=46059.83263 | Runtime: 7.99s
+  Run 4/10: ATE=45361.06821 | Runtime: 8.09s
+  Run 5/10: ATE=47579.90451 | Runtime: 8.29s
+  Run 6/10: ATE=47579.90451 | Runtime: 8.70s
+  Run 7/10: ATE=49405.60512 | Runtime: 9.32s
+  Run 8/10: ATE=42691.23161 | Runtime: 8.28s
+  Run 9/10: ATE=47384.58618 | Runtime: 7.99s
+  Run 10/10: ATE=45361.06821 | Runtime: 8.29s
+
+Results:
+  ATEs          : [47384.58618, 48896.71071, 46059.83263, 45361.06821, 47579.90451, 47579.90451, 49405.60512, 42691.23161, 47384.58618, 45361.06821]
+  Mean ATE      : 46770.449787
+  Variance      : 3849722.288430
+  Std Dev       : 1962.070918
+  Avg Runtime   : 8.24s
+
+Most Frequent ATE:
+  ATE           : 47384.58618
+  Frequency     : 2/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "sqft_living",
+    "operation": "winsorize"
+  },
+  {
+    "column": "grade",
+    "operation": "winsorize"
+  },
+  {
+    "column": "sqft_above",
+    "operation": "winsorize"
+  },
+  {
+    "column": "bathrooms",
+    "operation": "winsorize"
+  },
+  {
+    "column": "sqft_living15",
+    "operation": "winsorize"
+  },
+  {
+    "column": "sqft_lot",
+    "operation": "IQR"
+  },
+  {
+    "column": "sqft_lot15",
+    "operation": "IQR"
+  },
+  {
+    "column": "yr_renovated",
+    "operation": "IQR"
+  },
+  {
+    "column": "sqft_basement",
+    "operation": "zscore_filter_3"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 2.113388164920544e-34
+
+⚙️ Running mode: llm_few_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=50159.72804 | Runtime: 8.23s
+  Run 2/10: ATE=44287.04839 | Runtime: 7.81s
+  Run 3/10: ATE=41560.87882 | Runtime: 8.52s
+  Run 4/10: ATE=50159.72804 | Runtime: 7.65s
+  Run 5/10: ATE=50159.72804 | Runtime: 7.50s
+  Run 6/10: ATE=48260.64079 | Runtime: 7.38s
+  Run 7/10: ATE=48260.64079 | Runtime: 7.42s
+  Run 8/10: ATE=48260.64079 | Runtime: 7.37s
+  Run 9/10: ATE=48260.64079 | Runtime: 7.41s
+  Run 10/10: ATE=51261.90013 | Runtime: 7.71s
+
+Results:
+  ATEs          : [50159.72804, 44287.04839, 41560.87882, 50159.72804, 50159.72804, 48260.64079, 48260.64079, 48260.64079, 48260.64079, 51261.90013]
+  Mean ATE      : 48063.157462
+  Variance      : 8901489.460321
+  Std Dev       : 2983.536402
+  Avg Runtime   : 7.70s
+
+Most Frequent ATE:
+  ATE           : 48260.64079
+  Frequency     : 4/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "sqft_living",
+    "operation": "IQR"
+  },
+  {
+    "column": "grade",
+    "operation": "IQR"
+  },
+  {
+    "column": "bathrooms",
+    "operation": "IQR"
+  },
+  {
+    "column": "sqft_above",
+    "operation": "IQR"
+  },
+  {
+    "column": "sqft_living15",
+    "operation": "IQR"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 6.185089510753988e-17
+
+⚙️ Running mode: llm_few_shot_cot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=48268.27574 | Runtime: 13.32s
+  Run 2/10: ATE=41534.40215 | Runtime: 14.80s
+  Run 3/10: ATE=44696.5668 | Runtime: 13.56s
+  Run 4/10: ATE=44129.60398 | Runtime: 13.51s
+  Run 5/10: ATE=42984.43344 | Runtime: 13.35s
+  Run 6/10: ATE=45425.98965 | Runtime: 13.09s
+  Run 7/10: ATE=43293.90597 | Runtime: 14.98s
+  Run 8/10: ATE=40963.5856 | Runtime: 14.50s
+  Run 9/10: ATE=44079.80064 | Runtime: 14.32s
+  Run 10/10: ATE=50459.09968 | Runtime: 7.73s
+
+Results:
+  ATEs          : [48268.27574, 41534.40215, 44696.5668, 44129.60398, 42984.43344, 45425.98965, 43293.90597, 40963.5856, 44079.80064, 50459.09968]
+  Mean ATE      : 44583.566365
+  Variance      : 8433710.661249
+  Std Dev       : 2904.085168
+  Avg Runtime   : 13.31s
+
+Most Frequent ATE:
+  ATE           : 48268.27574
+  Frequency     : 1/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "sqft_living",
+    "operation": "bin_equal_frequency_10"
+  },
+  {
+    "column": "grade",
+    "operation": "bin_equal_frequency_5"
+  },
+  {
+    "column": "sqft_above",
+    "operation": "bin_equal_frequency_10"
+  },
+  {
+    "column": "bathrooms",
+    "operation": "bin_equal_frequency_5"
+  },
+  {
+    "column": "sqft_lot",
+    "operation": "IQR"
+  },
+  {
+    "column": "yr_renovated",
+    "operation": "winsorize"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 9.028170433358415e-25
+
+============================================================
+ ✅ FINISHED EXPERIMENT: EXP35
+============================================================

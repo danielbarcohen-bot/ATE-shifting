@@ -1,0 +1,153 @@
+============================================================
+ 🚀 STARTING EXPERIMENT: EXP27
+============================================================
+
+⚙️ Running mode: llm_zero_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=620.29664 | Runtime: 6.16s
+  Run 2/10: ATE=888.70551 | Runtime: 6.20s
+  Run 3/10: ATE=1226.22168 | Runtime: 6.11s
+  Run 4/10: ATE=620.29664 | Runtime: 6.08s
+  Run 5/10: ATE=888.70551 | Runtime: 6.01s
+  Run 6/10: ATE=1226.22168 | Runtime: 6.10s
+  Run 7/10: ATE=888.70551 | Runtime: 6.12s
+  Run 8/10: ATE=620.29664 | Runtime: 6.04s
+  Run 9/10: ATE=888.70551 | Runtime: 6.22s
+  Run 10/10: ATE=1392.96358 | Runtime: 6.16s
+
+Results:
+  ATEs          : [620.29664, 888.70551, 1226.22168, 620.29664, 888.70551, 1226.22168, 888.70551, 620.29664, 888.70551, 1392.96358]
+  Mean ATE      : 926.111890
+  Variance      : 76027.569224
+  Std Dev       : 275.730973
+  Avg Runtime   : 6.12s
+
+Most Frequent ATE:
+  ATE           : 888.70551
+  Frequency     : 4/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "age",
+    "operation": "bin_equal_frequency_10"
+  },
+  {
+    "column": "education",
+    "operation": "bin_equal_width_5"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 2.4093979105053085e-09
+
+⚙️ Running mode: llm_few_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=1261.04797 | Runtime: 6.73s
+  Run 2/10: ATE=619.20053 | Runtime: 6.22s
+  Run 3/10: ATE=1428.1048 | Runtime: 6.50s
+  Run 4/10: ATE=1428.1048 | Runtime: 6.46s
+  Run 5/10: ATE=1428.1048 | Runtime: 6.33s
+  Run 6/10: ATE=1428.1048 | Runtime: 6.30s
+  Run 7/10: ATE=1428.1048 | Runtime: 6.12s
+  Run 8/10: ATE=1428.1048 | Runtime: 6.24s
+  Run 9/10: ATE=1428.1048 | Runtime: 6.33s
+  Run 10/10: ATE=1428.1048 | Runtime: 6.53s
+
+Results:
+  ATEs          : [1261.04797, 619.20053, 1428.1048, 1428.1048, 1428.1048, 1428.1048, 1428.1048, 1428.1048, 1428.1048, 1428.1048]
+  Mean ATE      : 1330.508690
+  Variance      : 65220.455067
+  Std Dev       : 255.382958
+  Avg Runtime   : 6.38s
+
+Most Frequent ATE:
+  ATE           : 1428.10480
+  Frequency     : 8/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "age",
+    "operation": "bin_equal_width_10"
+  },
+  {
+    "column": "education",
+    "operation": "bin_equal_width_10"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 9.043064884883562e-10
+
+⚙️ Running mode: llm_few_shot_cot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=1251.81048 | Runtime: 12.79s
+  Run 2/10: ATE=971.75452 | Runtime: 14.47s
+  Run 3/10: ATE=1707.27887 | Runtime: 13.22s
+  Run 4/10: ATE=944.50983 | Runtime: 10.63s
+  Run 5/10: ATE=1707.27887 | Runtime: 10.40s
+  Run 6/10: ATE=1707.27887 | Runtime: 11.39s
+  Run 7/10: ATE=971.75452 | Runtime: 12.15s
+  Run 8/10: ATE=1707.27887 | Runtime: 11.57s
+  Run 9/10: ATE=993.49548 | Runtime: 13.47s
+  Run 10/10: ATE=1251.81048 | Runtime: 13.78s
+
+Results:
+  ATEs          : [1251.81048, 971.75452, 1707.27887, 944.50983, 1707.27887, 1707.27887, 971.75452, 1707.27887, 993.49548, 1251.81048]
+  Mean ATE      : 1321.425079
+  Variance      : 122151.878155
+  Std Dev       : 349.502329
+  Avg Runtime   : 12.39s
+
+Most Frequent ATE:
+  ATE           : 1707.27887
+  Frequency     : 4/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "age",
+    "operation": "bin_equal_width_2"
+  },
+  {
+    "column": "education",
+    "operation": "bin_equal_width_2"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  },
+  {
+    "column": "age",
+    "operation": "IQR"
+  },
+  {
+    "column": "education",
+    "operation": "zscore_filter_3"
+  }
+]
+
+Sequence Probability: 9.285859844771585e-16
+
+============================================================
+ ✅ FINISHED EXPERIMENT: EXP27
+============================================================

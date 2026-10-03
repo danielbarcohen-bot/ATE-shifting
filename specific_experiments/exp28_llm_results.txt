@@ -1,0 +1,141 @@
+============================================================
+ 🚀 STARTING EXPERIMENT: EXP28
+============================================================
+
+⚙️ Running mode: llm_zero_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=14522.9925 | Runtime: 7.08s
+  Run 2/10: ATE=14522.9925 | Runtime: 6.89s
+  Run 3/10: ATE=14522.9925 | Runtime: 6.75s
+  Run 4/10: ATE=14522.9925 | Runtime: 6.83s
+  Run 5/10: ATE=14522.9925 | Runtime: 6.94s
+  Run 6/10: ATE=14522.9925 | Runtime: 6.88s
+  Run 7/10: ATE=14522.9925 | Runtime: 6.86s
+  Run 8/10: ATE=14522.9925 | Runtime: 6.82s
+  Run 9/10: ATE=14522.9925 | Runtime: 6.85s
+  Run 10/10: ATE=14522.9925 | Runtime: 6.67s
+
+Results:
+  ATEs          : [14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925, 14522.9925]
+  Mean ATE      : 14522.992500
+  Variance      : 0.000000
+  Std Dev       : 0.000000
+  Avg Runtime   : 6.86s
+
+Most Frequent ATE:
+  ATE           : 14522.99250
+  Frequency     : 10/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "education",
+    "operation": "zscore_clip_3"
+  },
+  {
+    "column": "Age",
+    "operation": "winsorize"
+  }
+]
+
+Sequence Probability: 5.524262661736045e-07
+
+⚙️ Running mode: llm_few_shot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=16045.00678 | Runtime: 9.50s
+  Run 2/10: ATE=16045.00678 | Runtime: 9.43s
+  Run 3/10: ATE=16045.00678 | Runtime: 9.41s
+  Run 4/10: ATE=16653.09382 | Runtime: 9.32s
+  Run 5/10: ATE=16630.80634 | Runtime: 9.29s
+  Run 6/10: ATE=16653.09382 | Runtime: 9.16s
+  Run 7/10: ATE=16653.09382 | Runtime: 9.21s
+  Run 8/10: ATE=16630.80634 | Runtime: 9.08s
+  Run 9/10: ATE=16045.00678 | Runtime: 9.22s
+  Run 10/10: ATE=16630.80634 | Runtime: 9.16s
+
+Results:
+  ATEs          : [16045.00678, 16045.00678, 16045.00678, 16653.09382, 16630.80634, 16653.09382, 16653.09382, 16630.80634, 16045.00678, 16630.80634]
+  Mean ATE      : 16403.172760
+  Variance      : 95107.136205
+  Std Dev       : 308.394449
+  Avg Runtime   : 9.28s
+
+Most Frequent ATE:
+  ATE           : 16045.00678
+  Frequency     : 4/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "education",
+    "operation": "bin_equal_frequency_5"
+  },
+  {
+    "column": "Age",
+    "operation": "bin_equal_frequency_5"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 3.833133039440264e-09
+
+⚙️ Running mode: llm_few_shot_cot (10 repetitions)
+----------------------------------------
+  Run 1/10: ATE=13471.19783 | Runtime: 13.59s
+  Run 2/10: ATE=16889.48693 | Runtime: 15.16s
+  Run 3/10: ATE=13471.19783 | Runtime: 13.96s
+  Run 4/10: ATE=16926.11025 | Runtime: 13.61s
+  Run 5/10: ATE=16889.48693 | Runtime: 14.73s
+  Run 6/10: ATE=16889.48693 | Runtime: 13.83s
+  Run 7/10: ATE=18162.86998 | Runtime: 13.41s
+  Run 8/10: ATE=16889.48693 | Runtime: 14.52s
+  Run 9/10: ATE=16045.00678 | Runtime: 16.02s
+  Run 10/10: ATE=16889.48693 | Runtime: 14.28s
+
+Results:
+  ATEs          : [13471.19783, 16889.48693, 13471.19783, 16926.11025, 16889.48693, 16889.48693, 18162.86998, 16889.48693, 16045.00678, 16889.48693]
+  Mean ATE      : 16252.381732
+  Variance      : 2405151.421390
+  Std Dev       : 1550.855061
+  Avg Runtime   : 14.31s
+
+Most Frequent ATE:
+  ATE           : 16889.48693
+  Frequency     : 5/10
+
+Corresponding Sequence:
+[
+  {
+    "column": "TABLE",
+    "operation": "drop_duplicates"
+  },
+  {
+    "column": "education",
+    "operation": "bin_equal_frequency_5"
+  },
+  {
+    "column": "Age",
+    "operation": "IQR"
+  },
+  {
+    "column": "TABLE",
+    "operation": "isolationForest"
+  }
+]
+
+Sequence Probability: 2.924132918658716e-08
+
+============================================================
+ ✅ FINISHED EXPERIMENT: EXP28
+============================================================
