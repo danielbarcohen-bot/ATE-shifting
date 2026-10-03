@@ -1,0 +1,23 @@
+Starting EXP29.1, type=probe_probs_no_restart, run 3/3 (Task 5)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -2326.6063812674674
+***
+FINISHED
+ATE before: -2326.6063812674674
+ATE now is: -25.584589243324444
+sequence is: (('norm_log', 'education'), ('bin_equal_width_5', 'education'), ('zscore_clip_3', 'education'), ('isolationForest', 'TABLE'), ('IQR', 'education'))
+***
+Execution time: 3431.510 sec
+distances from ATE (with time):
+[(2326.6063812674674, 0), (2296.853617136043, 0.015546321868896484), (2294.5874092146933, 0.019509315490722656), (2181.910004595451, 0.27507472038269043), (2155.9251059643884, 0.28807544708251953), (2067.4834729497015, 2.151859998703003), (2000.8513296161982, 7.6706321239471436), (912.9879499975577, 18.963528156280518), (904.8277665541464, 81.09059071540833), (865.8327186061942, 1161.706650018692), (25.584589243324444, 3431.506850004196)]
+probability of this sequence is: 3.101103401614805e-11
+uncertainty:
+{'ate': -25.584589243324444, 'ci': (-8939.72838131357, 8888.55920282692)}
+checked:
+30472

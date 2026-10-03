@@ -1,0 +1,23 @@
+Starting EXP30.3, type=probe_probs_no_restart, run 2/3 (Task 103)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8942.524343525114
+***
+FINISHED
+ATE before: 8942.524343525114
+ATE now is: 18664.990056362483
+sequence is: (('drop_duplicates', 'TABLE'), ('norm_log', 'education'))
+***
+Execution time: 2.404 sec
+distances from ATE (with time):
+[(9831.475656474886, 0), (1597.6200665282631, 0.17887353897094727), (1597.620066522446, 1.8102383613586426), (1597.6200665221804, 2.049207925796509), (109.0099436375167, 2.26182222366333)]
+probability of this sequence is: 0.004815039592267109
+uncertainty:
+{'ate': 18664.990056362483, 'ci': (17694.660205715514, 19635.319907009452)}
+checked:
+10

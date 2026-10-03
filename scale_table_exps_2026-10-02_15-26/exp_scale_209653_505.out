@@ -1,0 +1,25 @@
+Starting EXP37.6, type=probe, run 2/3 (Task 505)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 39299.660962186754
+PROBE TRIGGERED! Error reduced from 29166.581 to 19471.979 (ATE went to 29605.058993648563).
+PROBE TRIGGERED! Error reduced from 19471.979 to 7491.654 (ATE went to 17624.73445143737).
+***
+FINISHED
+ATE before: 39299.660962186754
+ATE now is: 10823.48039138189
+sequence is: (('bin_equal_frequency_2', 'sqft_lot'), ('bin_equal_frequency_2', 'yr_built'))
+***
+Execution time: 0.121 sec
+distances from ATE (with time):
+[(29166.580962186752, 0), (19471.97899364856, 0.015288114547729492), (29166.580962186752, 0.026277780532836914), (19471.97899364856, 0.032616615295410156), (7491.654451437369, 0.078277587890625), (29166.580962186752, 0.08909940719604492), (19471.97899364856, 0.0952458381652832), (7491.654451437369, 0.10507345199584961), (690.4003913818906, 0.11693787574768066)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.0001602307322544469
+uncertainty:
+{'ate': 10823.48039138189, 'ci': (-54847.747378404776, 76494.70816116856)}
+checked:
+11

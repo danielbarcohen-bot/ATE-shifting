@@ -1,0 +1,23 @@
+Starting EXP36.2, type=probe_probs_no_restart, run 1/3 (Task 426)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 32598.264487497756
+***
+FINISHED
+ATE before: 32598.264487497756
+ATE now is: 12172.180178344624
+sequence is: (('bin_equal_frequency_10', 'sqft_living'),)
+***
+Execution time: 2.782 sec
+distances from ATE (with time):
+[(22465.184487497754, 0), (22465.155097481358, 0.02506232261657715), (21839.135427465888, 0.20507025718688965), (19091.215001823643, 0.2543501853942871), (13336.46752096325, 0.7121946811676025), (11723.289813743731, 0.8654637336730957), (2678.774381049423, 2.2330031394958496), (2039.1001783446245, 2.7776737213134766)]
+probability of this sequence is: 0.0001966128960185888
+uncertainty:
+{'ate': 12172.180178344624, 'ci': (-84901.89379488345, 109246.2541515727)}
+checked:
+148

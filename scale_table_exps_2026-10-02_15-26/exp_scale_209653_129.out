@@ -1,0 +1,23 @@
+Starting EXP30.6, type=probe_probs_no_restart, run 1/3 (Task 129)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8712.430308409488
+***
+FINISHED
+ATE before: 8712.430308409488
+ATE now is: 18336.941205687563
+sequence is: (('drop_duplicates', 'TABLE'), ('isolationForest', 'TABLE'))
+***
+Execution time: 30.874 sec
+distances from ATE (with time):
+[(10061.569691590512, 0), (2696.845398852609, 0.33250927925109863), (2696.845398839665, 3.2331550121307373), (1362.0413227088793, 3.802786111831665), (437.0587943124374, 30.65467596054077)]
+probability of this sequence is: 0.000799545319749151
+uncertainty:
+{'ate': 18336.941205687563, 'ci': (16727.360378148172, 19946.522033226953)}
+checked:
+58

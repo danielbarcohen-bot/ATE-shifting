@@ -1,0 +1,24 @@
+Starting EXP29.2, type=probe, run 2/3 (Task 10)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 338.1012551139502
+PROBE TRIGGERED! Error reduced from 338.101 to 293.886 (ATE went to 293.8862725397521).
+***
+FINISHED
+ATE before: 338.1012551139502
+ATE now is: 24.65808796121928
+sequence is: (('bin_equal_frequency_2', 'education'),)
+***
+Execution time: 0.017 sec
+distances from ATE (with time):
+[(338.1012551139502, 0), (293.8862725397521, 0.003457307815551758), (338.1012551139502, 0.007935523986816406), (293.8862725397521, 0.01108551025390625), (24.65808796121928, 0.015312433242797852)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.03225806451612903
+uncertainty:
+{'ate': 24.65808796121928, 'ci': (-3261.9223827514484, 3311.238558673887)}
+checked:
+3

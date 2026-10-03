@@ -1,0 +1,23 @@
+Starting EXP32.3, type=probe_probs_with_restart, run 2/3 (Task 313)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 13163.86377500132
+***
+FINISHED
+ATE before: 13163.86377500132
+ATE now is: 18485.142012548822
+sequence is: (('isolationForest', 'TABLE'),)
+***
+Execution time: 16.459 sec
+distances from ATE (with time):
+[(5610.13622499868, 0), (288.8579874511779, 16.272045612335205)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.005630278385986863
+uncertainty:
+{'ate': 18485.142012548822, 'ci': (17637.92351375703, 19332.360511340616)}
+checked:
+14

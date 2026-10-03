@@ -1,0 +1,23 @@
+Starting EXP29.4, type=probe_probs_no_restart, run 3/3 (Task 32)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 525.1071624474989
+***
+FINISHED
+ATE before: 525.1071624474989
+ATE now is: -45.17321102097412
+sequence is: (('zscore_clip_3', 'age'), ('isolationForest', 'TABLE'))
+***
+Execution time: 7.793 sec
+distances from ATE (with time):
+[(525.1071624474989, 0), (525.107156694583, 0.006569862365722656), (518.2678349072157, 0.013571023941040039), (465.8211446050718, 0.02653360366821289), (465.82113903377103, 0.4492952823638916), (457.62154294851643, 0.46984243392944336), (448.17039681257484, 0.9362831115722656), (353.9929621944302, 0.9624171257019043), (45.17321102097412, 7.7911553382873535)]
+probability of this sequence is: 2.500780515514966e-05
+uncertainty:
+{'ate': -45.17321102097412, 'ci': (-2049.810530762131, 1959.4641087201828)}
+checked:
+410

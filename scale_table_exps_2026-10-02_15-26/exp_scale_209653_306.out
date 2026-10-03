@@ -1,0 +1,23 @@
+Starting EXP32.3, type=probe, run 1/3 (Task 306)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 16159.951660181097
+***
+FINISHED
+ATE before: 16159.951660181097
+ATE now is: 19302.505782159384
+sequence is: (('bin_equal_width_2', 'education'),)
+***
+Execution time: 3.094 sec
+distances from ATE (with time):
+[(2614.0483398189026, 0), (528.5057821593837, 2.9107072353363037)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.03225806451612903
+uncertainty:
+{'ate': 19302.505782159384, 'ci': (19003.265906510263, 19601.745657808504)}
+checked:
+7

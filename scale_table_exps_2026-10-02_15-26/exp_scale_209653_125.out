@@ -1,0 +1,25 @@
+Starting EXP30.5, type=probe_probs_with_restart, run 3/3 (Task 125)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8843.429206750767
+PROBE TRIGGERED! Error reduced from 9930.571 to 2582.461 (ATE went to 16191.53924332497).
+PROBE TRIGGERED! Error reduced from 2582.461 to 1156.656 (ATE went to 17617.34390773865).
+***
+FINISHED
+ATE before: 8843.429206750767
+ATE now is: 18822.261893547817
+sequence is: (('drop_duplicates', 'TABLE'), ('isolationForest', 'TABLE'))
+***
+Execution time: 27.318 sec
+distances from ATE (with time):
+[(9930.570793249233, 0), (2582.460756675029, 0.20119714736938477), (9930.570793249233, 0.5010502338409424), (2582.460756675029, 0.7033896446228027), (2582.460756660048, 2.450881004333496), (1156.6560922613498, 4.325486660003662), (9930.570793249233, 4.656940937042236), (2582.460756675029, 4.937870979309082), (1156.6560922613498, 6.2172932624816895), (48.261893547816726, 27.119745016098022)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.000799545319749151
+uncertainty:
+{'ate': 18822.261893547817, 'ci': (17145.733186760637, 20498.790600334996)}
+checked:
+58

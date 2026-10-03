@@ -1,0 +1,23 @@
+Starting EXP30.8, type=probe_probs_no_restart, run 2/3 (Task 148)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8810.447827115344
+***
+FINISHED
+ATE before: 8810.447827115344
+ATE now is: 17854.534460064886
+sequence is: (('drop_duplicates', 'TABLE'), ('norm_log', 'Age'), ('isolationForest', 'TABLE'))
+***
+Execution time: 434.477 sec
+distances from ATE (with time):
+[(9963.552172884656, 0), (3308.5959729993374, 0.4727208614349365), (3308.595972992749, 5.002349376678467), (2064.1750027141206, 5.68215799331665), (1652.259394512439, 52.23753261566162), (1415.5924290369985, 287.0347671508789), (1336.3959528800551, 331.94637656211853), (1111.547948365147, 431.49921345710754), (919.4655399351141, 434.2238926887512)]
+probability of this sequence is: 2.71100133440125e-05
+uncertainty:
+{'ate': 17854.534460064886, 'ci': (16441.830912808826, 19267.238007320946)}
+checked:
+330

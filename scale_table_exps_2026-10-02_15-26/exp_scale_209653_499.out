@@ -1,0 +1,23 @@
+Starting EXP37.3, type=probe_probs_no_restart, run 2/3 (Task 499)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: -22829.270451639753
+***
+FINISHED
+ATE before: -22829.270451639753
+ATE now is: 7795.537817053122
+sequence is: (('isolationForest', 'TABLE'), ('IQR', 'sqft_lot15'))
+***
+Execution time: 10.428 sec
+distances from ATE (with time):
+[(32962.35045163975, 0), (30842.201518403017, 0.04395866394042969), (30528.892885077883, 0.08556675910949707), (9285.11621353596, 0.5801787376403809), (4825.09742933867, 1.7510807514190674), (3450.9174398187606, 7.95305061340332), (2337.542182946878, 10.423207521438599)]
+probability of this sequence is: 6.269562419178365e-05
+uncertainty:
+{'ate': 7795.537817053122, 'ci': (-61982.36576633534, 77573.44140044157)}
+checked:
+324

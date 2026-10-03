@@ -1,0 +1,25 @@
+Starting EXP32.3, type=probe_probs_with_restart, run 1/3 (Task 312)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 14942.096389686427
+PROBE TRIGGERED! Error reduced from 3831.904 to 2817.449 (ATE went to 15956.551444485134).
+PROBE TRIGGERED! Error reduced from 2817.449 to 1810.921 (ATE went to 16963.07902294873).
+***
+FINISHED
+ATE before: 14942.096389686427
+ATE now is: 19025.405213628477
+sequence is: (('norm_log', 'Age'), ('norm_log', 'education'))
+***
+Execution time: 11.009 sec
+distances from ATE (with time):
+[(3831.903610313573, 0), (2817.448555514866, 0.3587515354156494), (3831.903610313573, 0.7855477333068848), (2817.448555514866, 1.0872595310211182), (1810.9209770512716, 2.172990560531616), (3831.903610313573, 2.6896555423736572), (2817.448555514866, 3.043487071990967), (1810.9209770512716, 3.3607919216156006), (1798.8073344419063, 5.603046894073486), (251.4052136284772, 10.794710397720337)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.0011496702462593714
+uncertainty:
+{'ate': 19025.405213628477, 'ci': (18735.701057031347, 19315.109370225608)}
+checked:
+23

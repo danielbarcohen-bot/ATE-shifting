@@ -1,0 +1,25 @@
+Starting EXP30.5, type=probe, run 1/3 (Task 117)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8783.20347048351
+PROBE TRIGGERED! Error reduced from 9990.797 to 7331.211 (ATE went to 11442.788811714896).
+PROBE TRIGGERED! Error reduced from 7331.211 to 3094.113 (ATE went to 15679.886860348273).
+***
+FINISHED
+ATE before: 8783.20347048351
+ATE now is: 18412.1042909025
+sequence is: (('isolationForest', 'TABLE'), ('bin_equal_width_2', 'education'))
+***
+Execution time: 31.588 sec
+distances from ATE (with time):
+[(9990.79652951649, 0), (7331.211188285104, 2.5358049869537354), (9990.79652951649, 2.9397897720336914), (7331.211188285104, 3.2722907066345215), (3094.1131396517267, 16.452341556549072), (9990.79652951649, 16.766932249069214), (7331.211188285104, 17.00261378288269), (3094.1131396517267, 22.867321968078613), (361.8957090974982, 31.38197684288025)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.0010405827263267429
+uncertainty:
+{'ate': 18412.1042909025, 'ci': (17163.317777336117, 19660.890804468887)}
+checked:
+41

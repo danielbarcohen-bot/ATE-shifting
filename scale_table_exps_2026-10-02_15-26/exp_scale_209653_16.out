@@ -1,0 +1,23 @@
+Starting EXP29.2, type=probe_probs_with_restart, run 2/3 (Task 16)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 282.581102038308
+***
+FINISHED
+ATE before: 282.581102038308
+ATE now is: 0.8303332051768848
+sequence is: (('zscore_clip_3', 'education'),)
+***
+Execution time: 0.050 sec
+distances from ATE (with time):
+[(282.581102038308, 0), (282.5810977181227, 0.009111166000366211), (275.59355435500765, 0.018761396408081055), (0.8303332051768848, 0.04773139953613281)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.004441664060056303
+uncertainty:
+{'ate': 0.8303332051768848, 'ci': (-2127.556271948673, 2129.2169383590267)}
+checked:
+9

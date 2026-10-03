@@ -1,0 +1,23 @@
+Starting EXP29.6, type=probe_probs_no_restart, run 3/3 (Task 50)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 914.2075450327065
+***
+FINISHED
+ATE before: 914.2075450327065
+ATE now is: -36.57559076976031
+sequence is: (('IQR', 'education'), ('isolationForest', 'TABLE'))
+***
+Execution time: 4.022 sec
+distances from ATE (with time):
+[(914.2075450327065, 0), (788.1970886718518, 0.003112316131591797), (750.5024805867542, 0.028688907623291016), (441.91357035048713, 0.2660067081451416), (239.95013841899527, 0.875950813293457), (94.06015053264537, 3.6144216060638428), (36.57559076976031, 4.019943714141846)]
+probability of this sequence is: 9.404343628767548e-05
+uncertainty:
+{'ate': -36.57559076976031, 'ci': (-1852.7537359147811, 1779.6025543752605)}
+checked:
+211

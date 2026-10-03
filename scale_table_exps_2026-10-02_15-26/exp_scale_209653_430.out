@@ -1,0 +1,23 @@
+Starting EXP36.2, type=probe_probs_with_restart, run 2/3 (Task 430)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 21925.070603711218
+***
+FINISHED
+ATE before: 21925.070603711218
+ATE now is: 10643.729200540805
+sequence is: (('norm_log', 'sqft_basement'),)
+***
+Execution time: 0.136 sec
+distances from ATE (with time):
+[(11791.990603711218, 0), (11791.711706838223, 0.011843204498291016), (10788.748465508905, 0.10281538963317871), (510.6492005408054, 0.1329343318939209)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.004843826801912506
+uncertainty:
+{'ate': 10643.729200540805, 'ci': (-105562.52620814694, 126849.98460922856)}
+checked:
+22

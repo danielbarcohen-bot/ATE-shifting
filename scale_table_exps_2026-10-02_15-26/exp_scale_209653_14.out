@@ -1,0 +1,23 @@
+Starting EXP29.2, type=probe_probs_no_restart, run 3/3 (Task 14)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 946.7882397035173
+***
+FINISHED
+ATE before: 946.7882397035173
+ATE now is: 23.41302640051981
+sequence is: (('isolationForest', 'TABLE'), ('bin_equal_frequency_2', 'education'))
+***
+Execution time: 22.838 sec
+distances from ATE (with time):
+[(946.7882397035173, 0), (946.7882358751012, 0.006896257400512695), (929.8506879761189, 0.014150381088256836), (778.6946203511561, 0.036748409271240234), (292.5623806490603, 0.23556017875671387), (292.56238035173374, 0.854212760925293), (292.48695828763994, 1.3205516338348389), (127.05442382240471, 2.2460007667541504), (127.0544232631637, 10.704235792160034), (23.41302640051981, 22.836368083953857)]
+probability of this sequence is: 2.113335646914056e-06
+uncertainty:
+{'ate': 23.41302640051981, 'ci': (-4331.613610807392, 4378.439663608432)}
+checked:
+850

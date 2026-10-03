@@ -1,0 +1,23 @@
+Starting EXP32.3, type=probe_probs_with_restart, run 3/3 (Task 314)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 9881.207475921454
+***
+FINISHED
+ATE before: 9881.207475921454
+ATE now is: 19339.967735164926
+sequence is: (('drop_duplicates', 'TABLE'),)
+***
+Execution time: 0.510 sec
+distances from ATE (with time):
+[(8892.792524078546, 0), (565.9677351649261, 0.22575163841247559)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.18498899845163394
+uncertainty:
+{'ate': 19339.967735164926, 'ci': (16135.671502310985, 22544.263968018866)}
+checked:
+1

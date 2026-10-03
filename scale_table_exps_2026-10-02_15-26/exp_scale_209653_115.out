@@ -1,0 +1,24 @@
+Starting EXP30.4, type=probe_probs_with_restart, run 2/3 (Task 115)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+START ATE IS: 8833.649780249327
+PROBE TRIGGERED! Error reduced from 9940.350 to 2356.231 (ATE went to 16417.76937283246).
+***
+FINISHED
+ATE before: 8833.649780249327
+ATE now is: 17932.139591614385
+sequence is: (('drop_duplicates', 'TABLE'), ('norm_log', 'education'))
+***
+Execution time: 3.935 sec
+distances from ATE (with time):
+[(9940.350219750673, 0), (2356.2306271675407, 0.20683860778808594), (9940.350219750673, 0.47473859786987305), (2356.2306271675407, 0.6995456218719482), (2356.230627165176, 2.286682367324829), (841.8604083856153, 3.770023822784424)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 0.004815039592267109
+uncertainty:
+{'ate': 17932.139591614385, 'ci': (17066.714901957628, 18797.56428127114)}
+checked:
+13
