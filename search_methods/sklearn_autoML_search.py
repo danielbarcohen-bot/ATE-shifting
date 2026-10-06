@@ -32,33 +32,40 @@ class DataPrepTransformer(BaseEstimator, TransformerMixin):
 
 
 class LegalSequenceSampler:
-    """Sampler for RandomizedSearchCV (needs only an rvs method). Emits only legal sequences."""
+    """Emits legal sequences: any number of ops per column, interleaved, in any order."""
 
     def __init__(self, common_causes, col_types, legal_ops_by_type, transformations_dict,
-                 whole_df_ops, fill_methods, p_whole=0.5):
+                 whole_df_ops, fill_methods, max_len=7):
         self.whole_df_ops = whole_df_ops or []
         self.fill_methods = [tuple(s) for s in fill_methods]
-        self.p_whole = p_whole
+        self.max_len = max_len  # max number of prep ops after the fill prefix
         base_ops = [op for op in transformations_dict
                     if op not in self.whole_df_ops and not op.startswith("fill_")]
-        self.col_ops = {}
+        self.moves = []  # every legal (op, col) element
         for col in common_causes:
             col_type = col_types.get(col) if col_types else None
             if col_type is None:
-                self.col_ops[col] = list(base_ops)
+                ops = base_ops
             else:
-                self.col_ops[col] = [op for op in base_ops if op in legal_ops_by_type.get(col_type, [])]
+                ops = [op for op in base_ops if op in legal_ops_by_type.get(col_type, [])]
+            self.moves += [(op, col) for op in ops]
+        self.moves += [(op, "TABLE") for op in self.whole_df_ops]
 
     def _one(self, rng):
         seq = list(self.fill_methods[rng.randint(len(self.fill_methods))]) if self.fill_methods else []
-        for col, ops in self.col_ops.items():
-            i = rng.randint(len(ops) + 1)  # last index = no op on this column
-            if i < len(ops):
-                seq.append((ops[i], col))  # one op per column => prefix rule holds automatically
-        for op in self.whole_df_ops:  # each whole-df op at most once
-            if rng.rand() < self.p_whole:
-                seq.append((op, "TABLE"))
-        return tuple(seq)
+        target_len = rng.randint(self.max_len + 1)  # 0..max_len prep ops
+        used = set()  # (prefix, col) already taken -> the same repetition rule as the probe search
+        prep = []
+        for i in rng.permutation(len(self.moves)):  # random order; accepted moves keep that order
+            if len(prep) == target_len:
+                break
+            op, col = self.moves[i]
+            key = (op.split("_")[0], col)
+            if key in used:
+                continue
+            used.add(key)
+            prep.append((op, col))
+        return tuple(seq + prep)
 
     def rvs(self, size=None, random_state=None):
         rng = check_random_state(random_state)
@@ -138,6 +145,5 @@ if __name__ == "__main__":
     data_transformations = largest_data_transformations
 
     # run_experiment(LalondeDataLoader().load_data(), 0, 50, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
-    # run_experiment(LalondeDataLoader().load_data(), -500, 500, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
     # run_experiment(WalmartDataLoader().load_data(), 10133.08, 2533, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
     run_experiment(ACSDataLoader().load_data(), 18774, 1000, data_transformations,whole_df_ops, LEGAL_OPS_BY_TYPE, LEGAL_FILL_BY_TYPE)
