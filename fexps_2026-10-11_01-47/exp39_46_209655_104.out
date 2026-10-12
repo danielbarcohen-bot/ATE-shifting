@@ -1,0 +1,24 @@
+Starting EXP43.5, type=fprobe_probs_no_restart, run 3/3 (Task 104)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+RUNNING EXPERIMENT WITH i=5. G size is 10 + 3
+START ATE IS: 8774.433204759567
+***
+FINISHED
+ATE before: 8774.433204759567
+ATE now is: 18347.48521611017
+sequence is: (('bin_equal_frequency_5', 'education'), ('norm_log', 'education'), ('isolationForest', 'TABLE'))
+***
+Execution time: 520.496 sec
+distances from ATE (with time):
+[(9999.566795240433, 0), (8436.798039519961, 0.39007115364074707), (4136.8698838367345, 11.933510303497314), (3913.100992769554, 29.67531657218933), (3785.1519067496483, 49.23341464996338), (3371.4248100681343, 58.89438056945801), (2585.9167105459364, 112.4874119758606), (2541.6236486421094, 256.9292345046997), (2371.0019288238364, 267.5597550868988), (1965.7721732299178, 433.7413113117218), (1588.8086747420202, 499.00169801712036), (426.51478388983014, 520.2473390102386)]
+probability of this sequence is: 2.337204271733399e-06
+uncertainty:
+{'ate': 18347.48521611017, 'ci': (17208.932648144964, 19486.037784075375)}
+checked:
+135
