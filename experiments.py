@@ -759,19 +759,6 @@ EXPERIMENTS = {
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
         "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
-    # "EXP27_lal_zero": {
-    #     "df": df_lalonde_loaded,
-    #     "transformations_dict": largest_data_transformations,
-    #     "common_causes": df_lalonde.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-    #     "target_ate": 0,
-    #     "epsilon": 50,
-    #     "max_length": 5,
-    #     "sequence_length": 5,
-    #     "op_probs": prob_dict,
-    #     "whole_df_ops": whole_df_ops,
-    #     "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
-    #     "legal_fill_by_type": LEGAL_FILL_BY_TYPE
-    #     },
     "EXP28": {
         "df": df_acs_loaded,
         "transformations_dict": largest_data_transformations,
@@ -798,12 +785,25 @@ EXPERIMENTS = {
         "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
         "legal_fill_by_type": LEGAL_FILL_BY_TYPE
     },
-    "EXP35_high": {
-        "df": df_walmart,
+    "EXP47": {
+        "df": df_IHDP_loaded,
         "transformations_dict": largest_data_transformations,
-        "common_causes": df_walmart.columns.difference(["treatment", "outcome"], sort=False).tolist(),
-        "target_ate": 113001,
-        "epsilon": 2533,
+        "common_causes": df_IHDP_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 4.22,
+        "epsilon": 0.05,
+        "max_length": 10,
+        "sequence_length": 4,
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+    },
+    "EXP48": {
+        "df": df_twins_loaded,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": 0,
+        "epsilon": 0.0039,
         "max_length": 10,
         "sequence_length": 4,
         "op_probs": prob_dict,
@@ -945,6 +945,38 @@ EXPERIMENTS = {
         "common_causes": df_walmart.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
         "target_ate": 10133.08,
         "epsilon": 2533,
+        "max_length": 10,
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+
+    } for k in range(1, 6)
+    },
+    **{f"EXP49.{k}": {  # ihdp CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_IHDP_loaded.assign(replica_id=i)
+                         for i in range(k)], ignore_index=True),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_IHDP_loaded.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
+        "target_ate": 4.22,
+        "epsilon": 0.05,
+        "max_length": 10,
+        "op_probs": prob_dict,
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+
+    } for k in range(1, 6)
+    },
+    **{f"EXP50.{k}": {  # twins CHECK - duplication of df
+        # RUN WITH NO SMALL\LARGE ATE PRINT!!!!
+        "df": pd.concat([df_twins_loaded.assign(replica_id=i)
+                         for i in range(k)], ignore_index=True),
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome", "replica_id"], sort=False).tolist(),
+        "target_ate": 0,
+        "epsilon": 0.0039,
         "max_length": 10,
         "op_probs": prob_dict,
         "whole_df_ops": whole_df_ops,
