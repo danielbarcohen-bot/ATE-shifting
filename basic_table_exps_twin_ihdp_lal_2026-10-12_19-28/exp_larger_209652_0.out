@@ -1,0 +1,16 @@
+Starting EXP27, type=brute, run 1/3 (Task 0)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+base_line_ate: 1671.1304157874747
+
+
+*** TIMED OUT!! ***
+
+Execution time: 14400.37238907814 seconds
+popped 237529 from Q
+checked 3654451 combinations
