@@ -1,0 +1,20 @@
+Starting EXP50.3, type=probe_probs_with_restart, run 3/3 (Task 116)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+No start ate, there are 37 columns with missing values
+2053 options to fill missing
+PROBE TRIGGERED! Error reduced from 0.002 to 0.002 (ATE went to -0.006058930283895169).
+2053 options to fill missing
+PROBE TRIGGERED! Error reduced from 0.002 to 0.002 (ATE went to -0.005821395649354499).
+2053 options to fill missing
+
+
+*** TIMED OUT!! ***
+
+distances from ATE (with time):
+[(0.00248807091452863, 0), (0.0024880709140710352, 28.028927087783813), (0.0021589302838951694, 78.30989241600037), (0.00248807091452863, 6556.7797248363495), (0.0021589302838951694, 6561.163146734238), (0.0019213956493544992, 6656.95831489563), (0.00248807091452863, 13045.049730300903), (0.0021589302838951694, 13049.843611717224), (0.0019213956493544992, 13103.268294095993)]
