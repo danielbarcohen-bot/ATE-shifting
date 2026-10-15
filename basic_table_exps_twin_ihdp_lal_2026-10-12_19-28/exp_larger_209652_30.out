@@ -1,4 +1,4 @@
-Starting EXP48, type=brute, run 1/3 (Task 30)
+Starting EXP48, type=brute, run 1/3 (Task 30) [FIX RUN]
 loaded cached data
 loaded cached data
 loaded cached data
@@ -12,6 +12,6 @@ base_line_ate: N/A
 
 *** TIMED OUT!! ***
 
-Execution time: 14400.203653812408 seconds
-popped 3368 from Q
-checked 572709 combinations
+Execution time: 14401.683377981186 seconds
+popped 3068 from Q
+checked 522639 combinations

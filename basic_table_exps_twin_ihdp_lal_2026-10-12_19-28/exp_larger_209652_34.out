@@ -1,16 +1,1 @@
-Starting EXP48, type=probe_brute, run 2/3 (Task 34)
-loaded cached data
-loaded cached data
-loaded cached data
-loaded cached data
-loaded cached data
-loaded cached data
-loaded cached data
-No start ate, there are 37 columns with missing values
-2053 options to fill missing
-
-
-*** TIMED OUT!! ***
-
-distances from ATE (with time):
-[(0.0024880709146261545, 0), (0.002488070914361939, 27.125184059143066), (0.0018823844987026434, 62.364333152770996), (0.001882384498651541, 5182.551292181015), (0.0018823844984248552, 5239.184401988983), (0.0018823844979563176, 5351.686008691788), (0.0018811726806875397, 9532.356004953384), (0.0018684092086113883, 9553.778030633926), (0.0018356890026824408, 10363.33257818222), (0.0017784782321028005, 10378.453966140747)]
+Starting EXP48, type=probe_brute, run 2/3 (Task 34) [FIX RUN]

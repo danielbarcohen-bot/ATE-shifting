@@ -1,0 +1,1 @@
+./basic_run_fix_48.sh: line 43: 972209 Killed                  stdbuf -oL -eL python3 main.py "$EXP" "$TYPE"

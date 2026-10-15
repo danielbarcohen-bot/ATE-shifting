@@ -1192,4 +1192,58 @@ EXPERIMENTS = {
 
     } for k in range(1, 16)
     },
+    **{f"EXP55.{k}": {  # F size - twins uniform
+        "df": df_twins_loaded,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.00459216,
+        "epsilon": 0.00066199,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        'seed': 55,
+        "solution_sequence":(('fill_drop_na', 'TABLE'), ('zscore_filter_3', 'cigar6'), ('isolationForest', 'TABLE')),
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP56.{k}": {  # F size - twins probs with restart
+        "df": df_twins_loaded,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.00459216,
+        "epsilon": 0.00066199,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        'seed': 56,
+        "solution_sequence":(('fill_drop_na', 'TABLE'), ('zscore_filter_3', 'cigar6'), ('isolationForest', 'TABLE')),
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+
+    } for k in range(1, 16)
+    },
+    **{f"EXP57.{k}": {  # F size - twins probs with\out restart | more probable solution sequence
+        "df": df_twins_loaded,
+        "transformations_dict": largest_data_transformations,
+        "common_causes": df_twins_loaded.columns.difference(["treatment", "outcome"], sort=False).tolist(),
+        "target_ate": -0.00459216,
+        "epsilon": 0.00066199,
+        "max_length": 10,
+        "sequence_length": 5,
+        "op_probs": prob_dict,
+        "i": k,
+        'seed': 57,
+        "solution_sequence": (('fill_drop_na', 'TABLE'), ('zscore_filter_3', 'cigar6'), ('isolationForest', 'TABLE')),
+        "whole_df_ops": whole_df_ops,
+        "legal_ops_by_type": LEGAL_OPS_BY_TYPE,
+        "legal_fill_by_type": LEGAL_FILL_BY_TYPE
+
+    } for k in range(1, 16)
+    },
 }

@@ -183,7 +183,7 @@ class OperationSpaceExperiment:
         # subset_transformations = {op: self.transformations_dict[op] for op in operations_in_subset}
         subset_transformations = {op: self.transformations_dict[op]
                                   for op in self.transformations_dict.keys()
-                                  if op in operations_in_subset}
+                                  if op in operations_in_subset or op.startswith("fill_")}
         # Wrap the search to capture results
         result = {
             'found_solution': False,
