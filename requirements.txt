@@ -1,6 +1,8 @@
+anthropic==1.15.0
 dowhy==0.8
-networkx==2.8.8
-pandas<3.0
-matplotlib
-econml
-numpy<2.4
+econml==0.17.0
+matplotlib==3.11.2
+numpy==2.3.5
+pandas==2.3.3
+scikit_learn==1.9.1
+scipy==1.18.1
