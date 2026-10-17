@@ -1,1 +1,17 @@
 Starting EXP57.9, type=fprobe_probs_no_restart, run 3/3 (Task 386)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+RUNNING EXPERIMENT WITH i=9. G size is 135 + 3
+No start ate, there are 37 columns with missing values
+2053 options to fill missing
+
+
+*** TIMED OUT!! ***
+
+distances from ATE (with time):
+[(0.0017959109146261547, 0), (0.001795910914361939, 2.2528209686279297), (0.0011902244987026436, 207.0604944229126), (0.0011902244986515412, 2673.3056218624115), (0.0011902244984248554, 3003.2795140743256), (0.00118901268068754, 6189.545933485031), (0.001143529002682441, 7963.948148727417), (0.0010863182321028007, 7996.341597795486)]
