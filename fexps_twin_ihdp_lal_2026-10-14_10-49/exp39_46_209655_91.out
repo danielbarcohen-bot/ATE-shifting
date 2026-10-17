@@ -1,0 +1,24 @@
+Starting EXP51.1, type=fprobe_probs_no_restart, run 2/3 (Task 91)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+RUNNING EXPERIMENT WITH i=1. G size is 2 + 5
+START ATE IS: 1671.1304157874747
+***
+FINISHED
+ATE before: 1671.1304157874747
+ATE now is: 13.390554058323687
+sequence is: (('zscore_clip_3', 'age'), ('bin_equal_frequency_10', 'age'), ('drop_duplicates', 'TABLE'), ('bin_equal_frequency_2', 'education'), ('isolationForest', 'TABLE'))
+***
+Execution time: 72.566 sec
+distances from ATE (with time):
+[(1671.1304157874747, 0), (1577.7909315152556, 0.0031883716583251953), (1572.6858379900787, 0.23487019538879395), (1572.6657006211317, 0.24028944969177246), (1559.4658616300185, 0.6135423183441162), (1390.3296487870666, 0.9825060367584229), (1307.824258609122, 1.757646083831787), (1220.3248439835934, 2.689976215362549), (1200.571341964117, 3.8102431297302246), (620.2966391503851, 5.67187762260437), (619.295402332451, 14.005553722381592), (596.5264545321052, 32.266122817993164), (279.43670511653545, 40.51353859901428), (13.390554058323687, 72.56391954421997)]
+probability of this sequence is: 1.1949151644531328e-11
+uncertainty:
+{'ate': 13.390554058323687, 'ci': (-1621.9081364892959, 1648.6892446059433)}
+checked:
+511

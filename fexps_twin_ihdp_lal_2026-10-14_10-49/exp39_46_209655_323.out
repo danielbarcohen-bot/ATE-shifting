@@ -1,0 +1,29 @@
+Starting EXP56.3, type=fprobe_probs_with_restart, run 3/3 (Task 323)
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+loaded cached data
+RUNNING EXPERIMENT WITH i=3. G size is 45 + 3
+No start ate, there are 37 columns with missing values
+2053 options to fill missing
+PROBE TRIGGERED! Error reduced from 0.002 to 0.001 (ATE went to -0.005782384498702643).
+2053 options to fill missing
+PROBE TRIGGERED! Error reduced from 0.001 to 0.001 (ATE went to -0.005289594037257635).
+2053 options to fill missing
+***
+FINISHED
+ATE before: N/A
+ATE now is: -0.005212348435477137
+sequence is: (('fill_drop_na', 'TABLE'), ('zscore_filter_3', 'cigar6'), ('isolationForest', 'TABLE'))
+***
+Execution time: 4965.464 sec
+distances from ATE (with time):
+[(0.0017959109146261547, 0), (0.0011902244987026436, 48.2286159992218), (0.0017959109146261547, 2146.590062856674), (0.0011902244987026436, 2150.253209590912), (0.0011762492086113885, 2304.0261709690094), (0.0011508779426718258, 2341.3525075912476), (0.0006974340372576356, 2817.9030158519745), (0.0017959109146261547, 4930.329119920731), (0.0011902244987026436, 4932.948454380035), (0.0006974340372576356, 4962.859954833984), (0.0006201884354771377, 4965.463450193405)]
+(REAL, NOT adjusted by restarts) probability of this sequence is: 8.497408666158011e-07
+uncertainty:
+{'ate': -0.005212348435477137, 'ci': (-0.0077395171788172765, -0.0026851796921369985)}
+checked:
+264
